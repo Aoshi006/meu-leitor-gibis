@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Estante de Gibis</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #ff5722; }
+        .nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .nav button { background: #333; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .nav button.active { background: #ff5722; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: #1e1e1e; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.2s; }
+        .card:hover { transform: scale(1.03); }
+        .card-img { height: 260px; background: #2c2c2c; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; text-align: center; padding: 10px; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-content { padding: 15px; }
+        .card-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-info { font-size: 12px; color: #aaa; }
+        
+        /* Modal de Detalhes da Coleção */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
+        .modal-content { background: #1e1e1e; width: 90%; max-width: 600px; max-height: 80vh; border-radius: 8px; padding: 20px; overflow-y: auto; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #333; }
+        .item-row a { background: #ff5722; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 12px; }
+        .loading { text-align: center; font-size: 18px; margin-top: 50px; color: #aaa; }
+    </style>
+</head>
+<body>
+
+    <h1>📚 Minha Estante Digital</h1>
+    
+    <div class="nav">
+        <button id="btnGibis" class="active" onclick="mudarCategoria('gibis')">Gibis / HQs</button>
+        <button id="btnMangas" onclick="mudarCategoria('mangas')">Mangás</button>
+    </div>
+
+    <div id="loading" class="loading">Carregando biblioteca do Google Drive...</div>
+    <div id="grid" class="grid"></div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <h2 id="modalTitle">Coleção</h2>
+            <div id="modalList"></div>
+        </div>
+    </div>
+
+    <script>
+        // COLE A SUA URL DO WEB APP AQUI ENTRE AS ASPAS:
+        const URL_API = "https://script.google.com/macros/s/AKfycbzqakH3Mc_1Zaucv5iLvAM_1NqT1dmS1WZv47UXPOeAOKgni6adjbfzTnyjeU84FAjDgw/exec";
+
+        let dadosGlobais = [];
+
+        async function carregarBiblioteca(tipo = 'gibis') {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('grid');
+            loading.style.display = 'block';
+            grid.innerHTML = '';
+
+            try {
+                let resposta = await fetch(`${URL_API}?tipo=${tipo}`);
+                let resultado = await resposta.json();
+                dadosGlobais = resultado.dados;
+
+                loading.style.display = 'none';
+                renderizarEstante(dadosGlobais);
+            } catch (erro) {
+                loading.innerText = "Erro ao carregar a biblioteca. Verifique a URL da API.";
+                console.error(erro);
+            }
+        }
+
+        function renderizarEstante(colecoes) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+
+            colecoes.forEach((col, index) => {
+                let card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => abrirColecao(index);
+
+                card.innerHTML = `
+                    <div class="card-img">
+                        ${col.capa ? `<img src="${col.capa}" alt="Capa">` : 'Sem Capa'}
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title" title="${col.colecao}">${col.colecao}</div>
+                        <div class="card-info">${col.totalItens} edições disponíveis</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function abrirColecao(index) {
+            let col = dadosGlobais[index];
+            document.getElementById('modalTitleinnerText', col.colecao);
+            document.getElementById('modalTitle').innerText = col.colecao;
+            
+            let listaHtml = '';
+            col.itens.forEach(item => {
+                listaHtml += `
+                    <div class="item-row">
+                        <span>${item.nome} (${item.tamanhoMb} MB)</span>
+                        <a href="${item.urlDownload}" target="_blank">Baixar / Ler</a>
+                    </div>
+                `;
+            });
+
+            document.getElementById('modalList').innerHTML = listaHtml;
+            document.getElementById('modal.style.display', 'flex');
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function mudarCategoria(tipo) {
+            document.getElementById('btnGibis').classList.toggle('active', tipo === 'gibis');
+            document.getElementById('btnMangas').classList.toggle('active', tipo === 'mangas');
+            carregarBiblioteca(tipo);
+        }
+
+        // Inicializa carregando os gibis
+        carregarBiblioteca('gibis');
+    </script>
+</body>
+</html>
