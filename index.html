@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Estante de Gibis</title>
+    <title>Minha Estante Digital</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
         h1 { text-align: center; color: #ff5722; }
@@ -49,7 +49,6 @@
     </div>
 
     <script>
-        // COLE A SUA URL DO WEB APP AQUI ENTRE AS ASPAS:
         const URL_API = "https://script.google.com/macros/s/AKfycbzqakH3Mc_1Zaucv5iLvAM_1NqT1dmS1WZv47UXPOeAOKgni6adjbfzTnyjeU84FAjDgw/exec";
 
         let dadosGlobais = [];
@@ -63,7 +62,9 @@
             try {
                 let resposta = await fetch(`${URL_API}?tipo=${tipo}`);
                 let resultado = await resposta.json();
-                dadosGlobais = resultado.dados;
+                
+                // O Apps Script retorna o array direto, ajustado aqui:
+                dadosGlobais = resultado;
 
                 loading.style.display = 'none';
                 renderizarEstante(dadosGlobais);
@@ -77,6 +78,8 @@
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
 
+            if (!Array.isArray(colecoes)) return;
+
             colecoes.forEach((col, index) => {
                 let card = document.createElement('div');
                 card.className = 'card';
@@ -87,8 +90,8 @@
                         ${col.capa ? `<img src="${col.capa}" alt="Capa">` : 'Sem Capa'}
                     </div>
                     <div class="card-content">
-                        <div class="card-title" title="${col.colecao}">${col.colecao}</div>
-                        <div class="card-info">${col.totalItens} edições disponíveis</div>
+                        <div class="card-title" title="${col.titulo}">${col.titulo}</div>
+                        <div class="card-info">${col.edicoes} edições disponíveis</div>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -97,21 +100,24 @@
 
         function abrirColecao(index) {
             let col = dadosGlobais[index];
-            document.getElementById('modalTitleinnerText', col.colecao);
-            document.getElementById('modalTitle').innerText = col.colecao;
+            document.getElementById('modalTitle').innerText = col.titulo;
             
             let listaHtml = '';
-            col.itens.forEach(item => {
-                listaHtml += `
-                    <div class="item-row">
-                        <span>${item.nome} (${item.tamanhoMb} MB)</span>
-                        <a href="${item.urlDownload}" target="_blank">Baixar / Ler</a>
-                    </div>
-                `;
-            });
+            // Caso sua estrutura de itens venha a ser listada no futuro:
+            if (col.itens && Array.isArray(col.itens)) {
+                col.itens.forEach(item => {
+                    listaHtml += `
+                        <div class="item-row">
+                            <span>${item.nome} (${item.tamanhoMb} MB)</span>
+                            <a href="${item.urlDownload}" target="_blank">Baixar / Ler</a>
+                        </div>
+                    `;
+                });
+            } else {
+                listaHtml = `<div class="item-row"><span>Pasta da coleção no Drive</span><a href="https://drive.google.com/drive/folders/${col.id}" target="_blank">Abrir Pasta</a></div>`;
+            }
 
             document.getElementById('modalList').innerHTML = listaHtml;
-            document.getElementById('modal.style.display', 'flex');
             document.getElementById('modal').style.display = 'flex';
         }
 
@@ -125,7 +131,6 @@
             carregarBiblioteca(tipo);
         }
 
-        // Inicializa carregando os gibis
         carregarBiblioteca('gibis');
     </script>
 </body>
