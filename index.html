@@ -1,2077 +1,1076 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<meta
-    name="theme-color"
-    content="#090b10"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
 
 <title>Minha Estante</title>
 
-
 <style>
-
-/* =========================================================
-   VARIÁVEIS
-========================================================= */
-
-:root {
-
-    --bg: #090b10;
-    --bg-soft: #0d1017;
-
-    --sidebar: #0c0f15;
-
-    --card: #141820;
-    --card-hover: #181d27;
-
-    --border: rgba(255,255,255,.075);
-
-    --text: #f5f7fb;
-    --muted: #9299a8;
-    --muted2: #626a7a;
-
-    --primary: #ff5a36;
-    --primary-light: #ff7a4f;
-
-    --green: #40d98a;
-    --blue: #6b95ff;
-    --yellow: #ffc857;
-
-    --radius: 16px;
+:root{
+    --bg:#090b10;
+    --sidebar:#0c0f15;
+    --card:#151923;
+    --card2:#1c212c;
+    --border:rgba(255,255,255,.075);
+    --text:#f5f7fb;
+    --muted:#9299a8;
+    --muted2:#646d7e;
+    --primary:#ff5a36;
+    --primary2:#ff7a4f;
+    --green:#3ddc84;
+    --blue:#6b95ff;
+    --yellow:#ffc857;
+    --radius:16px;
 }
 
+*{box-sizing:border-box}
 
-/* =========================================================
-   RESET
-========================================================= */
+html{scroll-behavior:smooth}
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-
-    margin: 0;
-
-    min-height: 100vh;
-
+body{
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     background:
-
-        radial-gradient(
-            circle at 100% 0,
-            rgba(255,90,54,.07),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 0 100%,
-            rgba(91,140,255,.05),
-            transparent 30%
-        ),
-
+        radial-gradient(circle at 100% 0,rgba(255,90,54,.07),transparent 28%),
+        radial-gradient(circle at 0 100%,rgba(91,140,255,.05),transparent 30%),
         var(--bg);
-
-    color: var(--text);
-
-    font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
 }
 
+button,input,select{font:inherit}
+button{cursor:pointer}
 
-button,
-input,
-select {
-
-    font: inherit;
-}
-
-
-button {
-    cursor: pointer;
-}
-
-
-/* =========================================================
+/* =========================
    SIDEBAR
-========================================================= */
+========================= */
 
-.sidebar {
-
-    width: 240px;
-
-    position: fixed;
-
-    top: 0;
-    bottom: 0;
-    left: 0;
-
-    padding: 27px 18px;
-
-    background:
-        rgba(12,15,21,.96);
-
-    border-right:
-        1px solid var(--border);
-
-    z-index: 50;
-
-    overflow-y: auto;
-
-    backdrop-filter:
-        blur(18px);
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:240px;
+    z-index:50;
+    overflow-y:auto;
+    padding:27px 18px;
+    border-right:1px solid var(--border);
+    background:rgba(12,15,21,.97);
+    backdrop-filter:blur(18px);
 }
 
-
-.logo {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 0 7px;
-
-    margin-bottom: 34px;
-
-    font-weight: 850;
-
-    font-size: 22px;
+.logo{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:0 7px;
+    margin-bottom:34px;
+    font-size:22px;
+    font-weight:850;
 }
 
-
-.logo-icon {
-
-    width: 42px;
-    height: 42px;
-
-    flex-shrink: 0;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 13px;
-
-    font-size: 21px;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary-light)
-        );
-
-    box-shadow:
-        0 10px 28px
-        rgba(255,90,54,.20);
+.logo-icon{
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    border-radius:13px;
+    font-size:21px;
+    flex-shrink:0;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 10px 28px rgba(255,90,54,.22);
 }
 
+.logo span{color:var(--primary)}
 
-.logo-text span {
-    color: var(--primary);
+.menu-label{
+    margin:25px 11px 9px;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:1.5px;
+    color:#606879;
 }
 
-
-.menu-label {
-
-    margin:
-        25px 11px
-        9px;
-
-    font-size: 10px;
-
-    font-weight: 850;
-
-    letter-spacing: 1.5px;
-
-    color: #606879;
+.menu-item{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:4px;
+    padding:12px 13px;
+    border:0;
+    border-radius:11px;
+    color:var(--muted);
+    background:transparent;
+    text-align:left;
+    transition:.18s;
 }
 
-
-.menu-item {
-
-    width: 100%;
-
-    margin-bottom: 4px;
-
-    padding: 12px 13px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    border: 0;
-
-    border-radius: 11px;
-
-    color: var(--muted);
-
-    background: transparent;
-
-    text-align: left;
-
-    transition: .18s;
+.menu-item:hover{
+    color:#fff;
+    background:rgba(255,255,255,.04);
 }
 
-
-.menu-item:hover {
-
-    color: white;
-
-    background:
-        rgba(255,255,255,.04);
+.menu-item.active{
+    color:#fff;
+    background:linear-gradient(90deg,rgba(255,90,54,.16),rgba(255,90,54,.04));
 }
 
-
-.menu-item.active {
-
-    color: white;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            rgba(255,90,54,.16),
-            rgba(255,90,54,.04)
-        );
+.menu-icon{
+    width:23px;
+    text-align:center;
+    font-size:17px;
 }
 
+/* =========================
+   MAIN / HEADER
+========================= */
 
-.menu-icon {
-
-    width: 23px;
-
-    text-align: center;
-
-    font-size: 17px;
+.main{
+    min-height:100vh;
+    margin-left:240px;
 }
 
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-
-    margin-left: 240px;
-
-    min-height: 100vh;
+.header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    min-height:78px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:16px 30px;
+    background:rgba(9,11,16,.88);
+    border-bottom:1px solid var(--border);
+    backdrop-filter:blur(20px);
 }
 
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 30;
-
-    min-height: 78px;
-
-    padding: 16px 30px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    background:
-        rgba(9,11,16,.86);
-
-    border-bottom:
-        1px solid var(--border);
-
-    backdrop-filter:
-        blur(20px);
+.mobile-menu{
+    display:none;
+    width:43px;
+    height:43px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:var(--card);
+    color:#fff;
 }
 
-
-.mobile-menu {
-
-    display: none;
-
-    width: 43px;
-    height: 43px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 11px;
-
-    background: var(--card);
-
-    color: white;
+.search-box{
+    width:100%;
+    max-width:520px;
+    position:relative;
 }
 
-
-.search-box {
-
-    width: 100%;
-
-    max-width: 500px;
-
-    position: relative;
+.search-icon{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    opacity:.55;
 }
 
-
-.search-icon {
-
-    position: absolute;
-
-    top: 50%;
-    left: 16px;
-
-    transform:
-        translateY(-50%);
-
-    opacity: .55;
+.search-box input{
+    width:100%;
+    padding:13px 15px 13px 45px;
+    color:#fff;
+    outline:none;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:#141821;
 }
 
-
-.search-box input {
-
-    width: 100%;
-
-    padding:
-        13px 15px
-        13px 45px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 13px;
-
-    background: #141821;
-
-    color: white;
-
-    outline: none;
-
-    transition: .18s;
+.search-box input:focus{
+    border-color:rgba(255,90,54,.45);
+    box-shadow:0 0 0 3px rgba(255,90,54,.06);
 }
 
-
-.search-box input:focus {
-
-    border-color:
-        rgba(255,90,54,.45);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(255,90,54,.06);
+.header-actions{
+    margin-left:auto;
+    display:flex;
+    gap:9px;
 }
 
-
-.header-actions {
-
-    margin-left: auto;
-
-    display: flex;
-
-    gap: 9px;
+.action-button{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:11px 15px;
+    white-space:nowrap;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:#171b24;
+    color:#fff;
+    font-weight:700;
 }
 
+.action-button:hover{background:#202631}
 
-.action-button {
-
-    padding:
-        11px 15px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    white-space: nowrap;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 11px;
-
-    background:
-        #171b24;
-
-    color: white;
-
-    font-weight: 700;
-
-    transition: .18s;
+.action-button.primary{
+    border-color:transparent;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
 }
 
-
-.action-button:hover {
-
-    background:
-        #202631;
-}
-
-
-.action-button.primary {
-
-    border-color: transparent;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary-light)
-        );
-}
-
-
-.action-button.primary:hover {
-
-    transform:
-        translateY(-1px);
-}
-
-
-/* =========================================================
+/* =========================
    CONTEÚDO
-========================================================= */
+========================= */
 
-.content {
-
-    max-width: 1600px;
-
-    margin: auto;
-
-    padding:
-        34px 34px
-        70px;
+.content{
+    max-width:1650px;
+    margin:auto;
+    padding:34px 34px 70px;
 }
 
+.page-heading{margin-bottom:28px}
 
-.page-heading {
-
-    margin-bottom: 28px;
+.page-heading h1{
+    margin:0 0 7px;
+    font-size:clamp(27px,3vw,39px);
+    letter-spacing:-.7px;
 }
 
-
-.page-heading h1 {
-
-    margin: 0 0 7px;
-
-    font-size:
-        clamp(
-            27px,
-            3vw,
-            39px
-        );
-
-    letter-spacing: -.7px;
+.page-heading p{
+    margin:0;
+    color:var(--muted);
 }
 
-
-.page-heading p {
-
-    margin: 0;
-
-    color: var(--muted);
-}
-
-
-/* =========================================================
+/* =========================
    ESTATÍSTICAS
-========================================================= */
+========================= */
 
-.stats {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            4,
-            minmax(150px,1fr)
-        );
-
-    gap: 15px;
-
-    margin-bottom: 28px;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(150px,1fr));
+    gap:15px;
+    margin-bottom:28px;
 }
 
-
-.stat-card {
-
-    min-height: 120px;
-
-    padding: 20px;
-
-    background:
-
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.05),
-            rgba(255,255,255,.017)
-        );
-
-    border:
-        1px solid var(--border);
-
-    border-radius: var(--radius);
+.stat-card{
+    min-height:120px;
+    padding:20px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.017));
 }
 
-
-.stat-label {
-
-    margin-bottom: 8px;
-
-    font-size: 13px;
-
-    color: var(--muted);
+.stat-label{
+    margin-bottom:8px;
+    font-size:13px;
+    color:var(--muted);
 }
 
-
-.stat-number {
-
-    font-size: 30px;
-
-    font-weight: 900;
+.stat-number{
+    font-size:30px;
+    font-weight:900;
 }
 
-
-.stat-detail {
-
-    margin-top: 5px;
-
-    font-size: 11px;
-
-    color: var(--muted2);
+.stat-detail{
+    margin-top:5px;
+    font-size:11px;
+    color:var(--muted2);
 }
 
+/* =========================
+   FILTROS
+========================= */
 
-/* =========================================================
-   TOOLBAR
-========================================================= */
-
-.toolbar {
-
-    margin-bottom: 23px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    flex-wrap: wrap;
+.toolbar{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+    margin-bottom:23px;
 }
 
-
-.chip {
-
-    padding:
-        8px 14px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 100px;
-
-    background:
-        #131720;
-
-    color: var(--muted);
-
-    transition: .17s;
+.chip{
+    padding:8px 14px;
+    border:1px solid var(--border);
+    border-radius:100px;
+    background:#131720;
+    color:var(--muted);
 }
 
+.chip:hover{color:#fff}
 
-.chip:hover {
-    color: white;
+.chip.active{
+    color:#ff8a68;
+    border-color:rgba(255,90,54,.35);
+    background:rgba(255,90,54,.13);
 }
 
+.toolbar-right{margin-left:auto}
 
-.chip.active {
-
-    color: #ff8a68;
-
-    background:
-        rgba(255,90,54,.13);
-
-    border-color:
-        rgba(255,90,54,.35);
+.sort-select{
+    padding:9px 12px;
+    color:#fff;
+    outline:none;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#131720;
 }
 
-
-.toolbar-right {
-
-    margin-left: auto;
-}
-
-
-.sort-select {
-
-    padding:
-        9px 12px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 10px;
-
-    background:
-        #131720;
-
-    color: white;
-
-    outline: none;
-}
-
-
-/* =========================================================
+/* =========================
    GRID
-========================================================= */
+========================= */
 
-.library-grid {
-
-    display: grid;
-
-    grid-template-columns:
-
-        repeat(
-            auto-fill,
-            minmax(175px,1fr)
-        );
-
-    gap:
-        25px 20px;
+.library-grid,
+.subcollection-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(175px,1fr));
+    gap:25px 20px;
 }
 
-
-/* =========================================================
-   CARD COLEÇÃO
-========================================================= */
-
-.collection-card {
-
-    min-width: 0;
-
-    cursor: pointer;
-
-    transition:
-        transform .2s;
+.collection-card{
+    min-width:0;
+    cursor:pointer;
+    transition:transform .2s;
 }
 
+.collection-card:hover{transform:translateY(-6px)}
 
-.collection-card:hover {
-
-    transform:
-        translateY(-6px);
+.cover{
+    position:relative;
+    overflow:hidden;
+    aspect-ratio:2/3;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:var(--card);
+    box-shadow:0 12px 30px rgba(0,0,0,.27);
 }
 
+.collection-card:hover .cover{
+    box-shadow:0 20px 45px rgba(0,0,0,.42);
+}
 
-.cover {
+.cover img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+}
 
-    position: relative;
-
-    overflow: hidden;
-
-    aspect-ratio:
-        2 / 3;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 16px;
-
+.cover-placeholder{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:17px;
+    text-align:center;
     background:
-        var(--card);
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.27);
+        radial-gradient(circle at 30% 20%,rgba(255,90,54,.20),transparent 32%),
+        linear-gradient(145deg,#222835,#11141b);
 }
 
-
-.collection-card:hover .cover {
-
-    box-shadow:
-        0 20px 45px
-        rgba(0,0,0,.42);
+.placeholder-icon{
+    margin-bottom:15px;
+    font-size:42px;
 }
 
-
-.cover img {
-
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    object-fit: cover;
+.placeholder-name{
+    font-size:13px;
+    font-weight:750;
+    line-height:1.4;
+    color:#dde1e9;
 }
 
-
-.cover-placeholder {
-
-    width: 100%;
-    height: 100%;
-
-    padding: 17px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    background:
-
-        radial-gradient(
-            circle at 30% 20%,
-            rgba(255,90,54,.20),
-            transparent 32%
-        ),
-
-        linear-gradient(
-            145deg,
-            #222835,
-            #11141b
-        );
+.cover-count{
+    position:absolute;
+    left:10px;
+    top:10px;
+    padding:5px 8px;
+    font-size:10px;
+    font-weight:850;
+    border-radius:8px;
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(8px);
 }
 
-
-.placeholder-icon {
-
-    margin-bottom: 15px;
-
-    font-size: 42px;
+.cover-sub{
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    padding:5px 8px;
+    font-size:10px;
+    font-weight:800;
+    border-radius:8px;
+    background:rgba(0,0,0,.75);
 }
 
-
-.placeholder-name {
-
-    font-size: 13px;
-
-    font-weight: 750;
-
-    line-height: 1.4;
-
-    color: #dde1e9;
+.cover-star{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:rgba(0,0,0,.72);
 }
 
+.collection-info{padding:11px 3px 0}
 
-.cover-count {
-
-    position: absolute;
-
-    top: 10px;
-    left: 10px;
-
-    padding:
-        5px 8px;
-
-    border-radius: 8px;
-
-    font-size: 10px;
-
-    font-weight: 850;
-
-    background:
-        rgba(0,0,0,.7);
-
-    backdrop-filter:
-        blur(8px);
+.collection-title{
+    margin-bottom:5px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    font-size:14px;
+    font-weight:750;
 }
 
-
-.cover-star {
-
-    position: absolute;
-
-    top: 10px;
-    right: 10px;
-
-    width: 32px;
-    height: 32px;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(0,0,0,.72);
+.collection-meta{
+    color:var(--muted);
+    font-size:11px;
 }
 
-
-.collection-info {
-
-    padding:
-        11px 3px 0;
+.progress-bar{
+    width:100%;
+    height:5px;
+    margin-top:9px;
+    overflow:hidden;
+    border-radius:100px;
+    background:#272c37;
 }
 
-
-.collection-title {
-
-    margin-bottom: 5px;
-
-    overflow: hidden;
-
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
-
-    font-size: 14px;
-
-    font-weight: 750;
+.progress-fill{
+    height:100%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,var(--primary),var(--primary2));
 }
 
-
-.collection-meta {
-
-    color: var(--muted);
-
-    font-size: 11px;
-}
-
-
-/* =========================================================
-   PROGRESSO
-========================================================= */
-
-.progress-bar {
-
-    width: 100%;
-    height: 5px;
-
-    margin-top: 9px;
-
-    overflow: hidden;
-
-    border-radius: 100px;
-
-    background:
-        #272c37;
-}
-
-
-.progress-fill {
-
-    height: 100%;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            var(--primary),
-            var(--primary-light)
-        );
-
-    border-radius: inherit;
-}
-
-
-/* =========================================================
+/* =========================
    ESTADOS
-========================================================= */
+========================= */
 
-.state {
-
-    grid-column:
-        1 / -1;
-
-    padding:
-        90px 20px;
-
-    text-align: center;
-
-    color: var(--muted);
+.state{
+    grid-column:1/-1;
+    padding:90px 20px;
+    color:var(--muted);
+    text-align:center;
 }
 
-
-.state-icon {
-
-    margin-bottom: 14px;
-
-    font-size: 48px;
+.state-icon{
+    margin-bottom:14px;
+    font-size:48px;
 }
 
-
-.loader {
-
-    width: 39px;
-    height: 39px;
-
-    margin:
-        0 auto 16px;
-
-    border:
-        3px solid
-        rgba(255,255,255,.08);
-
-    border-top-color:
-        var(--primary);
-
-    border-radius: 50%;
-
-    animation:
-        spin .75s
-        linear infinite;
+.loader{
+    width:39px;
+    height:39px;
+    margin:0 auto 16px;
+    border:3px solid rgba(255,255,255,.08);
+    border-top-color:var(--primary);
+    border-radius:50%;
+    animation:spin .75s linear infinite;
 }
 
-
-@keyframes spin {
-
-    to {
-        transform:
-            rotate(360deg);
-    }
+@keyframes spin{
+    to{transform:rotate(360deg)}
 }
 
-
-/* =========================================================
+/* =========================
    MODAL
-========================================================= */
+========================= */
 
-.modal {
-
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 100;
-
-    padding: 22px;
-
-    overflow-y: auto;
-
-    background:
-        rgba(3,5,9,.88);
-
-    backdrop-filter:
-        blur(10px);
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:100;
+    padding:22px;
+    overflow-y:auto;
+    background:rgba(3,5,9,.90);
+    backdrop-filter:blur(10px);
 }
 
-
-.modal.open {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: flex-start;
+.modal.open{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
 }
 
-
-.modal-box {
-
-    width: 100%;
-
-    max-width: 1000px;
-
-    margin: auto;
-
-    overflow: hidden;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 20px;
-
-    background:
-        #11151d;
-
-    box-shadow:
-        0 30px 90px
-        rgba(0,0,0,.55);
+.modal-box{
+    width:100%;
+    max-width:1120px;
+    margin:auto;
+    overflow:hidden;
+    border:1px solid var(--border);
+    border-radius:21px;
+    background:#11151d;
+    box-shadow:0 30px 90px rgba(0,0,0,.55);
 }
 
-
-.modal-header {
-
-    padding:
-        25px 28px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    border-bottom:
-        1px solid var(--border);
+.modal-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:22px 27px;
+    border-bottom:1px solid var(--border);
 }
 
-
-.modal-title-container {
-
-    min-width: 0;
-
-    flex: 1;
+.modal-back{
+    display:none;
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:#1b202a;
+    color:#fff;
+    font-size:20px;
 }
 
+.modal-back.show{display:block}
 
-.modal-title {
-
-    margin:
-        0 0 5px;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    font-size: 25px;
+.modal-title-container{
+    flex:1;
+    min-width:0;
 }
 
-
-.modal-subtitle {
-
-    color: var(--muted);
-
-    font-size: 12px;
+.breadcrumb{
+    margin-bottom:6px;
+    color:#737c8d;
+    font-size:11px;
 }
 
-
-.close-button {
-
-    width: 42px;
-    height: 42px;
-
-    flex-shrink: 0;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 11px;
-
-    background:
-        #1b202a;
-
-    color: white;
-
-    font-size: 21px;
+.modal-title{
+    margin:0 0 4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    font-size:25px;
 }
 
-
-.modal-body {
-
-    padding:
-        22px 27px;
+.modal-subtitle{
+    color:var(--muted);
+    font-size:12px;
 }
 
+.close-button{
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:#1b202a;
+    color:#fff;
+    font-size:21px;
+}
 
-/* =========================================================
+.modal-body{padding:24px 27px}
+
+/* =========================
+   SEÇÕES MODAL
+========================= */
+
+.modal-section{margin-bottom:30px}
+
+.section-title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.section-title{
+    margin:0;
+    font-size:17px;
+}
+
+.section-count{
+    font-size:11px;
+    color:var(--muted);
+}
+
+.empty-inline{
+    padding:20px;
+    color:var(--muted);
+    text-align:center;
+    border:1px dashed var(--border);
+    border-radius:13px;
+}
+
+/* =========================
    EDIÇÕES
-========================================================= */
+========================= */
 
-.edition {
-
-    margin-bottom: 9px;
-
-    padding: 15px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 14px;
-
-    background:
-        #161a22;
+.edition{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:9px;
+    padding:15px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#161a22;
 }
 
+.edition:hover{background:#191e27}
 
-.edition:hover {
-
-    background:
-        #191e27;
+.edition-icon{
+    width:44px;
+    height:55px;
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+    border-radius:9px;
+    background:#252b37;
+    font-size:21px;
 }
 
-
-.edition-icon {
-
-    width: 44px;
-    height: 55px;
-
-    flex-shrink: 0;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 9px;
-
-    background:
-        #252b37;
-
-    font-size: 21px;
+.edition-content{
+    flex:1;
+    min-width:0;
 }
 
-
-.edition-content {
-
-    flex: 1;
-
-    min-width: 0;
+.edition-name{
+    margin-bottom:4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    font-size:13px;
+    font-weight:750;
 }
 
-
-.edition-name {
-
-    margin-bottom: 4px;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    font-size: 13px;
-
-    font-weight: 750;
+.edition-meta{
+    font-size:11px;
+    color:var(--muted);
 }
 
-
-.edition-meta {
-
-    font-size: 11px;
-
-    color: var(--muted);
+.status{
+    display:inline-block;
+    margin-top:7px;
+    padding:4px 7px;
+    border-radius:100px;
+    font-size:9px;
+    font-weight:900;
+    text-transform:uppercase;
 }
 
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-.status {
-
-    display: inline-block;
-
-    margin-top: 7px;
-
-    padding:
-        4px 7px;
-
-    border-radius: 100px;
-
-    font-size: 9px;
-
-    font-weight: 900;
-
-    text-transform: uppercase;
+.status.nao_lido{
+    color:#a0a7b4;
+    background:rgba(255,255,255,.07);
 }
 
-
-.status.nao_lido {
-
-    color: #a0a7b4;
-
-    background:
-        rgba(255,255,255,.07);
+.status.lendo{
+    color:#ff8b69;
+    background:rgba(255,90,54,.13);
 }
 
-
-.status.lendo {
-
-    color: #ff8b69;
-
-    background:
-        rgba(255,90,54,.13);
+.status.lido{
+    color:var(--green);
+    background:rgba(64,217,138,.12);
 }
 
-
-.status.lido {
-
-    color: var(--green);
-
-    background:
-        rgba(64,217,138,.12);
+.status.quero_ler{
+    color:#8aa9ff;
+    background:rgba(107,149,255,.13);
 }
 
-
-.status.quero_ler {
-
-    color: #8aa9ff;
-
-    background:
-        rgba(107,149,255,.13);
+.page-control{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:9px;
 }
 
-
-/* =========================================================
-   CONTROLE DE PÁGINAS
-========================================================= */
-
-.page-control {
-
-    margin-top: 9px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
+.page-control input{
+    width:68px;
+    padding:6px 7px;
+    color:#fff;
+    outline:none;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:#0f1218;
 }
 
-
-.page-control input {
-
-    width: 68px;
-
-    padding:
-        6px 7px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 7px;
-
-    background:
-        #0f1218;
-
-    color: white;
-
-    outline: none;
+.page-control span{
+    font-size:11px;
+    color:var(--muted);
 }
 
-
-.page-control span {
-
-    color: var(--muted);
-
-    font-size: 11px;
+.edition-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:6px;
 }
 
-
-/* =========================================================
-   AÇÕES DA EDIÇÃO
-========================================================= */
-
-.edition-actions {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: flex-end;
-
-    flex-wrap: wrap;
-
-    gap: 6px;
+.small-button{
+    padding:7px 9px;
+    color:#fff;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#202530;
 }
 
+.small-button:hover{background:#2b323f}
 
-.small-button {
-
-    padding:
-        7px 9px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 8px;
-
-    background:
-        #202530;
-
-    color: white;
-
-    transition: .15s;
+.small-button.read{
+    border-color:transparent;
+    background:var(--primary);
 }
 
-
-.small-button:hover {
-
-    background:
-        #2b323f;
-}
-
-
-.small-button.read {
-
-    border-color: transparent;
-
-    background:
-        var(--primary);
-}
-
-
-/* =========================================================
+/* =========================
    TOAST
-========================================================= */
+========================= */
 
-.toast-container {
-
-    position: fixed;
-
-    z-index: 300;
-
-    right: 22px;
-    bottom: 22px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 9px;
+.toast-container{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    z-index:300;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
 }
 
-
-.toast {
-
-    max-width: 360px;
-
-    min-width: 270px;
-
-    padding:
-        13px 16px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 11px;
-
-    background:
-        #202530;
-
-    color: white;
-
-    box-shadow:
-        0 15px 35px
-        rgba(0,0,0,.35);
-
-    animation:
-        toastIn .22s ease;
+.toast{
+    min-width:270px;
+    max-width:380px;
+    padding:13px 16px;
+    color:#fff;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:#202530;
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
 }
 
+/* =========================
+   RESPONSIVO
+========================= */
 
-@keyframes toastIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(10px);
+@media(max-width:1000px){
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.24s;
     }
 
-    to {
+    .sidebar.open{transform:translateX(0)}
+    .main{margin-left:0}
+    .mobile-menu{display:block}
 
-        opacity: 1;
-
-        transform:
-            translateY(0);
+    .stats{
+        grid-template-columns:repeat(2,1fr);
     }
 }
 
+@media(max-width:650px){
+    .header{padding:12px}
 
-/* =========================================================
-   RESPONSIVIDADE
-========================================================= */
-
-@media (
-    max-width: 1000px
-) {
-
-    .sidebar {
-
-        transform:
-            translateX(-100%);
-
-        transition:
-            .24s;
+    .content{
+        padding:23px 13px 60px;
     }
 
+    .header-actions span{display:none}
 
-    .sidebar.open {
+    .action-button{padding:11px 12px}
 
-        transform:
-            translateX(0);
+    .library-grid,
+    .subcollection-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:18px 12px;
     }
 
+    .stats{gap:9px}
 
-    .main {
-
-        margin-left: 0;
+    .stat-card{
+        min-height:105px;
+        padding:15px;
     }
 
+    .stat-number{font-size:25px}
 
-    .mobile-menu {
-
-        display: block;
+    .toolbar-right{
+        width:100%;
+        margin-left:0;
     }
 
+    .sort-select{width:100%}
 
-    .stats {
+    .modal{padding:7px}
 
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-}
+    .modal-header{padding:16px}
 
+    .modal-body{padding:13px}
 
-@media (
-    max-width: 650px
-) {
-
-    .header {
-
-        padding:
-            12px;
+    .edition{
+        align-items:flex-start;
     }
 
-
-    .content {
-
-        padding:
-            23px 13px
-            60px;
-    }
-
-
-    .header-actions span {
-
-        display: none;
-    }
-
-
-    .action-button {
-
-        padding:
-            11px 12px;
-    }
-
-
-    .library-grid {
-
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0,1fr)
-            );
-
-        gap:
-            18px 12px;
-    }
-
-
-    .stats {
-
-        gap: 9px;
-    }
-
-
-    .stat-card {
-
-        min-height: 105px;
-
-        padding: 15px;
-    }
-
-
-    .stat-number {
-
-        font-size: 25px;
-    }
-
-
-    .toolbar-right {
-
-        width: 100%;
-
-        margin-left: 0;
-    }
-
-
-    .sort-select {
-
-        width: 100%;
-    }
-
-
-    .modal {
-
-        padding: 7px;
-    }
-
-
-    .modal-header {
-
-        padding:
-            17px;
-    }
-
-
-    .modal-body {
-
-        padding:
-            13px;
-    }
-
-
-    .edition {
-
-        align-items:
-            flex-start;
-    }
-
-
-    .edition-actions {
-
-        flex-direction: column;
+    .edition-actions{
+        flex-direction:column;
     }
 }
-
 </style>
-
 </head>
-
 
 <body>
 
+<aside id="sidebar" class="sidebar">
 
-<!-- ======================================================
-     SIDEBAR
-======================================================= -->
-
-<aside
-    id="sidebar"
-    class="sidebar"
->
-
-
-<div class="logo">
-
-    <div class="logo-icon">
-        📚
+    <div class="logo">
+        <div class="logo-icon">📚</div>
+        <div>
+            Minha<br>
+            <span>Estante</span>
+        </div>
     </div>
 
-    <div class="logo-text">
+    <div class="menu-label">BIBLIOTECA</div>
 
-        Minha<br>
+    <button id="menuTodos" class="menu-item active" onclick="selecionarFiltro('todos')">
+        <span class="menu-icon">🏠</span>
+        Todos
+    </button>
 
-        <span>
-            Estante
-        </span>
+    <button id="menuLendo" class="menu-item" onclick="selecionarFiltro('lendo')">
+        <span class="menu-icon">📖</span>
+        Lendo
+    </button>
 
-    </div>
+    <button id="menuQuero" class="menu-item" onclick="selecionarFiltro('quero_ler')">
+        <span class="menu-icon">🔖</span>
+        Quero ler
+    </button>
 
-</div>
+    <button id="menuLidos" class="menu-item" onclick="selecionarFiltro('lido')">
+        <span class="menu-icon">✅</span>
+        Lidos
+    </button>
 
+    <button id="menuFavoritos" class="menu-item" onclick="selecionarFiltro('favoritos')">
+        <span class="menu-icon">⭐</span>
+        Favoritos
+    </button>
 
+    <div class="menu-label">CATEGORIA</div>
 
-<div class="menu-label">
-    BIBLIOTECA
-</div>
+    <button id="menuGibis" class="menu-item active" onclick="mudarCategoria('gibis')">
+        <span class="menu-icon">🦸</span>
+        Gibis / HQs
+    </button>
 
-
-<button
-    id="menuTodos"
-    class="menu-item active"
-    onclick="selecionarFiltro('todos')"
->
-
-    <span class="menu-icon">
-        🏠
-    </span>
-
-    Todos
-
-</button>
-
-
-<button
-    id="menuLendo"
-    class="menu-item"
-    onclick="selecionarFiltro('lendo')"
->
-
-    <span class="menu-icon">
-        📖
-    </span>
-
-    Lendo
-
-</button>
-
-
-<button
-    id="menuQuero"
-    class="menu-item"
-    onclick="selecionarFiltro('quero_ler')"
->
-
-    <span class="menu-icon">
-        🔖
-    </span>
-
-    Quero ler
-
-</button>
-
-
-<button
-    id="menuLidos"
-    class="menu-item"
-    onclick="selecionarFiltro('lido')"
->
-
-    <span class="menu-icon">
-        ✅
-    </span>
-
-    Lidos
-
-</button>
-
-
-<button
-    id="menuFavoritos"
-    class="menu-item"
-    onclick="selecionarFiltro('favoritos')"
->
-
-    <span class="menu-icon">
-        ⭐
-    </span>
-
-    Favoritos
-
-</button>
-
-
-
-<div class="menu-label">
-    CATEGORIA
-</div>
-
-
-<button
-    id="menuGibis"
-    class="menu-item active"
-    onclick="mudarCategoria('gibis')"
->
-
-    <span class="menu-icon">
-        🦸
-    </span>
-
-    Gibis / HQs
-
-</button>
-
-
-<button
-    id="menuMangas"
-    class="menu-item"
-    onclick="mudarCategoria('mangas')"
->
-
-    <span class="menu-icon">
-        🇯🇵
-    </span>
-
-    Mangás
-
-</button>
-
+    <button id="menuMangas" class="menu-item" onclick="mudarCategoria('mangas')">
+        <span class="menu-icon">🇯🇵</span>
+        Mangás
+    </button>
 
 </aside>
 
 
-
-<!-- ======================================================
-     CONTEÚDO PRINCIPAL
-======================================================= -->
-
 <main class="main">
-
 
 <header class="header">
 
+    <button class="mobile-menu" onclick="alternarMenu()">☰</button>
 
-<button
-    class="mobile-menu"
-    onclick="alternarMenu()"
->
-    ☰
-</button>
+    <div class="search-box">
+        <span class="search-icon">🔎</span>
 
+        <input
+            id="pesquisa"
+            type="search"
+            placeholder="Pesquisar coleção, subcoleção ou arquivo..."
+        >
+    </div>
 
-<div class="search-box">
+    <div class="header-actions">
 
-    <span class="search-icon">
-        🔎
-    </span>
+        <button class="action-button" onclick="recarregarBiblioteca()">
+            ↻
+            <span>Atualizar</span>
+        </button>
 
-    <input
-        id="pesquisa"
-        type="search"
-        placeholder="Pesquisar coleção ou arquivo..."
-    >
+        <button class="action-button primary" onclick="sincronizarDrive()">
+            🔄
+            <span>Sincronizar Drive</span>
+        </button>
 
-</div>
-
-
-<div class="header-actions">
-
-
-<button
-    class="action-button"
-    onclick="recarregarBiblioteca()"
-    title="Recarregar dados do Supabase"
->
-
-    ↻
-
-    <span>
-        Atualizar
-    </span>
-
-</button>
-
-
-<button
-    class="action-button primary"
-    onclick="sincronizarDrive()"
-    title="Sincronizar Google Drive"
->
-
-    🔄
-
-    <span>
-        Sincronizar Drive
-    </span>
-
-</button>
-
-
-</div>
-
+    </div>
 
 </header>
 
 
-
 <div class="content">
 
+    <section class="page-heading">
 
-<section class="page-heading">
+        <h1 id="tituloPagina">Gibis / HQs</h1>
 
-    <h1 id="tituloPagina">
-        Gibis / HQs
-    </h1>
+        <p>
+            Sua biblioteca organizada em coleções e subcoleções.
+        </p>
 
-    <p id="subtituloPagina">
-        Sua coleção pessoal organizada em um só lugar.
-    </p>
-
-</section>
+    </section>
 
 
+    <section class="stats">
 
-<!-- ======================================================
-     ESTATÍSTICAS
-======================================================= -->
+        <div class="stat-card">
 
-<section class="stats">
+            <div class="stat-label">Coleções principais</div>
+
+            <div id="statColecoes" class="stat-number">
+                0
+            </div>
+
+            <div id="statColecoesDetalhe" class="stat-detail">
+                0 subcoleções
+            </div>
+
+        </div>
 
 
-<div class="stat-card">
+        <div class="stat-card">
 
-    <div class="stat-label">
-        Coleções
+            <div class="stat-label">Arquivos</div>
+
+            <div id="statArquivos" class="stat-number">
+                0
+            </div>
+
+            <div class="stat-detail">
+                volumes e edições
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">Lidos</div>
+
+            <div id="statLidos" class="stat-number">
+                0
+            </div>
+
+            <div class="stat-detail">
+                concluídos
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">Lendo</div>
+
+            <div id="statLendo" class="stat-number">
+                0
+            </div>
+
+            <div class="stat-detail">
+                em andamento
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="toolbar">
+
+        <button class="chip active" data-filter="todos" onclick="selecionarFiltro('todos')">
+            Todos
+        </button>
+
+        <button class="chip" data-filter="lendo" onclick="selecionarFiltro('lendo')">
+            📖 Lendo
+        </button>
+
+        <button class="chip" data-filter="quero_ler" onclick="selecionarFiltro('quero_ler')">
+            🔖 Quero ler
+        </button>
+
+        <button class="chip" data-filter="lido" onclick="selecionarFiltro('lido')">
+            ✓ Lidos
+        </button>
+
+        <button class="chip" data-filter="favoritos" onclick="selecionarFiltro('favoritos')">
+            ⭐ Favoritos
+        </button>
+
+
+        <div class="toolbar-right">
+
+            <select id="ordenacao" class="sort-select" onchange="renderizarBiblioteca()">
+
+                <option value="nome">
+                    Nome
+                </option>
+
+                <option value="quantidade">
+                    Mais edições
+                </option>
+
+                <option value="recente">
+                    Última leitura
+                </option>
+
+            </select>
+
+        </div>
+
     </div>
 
-    <div
-        id="statColecoes"
-        class="stat-number"
-    >
-        0
-    </div>
 
-    <div class="stat-detail">
-        pastas encontradas
+    <div id="libraryGrid" class="library-grid">
+
+        <div class="state">
+            <div class="loader"></div>
+            Carregando biblioteca...
+        </div>
+
     </div>
 
 </div>
-
-
-<div class="stat-card">
-
-    <div class="stat-label">
-        Arquivos
-    </div>
-
-    <div
-        id="statArquivos"
-        class="stat-number"
-    >
-        0
-    </div>
-
-    <div class="stat-detail">
-        volumes e edições
-    </div>
-
-</div>
-
-
-<div class="stat-card">
-
-    <div class="stat-label">
-        Lidos
-    </div>
-
-    <div
-        id="statLidos"
-        class="stat-number"
-    >
-        0
-    </div>
-
-    <div class="stat-detail">
-        concluídos
-    </div>
-
-</div>
-
-
-<div class="stat-card">
-
-    <div class="stat-label">
-        Lendo
-    </div>
-
-    <div
-        id="statLendo"
-        class="stat-number"
-    >
-        0
-    </div>
-
-    <div class="stat-detail">
-        em andamento
-    </div>
-
-</div>
-
-
-</section>
-
-
-
-<!-- ======================================================
-     FILTROS
-======================================================= -->
-
-<div class="toolbar">
-
-
-<button
-    class="chip active"
-    data-filter="todos"
-    onclick="selecionarFiltro('todos')"
->
-    Todos
-</button>
-
-
-<button
-    class="chip"
-    data-filter="lendo"
-    onclick="selecionarFiltro('lendo')"
->
-    📖 Lendo
-</button>
-
-
-<button
-    class="chip"
-    data-filter="quero_ler"
-    onclick="selecionarFiltro('quero_ler')"
->
-    🔖 Quero ler
-</button>
-
-
-<button
-    class="chip"
-    data-filter="lido"
-    onclick="selecionarFiltro('lido')"
->
-    ✓ Lidos
-</button>
-
-
-<button
-    class="chip"
-    data-filter="favoritos"
-    onclick="selecionarFiltro('favoritos')"
->
-    ⭐ Favoritos
-</button>
-
-
-<div class="toolbar-right">
-
-
-<select
-    id="ordenacao"
-    class="sort-select"
-    onchange="renderizarBiblioteca()"
->
-
-    <option value="nome">
-        Nome
-    </option>
-
-    <option value="quantidade">
-        Mais edições
-    </option>
-
-    <option value="recente">
-        Última leitura
-    </option>
-
-</select>
-
-
-</div>
-
-
-</div>
-
-
-
-<!-- ======================================================
-     BIBLIOTECA
-======================================================= -->
-
-<div
-    id="libraryGrid"
-    class="library-grid"
->
-
-<div class="state">
-
-    <div class="loader">
-    </div>
-
-    Carregando sua biblioteca...
-
-</div>
-
-</div>
-
-
-</div>
-
 
 </main>
 
 
+<!-- MODAL -->
 
-<!-- ======================================================
-     MODAL
-======================================================= -->
+<div id="modal" class="modal">
 
-<div
-    id="modal"
-    class="modal"
->
+    <div class="modal-box">
 
+        <div class="modal-header">
 
-<div class="modal-box">
+            <button id="modalBack" class="modal-back" onclick="voltarColecao()">
+                ←
+            </button>
 
+            <div class="modal-title-container">
 
-<div class="modal-header">
+                <div id="breadcrumb" class="breadcrumb"></div>
 
+                <h2 id="modalTitle" class="modal-title">
+                    Coleção
+                </h2>
 
-<div class="modal-title-container">
+                <div id="modalSubtitle" class="modal-subtitle"></div>
 
-    <h2
-        id="modalTitle"
-        class="modal-title"
-    >
-        Coleção
-    </h2>
+            </div>
 
-    <div
-        id="modalSubtitle"
-        class="modal-subtitle"
-    >
+            <button class="close-button" onclick="fecharModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="modalBody" class="modal-body"></div>
+
     </div>
 
 </div>
 
 
-<button
-    class="close-button"
-    onclick="fecharModal()"
->
-    ×
-</button>
-
-
-</div>
-
-
-<div
-    id="modalBody"
-    class="modal-body"
->
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-<div
-    id="toastContainer"
-    class="toast-container"
->
-</div>
-
-
+<div id="toastContainer" class="toast-container"></div>
 
 
 <script>
@@ -2080,257 +1079,167 @@ button {
    CONFIGURAÇÃO
 ========================================================= */
 
-
-/*
- * APPS SCRIPT
- *
- * JÁ DEIXEI SUA URL CONFIGURADA.
- */
-
 const URL_API =
-    "https://script.google.com/macros/s/AKfycbzb08jyTllecWC3RhQFBAg5qUNI-KUQVqJQdjV7notW-6gVjQ9XG3AkN5J1aXInX4v25Q/exec";
+"https://script.google.com/macros/s/AKfycbzb08jyTllecWC3RhQFBAg5qUNI-KUQVqJQdjV7notW-6gVjQ9XG3AkN5J1aXInX4v25Q/exec";
 
 
 /*
- * ========================================================
- *
- * ALTERE ESTA LINHA
- *
- * Supabase → Connect → Project URL
- *
- * ========================================================
+ * COPIE DO SEU index.html ATUAL
  */
 
 const SUPABASE_URL =
-    "https://cnujjmfurumklnusiedh.supabase.co";
+"https://cnujjmfurumklnusiedh.supabase.co";
 
 
 /*
- * ========================================================
+ * É A PUBLISHABLE KEY.
  *
- * ALTERE ESTA LINHA
- *
- * Supabase → Connect → Publishable key
- *
- * Tem que começar com:
+ * Começa com:
  *
  * sb_publishable_
  *
- * NÃO COLOQUE sb_secret_
- * NÃO COLOQUE service_role
- *
- * ========================================================
+ * NÃO COLOQUE A SECRET KEY AQUI.
  */
 
 const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_YsV_wvI18wbxep-ekR1sag_QUQ9q2U6";
-
+"sb_publishable_YsV_wvI18wbxep-ekR1sag_QUQ9q2U6";
 
 
 /* =========================================================
-   ESTADO DO APP
+   ESTADO
 ========================================================= */
 
-let categoriaAtual =
-    "gibis";
+let categoriaAtual = "gibis";
 
+let filtroAtual = "todos";
 
-let filtroAtual =
-    "todos";
+let biblioteca = [];
 
+let progresso = {};
 
-let biblioteca =
-    [];
+let mapaColecoes = new Map();
 
+let colecaoAtual = null;
 
-let progresso =
-    {};
-
-
-let colecaoAberta =
-    null;
-
+let historicoColecoes = [];
 
 
 /* =========================================================
-   INICIAR
+   INICIALIZAÇÃO
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-
-    async function() {
-
+    async function(){
 
         document
-            .getElementById(
-                "pesquisa"
-            )
+            .getElementById("pesquisa")
             .addEventListener(
                 "input",
                 renderizarBiblioteca
             );
 
-
         await carregarTudo();
-
     }
 );
 
 
-
 /* =========================================================
-   CARREGAR TUDO
+   CARREGAMENTO
 ========================================================= */
 
-async function carregarTudo() {
-
+async function carregarTudo(){
 
     mostrarCarregando();
 
-
-    try {
-
+    try{
 
         await Promise.all([
-
             carregarBiblioteca(),
-
             carregarProgresso()
-
         ]);
 
+        montarArvoreColecoes();
 
         atualizarEstatisticas();
 
-
         renderizarBiblioteca();
 
+    }catch(erro){
 
-    } catch (erro) {
-
-
-        console.error(
-            erro
-        );
-
+        console.error(erro);
 
         mostrarErro(
             erro.message
         );
-
     }
-
 }
 
 
-
 /* =========================================================
-   CARREGAR BIBLIOTECA DIRETAMENTE DO SUPABASE
+   SUPABASE - BIBLIOTECA
 ========================================================= */
 
-async function carregarBiblioteca() {
-
+async function carregarBiblioteca(){
 
     biblioteca = [];
 
+    const limite = 1000;
 
-    const limite =
-        1000;
+    let offset = 0;
 
-
-    let offset =
-        0;
-
-
-    while (true) {
-
+    while(true){
 
         const url =
-
             SUPABASE_URL +
-
             "/rest/v1/biblioteca" +
-
             "?select=*" +
-
             "&categoria=eq." +
-            encodeURIComponent(
-                categoriaAtual
-            ) +
-
+            encodeURIComponent(categoriaAtual) +
             "&encontrado_no_drive=eq.true" +
-
-            "&order=pasta_nome.asc,nome.asc" +
-
+            "&order=nivel.asc,pasta_nome.asc,nome.asc" +
             "&limit=" +
             limite +
-
             "&offset=" +
             offset;
 
 
-
         const resposta =
             await fetch(
-
                 url,
-
                 {
-
-                    headers: {
-
+                    headers:{
                         apikey:
                             SUPABASE_PUBLISHABLE_KEY
-
                     }
-
                 }
-
             );
 
 
-
-        if (!resposta.ok) {
-
+        if(!resposta.ok){
 
             const texto =
                 await resposta.text();
 
-
             throw new Error(
-
                 "Supabase HTTP " +
-
                 resposta.status +
-
                 ": " +
-
                 texto
-
             );
-
         }
-
 
 
         const dados =
             await resposta.json();
 
 
-
-        if (
-
+        if(
             !dados ||
-
             dados.length === 0
-
-        ) {
-
+        ){
             break;
-
         }
-
 
 
         biblioteca.push(
@@ -2338,261 +1247,601 @@ async function carregarBiblioteca() {
         );
 
 
-
-        if (
+        if(
             dados.length <
             limite
-        ) {
-
+        ){
             break;
-
         }
 
 
-
-        offset +=
-            limite;
-
+        offset += limite;
     }
-
 }
 
 
-
 /* =========================================================
-   CARREGAR PROGRESSO
+   SUPABASE - PROGRESSO
 ========================================================= */
 
-async function carregarProgresso() {
+async function carregarProgresso(){
 
-
-    progresso =
-        {};
-
+    progresso = {};
 
     const resposta =
         await fetch(
-
             SUPABASE_URL +
-
             "/rest/v1/progresso?select=*",
-
             {
-
-                headers: {
-
+                headers:{
                     apikey:
                         SUPABASE_PUBLISHABLE_KEY
-
                 }
-
             }
-
         );
 
 
-
-    if (!resposta.ok) {
-
-
-        const erro =
-            await resposta.text();
-
+    if(!resposta.ok){
 
         console.warn(
-
-            "Não foi possível carregar progresso:",
-
-            erro
-
+            await resposta.text()
         );
 
-
         return;
-
     }
-
 
 
     const dados =
         await resposta.json();
 
 
-
     dados.forEach(
-
-        function(item) {
-
+        function(item){
 
             progresso[
                 item.file_id
             ] = item;
-
-
         }
-
     );
-
 }
 
 
-
 /* =========================================================
-   AGRUPAR POR PASTA
+   CRIAR ÁRVORE DE COLEÇÕES
 ========================================================= */
 
-function gerarColecoes() {
+function montarArvoreColecoes(){
+
+    mapaColecoes =
+        new Map();
 
 
-    const mapa =
-        {};
-
+    /*
+     * Primeiro cria todas as pastas que possuem arquivos.
+     */
 
     biblioteca.forEach(
+        function(item){
 
-        function(item) {
+            if(
+                !mapaColecoes.has(
+                    item.pasta_id
+                )
+            ){
 
+                mapaColecoes.set(
+                    item.pasta_id,
+                    {
+                        id:
+                            item.pasta_id,
 
-            const pastaId =
-                item.pasta_id;
+                        nome:
+                            item.pasta_nome ||
+                            "Sem nome",
 
+                        parentId:
+                            item.pasta_pai_id ||
+                            null,
 
-            if (!mapa[pastaId]) {
+                        parentName:
+                            item.pasta_pai_nome ||
+                            null,
 
+                        nivel:
+                            Number(
+                                item.nivel || 0
+                            ),
 
-                mapa[pastaId] = {
+                        itens:
+                            [],
 
-                    id:
-                        pastaId,
+                        filhos:
+                            [],
 
-                    nome:
-                        item.pasta_nome ||
-                        "Sem nome",
-
-                    itens:
-                        [],
-
-                    capa:
-                        null
-
-                };
-
+                        capa:
+                            null
+                    }
+                );
             }
 
 
+            const colecao =
+                mapaColecoes.get(
+                    item.pasta_id
+                );
 
-            mapa[
-                pastaId
-            ].itens.push(
+
+            colecao.itens.push(
                 item
             );
 
 
+            /*
+             * Uma capa de qualquer arquivo da pasta
+             * pode representar a coleção.
+             */
 
-            if (
-
-                !mapa[
-                    pastaId
-                ].capa &&
-
+            if(
+                !colecao.capa &&
                 item.capa_url
+            ){
 
-            ) {
-
-
-                mapa[
-                    pastaId
-                ].capa =
+                colecao.capa =
                     item.capa_url;
-
             }
-
         }
-
     );
 
 
-    return Object.values(
-        mapa
+    /*
+     * Cria também pastas-pai que talvez não tenham
+     * nenhum arquivo direto.
+     */
+
+    biblioteca.forEach(
+        function(item){
+
+            if(
+                item.pasta_pai_id &&
+                !mapaColecoes.has(
+                    item.pasta_pai_id
+                )
+            ){
+
+                mapaColecoes.set(
+                    item.pasta_pai_id,
+                    {
+                        id:
+                            item.pasta_pai_id,
+
+                        nome:
+                            item.pasta_pai_nome ||
+                            "Coleção",
+
+                        parentId:
+                            null,
+
+                        parentName:
+                            null,
+
+                        nivel:
+                            Math.max(
+                                0,
+                                Number(item.nivel || 1) - 1
+                            ),
+
+                        itens:
+                            [],
+
+                        filhos:
+                            [],
+
+                        capa:
+                            null
+                    }
+                );
+            }
+        }
     );
 
+
+    /*
+     * Relaciona filho → pai.
+     */
+
+    mapaColecoes.forEach(
+        function(colecao){
+
+            if(
+                colecao.parentId &&
+                mapaColecoes.has(
+                    colecao.parentId
+                )
+            ){
+
+                mapaColecoes
+                    .get(
+                        colecao.parentId
+                    )
+                    .filhos
+                    .push(
+                        colecao
+                    );
+            }
+        }
+    );
+
+
+    /*
+     * Ordena filhos.
+     */
+
+    mapaColecoes.forEach(
+        function(colecao){
+
+            colecao.filhos.sort(
+                function(a,b){
+
+                    return a.nome.localeCompare(
+                        b.nome,
+                        "pt-BR",
+                        {
+                            numeric:true,
+                            sensitivity:"base"
+                        }
+                    );
+                }
+            );
+        }
+    );
+
+
+    /*
+     * Se uma coleção-pai não tiver capa própria,
+     * usa uma capa de algum descendente.
+     */
+
+    mapaColecoes.forEach(
+        function(colecao){
+
+            if(!colecao.capa){
+
+                colecao.capa =
+                    encontrarCapaDescendente(
+                        colecao
+                    );
+            }
+        }
+    );
 }
 
 
-
 /* =========================================================
-   FILTRAR
+   CAPA DESCENDENTE
 ========================================================= */
 
-function colecaoPassaFiltro(
-    colecao
-) {
+function encontrarCapaDescendente(
+    colecao,
+    visitados = new Set()
+){
 
-
-    if (
-        filtroAtual ===
-        "todos"
-    ) {
-
-        return true;
-
+    if(
+        !colecao ||
+        visitados.has(
+            colecao.id
+        )
+    ){
+        return null;
     }
 
 
-
-    return colecao.itens.some(
-
-        function(item) {
-
-
-            const p =
-                progresso[
-                    item.file_id
-                ];
-
-
-            if (!p) {
-
-                return false;
-
-            }
-
-
-
-            if (
-                filtroAtual ===
-                "favoritos"
-            ) {
-
-
-                return (
-                    p.favorito ===
-                    true
-                );
-
-            }
-
-
-
-            return (
-                p.status ===
-                filtroAtual
-            );
-
-        }
-
+    visitados.add(
+        colecao.id
     );
 
+
+    if(colecao.capa){
+        return colecao.capa;
+    }
+
+
+    for(
+        const filho of colecao.filhos
+    ){
+
+        const capa =
+            encontrarCapaDescendente(
+                filho,
+                visitados
+            );
+
+
+        if(capa){
+            return capa;
+        }
+    }
+
+
+    return null;
 }
 
 
-
 /* =========================================================
-   RENDERIZAR BIBLIOTECA
+   COLEÇÕES PRINCIPAIS
 ========================================================= */
 
-function renderizarBiblioteca() {
+function obterColecoesPrincipais(){
 
+    const todas =
+        Array.from(
+            mapaColecoes.values()
+        );
+
+
+    /*
+     * A raiz "Gibis" / "Mangás" está no nível 0.
+     * As coleções principais estão normalmente no nível 1.
+     */
+
+    let principais =
+        todas.filter(
+            function(c){
+
+                return (
+                    c.nivel === 1
+                );
+            }
+        );
+
+
+    /*
+     * Segurança para bibliotecas antigas.
+     */
+
+    if(
+        principais.length === 0
+    ){
+
+        const menorNivel =
+            Math.min(
+                ...todas
+                    .filter(
+                        c =>
+                            c.itens.length > 0 ||
+                            c.filhos.length > 0
+                    )
+                    .map(
+                        c => c.nivel
+                    )
+            );
+
+
+        principais =
+            todas.filter(
+                c =>
+                    c.nivel ===
+                    menorNivel
+            );
+    }
+
+
+    return principais;
+}
+
+
+/* =========================================================
+   TODOS OS ARQUIVOS DE UMA ÁRVORE
+========================================================= */
+
+function obterItensRecursivos(
+    colecao,
+    visitados = new Set()
+){
+
+    if(
+        !colecao ||
+        visitados.has(
+            colecao.id
+        )
+    ){
+        return [];
+    }
+
+
+    visitados.add(
+        colecao.id
+    );
+
+
+    let itens =
+        [
+            ...colecao.itens
+        ];
+
+
+    colecao.filhos.forEach(
+        function(filho){
+
+            itens.push(
+                ...obterItensRecursivos(
+                    filho,
+                    visitados
+                )
+            );
+        }
+    );
+
+
+    return itens;
+}
+
+
+/* =========================================================
+   QUANTIDADE DE SUBCOLEÇÕES
+========================================================= */
+
+function contarDescendentes(
+    colecao,
+    visitados = new Set()
+){
+
+    if(
+        !colecao ||
+        visitados.has(
+            colecao.id
+        )
+    ){
+        return 0;
+    }
+
+
+    visitados.add(
+        colecao.id
+    );
+
+
+    let total =
+        colecao.filhos.length;
+
+
+    colecao.filhos.forEach(
+        function(filho){
+
+            total +=
+                contarDescendentes(
+                    filho,
+                    visitados
+                );
+        }
+    );
+
+
+    return total;
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function itemPassaFiltro(
+    item
+){
+
+    if(
+        filtroAtual ===
+        "todos"
+    ){
+        return true;
+    }
+
+
+    const p =
+        progresso[
+            item.file_id
+        ];
+
+
+    if(!p){
+        return false;
+    }
+
+
+    if(
+        filtroAtual ===
+        "favoritos"
+    ){
+
+        return (
+            p.favorito ===
+            true
+        );
+    }
+
+
+    return (
+        p.status ===
+        filtroAtual
+    );
+}
+
+
+function colecaoPassaFiltro(
+    colecao
+){
+
+    if(
+        filtroAtual ===
+        "todos"
+    ){
+        return true;
+    }
+
+
+    return obterItensRecursivos(
+        colecao
+    ).some(
+        itemPassaFiltro
+    );
+}
+
+
+/* =========================================================
+   BUSCA RECURSIVA
+========================================================= */
+
+function colecaoCombinaBusca(
+    colecao,
+    busca
+){
+
+    if(!busca){
+        return true;
+    }
+
+
+    if(
+        colecao.nome
+            .toLowerCase()
+            .includes(
+                busca
+            )
+    ){
+        return true;
+    }
+
+
+    if(
+        colecao.itens.some(
+            item =>
+                String(
+                    item.nome || ""
+                )
+                .toLowerCase()
+                .includes(
+                    busca
+                )
+        )
+    ){
+        return true;
+    }
+
+
+    return colecao.filhos.some(
+        filho =>
+            colecaoCombinaBusca(
+                filho,
+                busca
+            )
+    );
+}
+
+
+/* =========================================================
+   RENDER DA ESTANTE
+========================================================= */
+
+function renderizarBiblioteca(){
 
     const grid =
         document.getElementById(
@@ -2610,69 +1859,25 @@ function renderizarBiblioteca() {
             .toLowerCase();
 
 
-
     let colecoes =
-        gerarColecoes();
-
+        obterColecoesPrincipais();
 
 
     colecoes =
         colecoes.filter(
+            function(colecao){
 
-            function(colecao) {
-
-
-                if (
-                    !colecaoPassaFiltro(
+                return (
+                    colecaoPassaFiltro(
                         colecao
+                    ) &&
+                    colecaoCombinaBusca(
+                        colecao,
+                        busca
                     )
-                ) {
-
-                    return false;
-
-                }
-
-
-
-                if (!busca) {
-
-                    return true;
-
-                }
-
-
-
-                if (
-                    colecao.nome
-                        .toLowerCase()
-                        .includes(busca)
-                ) {
-
-                    return true;
-
-                }
-
-
-
-                return colecao.itens.some(
-
-                    function(item) {
-
-
-                        return item.nome
-                            .toLowerCase()
-                            .includes(
-                                busca
-                            );
-
-                    }
-
                 );
-
             }
-
         );
-
 
 
     ordenarColecoes(
@@ -2680,16 +1885,12 @@ function renderizarBiblioteca() {
     );
 
 
-
-    if (
-        colecoes.length ===
-        0
-    ) {
-
+    if(
+        colecoes.length === 0
+    ){
 
         grid.innerHTML =
             `
-
             <div class="state">
 
                 <div class="state-icon">
@@ -2699,50 +1900,36 @@ function renderizarBiblioteca() {
                 Nenhuma coleção encontrada.
 
             </div>
-
             `;
 
-
         return;
-
     }
-
 
 
     grid.innerHTML =
         "";
 
 
-
     colecoes.forEach(
-
-        function(colecao) {
-
+        function(colecao){
 
             grid.appendChild(
-
                 criarCardColecao(
                     colecao
                 )
-
             );
-
         }
-
     );
-
 }
 
 
-
 /* =========================================================
-   CARD
+   CARD DE COLEÇÃO
 ========================================================= */
 
 function criarCardColecao(
     colecao
-) {
-
+){
 
     const card =
         document.createElement(
@@ -2754,100 +1941,172 @@ function criarCardColecao(
         "collection-card";
 
 
+    const itens =
+        obterItensRecursivos(
+            colecao
+        );
+
 
     const total =
-        colecao.itens.length;
+        itens.length;
 
 
-
-    let lidos =
-        0;
-
-
-    let favoritos =
-        0;
-
-
-
-    colecao.itens.forEach(
-
-        function(item) {
-
-
-            const p =
+    const lidos =
+        itens.filter(
+            item =>
                 progresso[
                     item.file_id
-                ];
-
-
-            if (
-                p?.status ===
+                ]?.status ===
                 "lido"
-            ) {
-
-                lidos++;
-
-            }
+        ).length;
 
 
-            if (
-                p?.favorito ===
+    const favoritos =
+        itens.filter(
+            item =>
+                progresso[
+                    item.file_id
+                ]?.favorito ===
                 true
-            ) {
+        ).length;
 
-                favoritos++;
 
-            }
-
-        }
-
-    );
-
+    const subcolecoes =
+        contarDescendentes(
+            colecao
+        );
 
 
     const percentual =
         total > 0
-
             ? Math.round(
                 (
                     lidos /
                     total
-                )
-                * 100
+                ) * 100
             )
-
             : 0;
 
 
+    const capaHtml =
+        gerarCapaHtml(
+            colecao
+        );
 
-    let capaHtml;
+
+    card.innerHTML =
+        `
+        <div class="cover">
+
+            ${capaHtml}
+
+            <div class="cover-count">
+                ${total} ed.
+            </div>
+
+            ${
+                subcolecoes > 0
+                    ? `
+                    <div class="cover-sub">
+                        📁 ${subcolecoes}
+                    </div>
+                    `
+                    : ""
+            }
+
+            ${
+                favoritos > 0
+                    ? `
+                    <div class="cover-star">
+                        ⭐
+                    </div>
+                    `
+                    : ""
+            }
+
+        </div>
 
 
-    if (
+        <div class="collection-info">
+
+            <div
+                class="collection-title"
+                title="${escapeHtml(
+                    colecao.nome
+                )}"
+            >
+                ${escapeHtml(
+                    colecao.nome
+                )}
+            </div>
+
+
+            <div class="collection-meta">
+
+                ${lidos}
+                de
+                ${total}
+                lidos
+
+                ${
+                    subcolecoes > 0
+                        ? ` • ${subcolecoes} subcoleção(ões)`
+                        : ""
+                }
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    style="width:${percentual}%"
+                ></div>
+
+            </div>
+
+        </div>
+        `;
+
+
+    card.onclick =
+        function(){
+
+            abrirColecao(
+                colecao
+            );
+        };
+
+
+    return card;
+}
+
+
+/* =========================================================
+   CAPA HTML
+========================================================= */
+
+function gerarCapaHtml(
+    colecao
+){
+
+    if(
         colecao.capa
-    ) {
+    ){
 
-
-        capaHtml =
-            `
-
+        return `
             <img
-
                 src="${escapeHtml(
                     colecao.capa
                 )}"
-
                 loading="lazy"
-
                 alt="Capa"
-
                 onerror="
                     this.style.display='none';
                     this.nextElementSibling.style.display='flex';
                 "
-
             >
-
 
             <div
                 class="cover-placeholder"
@@ -2859,307 +2118,32 @@ function criarCardColecao(
                 </div>
 
                 <div class="placeholder-name">
-
                     ${escapeHtml(
                         colecao.nome
                     )}
-
                 </div>
 
             </div>
-
-            `;
-
-
-    } else {
-
-
-        capaHtml =
-            `
-
-            <div class="cover-placeholder">
-
-                <div class="placeholder-icon">
-                    📚
-                </div>
-
-                <div class="placeholder-name">
-
-                    ${escapeHtml(
-                        colecao.nome
-                    )}
-
-                </div>
-
-            </div>
-
-            `;
-
+        `;
     }
 
 
+    return `
+        <div class="cover-placeholder">
 
-    card.innerHTML =
-        `
-
-        <div class="cover">
-
-
-            ${capaHtml}
-
-
-            <div class="cover-count">
-
-                ${total}
-                ed.
-
+            <div class="placeholder-icon">
+                📚
             </div>
 
-
-            ${
-                favoritos > 0
-
-                    ? `
-                    <div class="cover-star">
-                        ⭐
-                    </div>
-                    `
-
-                    : ""
-            }
-
-
-        </div>
-
-
-        <div class="collection-info">
-
-
-            <div
-                class="collection-title"
-
-                title="${escapeHtml(
-                    colecao.nome
-                )}"
-            >
-
+            <div class="placeholder-name">
                 ${escapeHtml(
                     colecao.nome
                 )}
-
             </div>
-
-
-            <div class="collection-meta">
-
-                ${lidos}
-                de
-                ${total}
-                lidos
-
-            </div>
-
-
-            <div class="progress-bar">
-
-                <div
-                    class="progress-fill"
-
-                    style="
-                        width:
-                        ${percentual}%
-                    "
-                >
-                </div>
-
-            </div>
-
 
         </div>
-
-        `;
-
-
-
-    card.addEventListener(
-
-        "click",
-
-        function() {
-
-            abrirColecao(
-                colecao
-            );
-
-        }
-
-    );
-
-
-    return card;
-
+    `;
 }
-
-
-
-/* =========================================================
-   ORDENAÇÃO
-========================================================= */
-
-function ordenarColecoes(
-    colecoes
-) {
-
-
-    const tipo =
-        document
-            .getElementById(
-                "ordenacao"
-            )
-            .value;
-
-
-
-    if (
-        tipo ===
-        "quantidade"
-    ) {
-
-
-        colecoes.sort(
-
-            function(a,b) {
-
-                return (
-                    b.itens.length -
-                    a.itens.length
-                );
-
-            }
-
-        );
-
-
-        return;
-
-    }
-
-
-
-    if (
-        tipo ===
-        "recente"
-    ) {
-
-
-        colecoes.sort(
-
-            function(a,b) {
-
-
-                return (
-                    obterUltimaLeitura(b) -
-                    obterUltimaLeitura(a)
-                );
-
-            }
-
-        );
-
-
-        return;
-
-    }
-
-
-
-    colecoes.sort(
-
-        function(a,b) {
-
-
-            return a.nome.localeCompare(
-
-                b.nome,
-
-                "pt-BR",
-
-                {
-
-                    numeric:
-                        true,
-
-                    sensitivity:
-                        "base"
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-
-/* =========================================================
-   ÚLTIMA LEITURA
-========================================================= */
-
-function obterUltimaLeitura(
-    colecao
-) {
-
-
-    let maior =
-        0;
-
-
-    colecao.itens.forEach(
-
-        function(item) {
-
-
-            const data =
-                progresso[
-                    item.file_id
-                ]?.ultima_leitura;
-
-
-            if (!data) {
-
-                return;
-
-            }
-
-
-            const timestamp =
-                new Date(
-                    data
-                ).getTime();
-
-
-            if (
-                timestamp >
-                maior
-            ) {
-
-                maior =
-                    timestamp;
-
-            }
-
-        }
-
-    );
-
-
-    return maior;
-
-}
-
 
 
 /* =========================================================
@@ -3167,47 +2151,26 @@ function obterUltimaLeitura(
 ========================================================= */
 
 function abrirColecao(
-    colecao
-) {
+    colecao,
+    adicionarHistorico = true
+){
+
+    if(
+        adicionarHistorico &&
+        colecaoAtual
+    ){
+
+        historicoColecoes.push(
+            colecaoAtual
+        );
+    }
 
 
-    colecaoAberta =
+    colecaoAtual =
         colecao;
 
 
-
-    document
-        .getElementById(
-            "modalTitle"
-        )
-        .textContent =
-            colecao.nome;
-
-
-
-    document
-        .getElementById(
-            "modalSubtitle"
-        )
-        .textContent =
-
-            colecao.itens.length +
-
-            " arquivo(s) • " +
-
-            (
-                categoriaAtual ===
-                "gibis"
-
-                ? "Gibis / HQs"
-
-                : "Mangás"
-            );
-
-
-
-    renderizarItensModal();
-
+    atualizarModalColecao();
 
 
     document
@@ -3220,28 +2183,100 @@ function abrirColecao(
         );
 
 
-
     document.body.style.overflow =
         "hidden";
-
 }
 
 
-
 /* =========================================================
-   RENDER MODAL
+   ATUALIZAR MODAL
 ========================================================= */
 
-function renderizarItensModal() {
+function atualizarModalColecao(){
 
-
-    if (!colecaoAberta) {
-
+    if(!colecaoAtual){
         return;
-
     }
 
 
+    const colecao =
+        colecaoAtual;
+
+
+    const todosItens =
+        obterItensRecursivos(
+            colecao
+        );
+
+
+    document
+        .getElementById(
+            "modalTitle"
+        )
+        .textContent =
+            colecao.nome;
+
+
+    document
+        .getElementById(
+            "modalSubtitle"
+        )
+        .textContent =
+            colecao.itens.length +
+            " arquivo(s) nesta pasta • " +
+            todosItens.length +
+            " no total";
+
+
+    /*
+     * Botão voltar.
+     */
+
+    document
+        .getElementById(
+            "modalBack"
+        )
+        .classList
+        .toggle(
+            "show",
+            historicoColecoes.length > 0
+        );
+
+
+    /*
+     * Breadcrumb.
+     */
+
+    const nomes =
+        historicoColecoes
+            .map(
+                item =>
+                    item.nome
+            )
+            .concat(
+                colecao.nome
+            );
+
+
+    document
+        .getElementById(
+            "breadcrumb"
+        )
+        .textContent =
+            nomes.join(
+                "  ›  "
+            );
+
+
+    renderizarConteudoColecao();
+}
+
+
+/* =========================================================
+   CONTEÚDO DA COLEÇÃO
+========================================================= */
+
+function renderizarConteudoColecao(){
 
     const body =
         document.getElementById(
@@ -3249,67 +2284,191 @@ function renderizarItensModal() {
         );
 
 
-
-    const itens =
-        [
-            ...colecaoAberta.itens
-        ];
-
-
-
-    itens.sort(
-
-        function(a,b) {
-
-
-            return a.nome.localeCompare(
-
-                b.nome,
-
-                "pt-BR",
-
-                {
-
-                    numeric:
-                        true,
-
-                    sensitivity:
-                        "base"
-
-                }
-
-            );
-
-        }
-
-    );
-
-
-
     body.innerHTML =
         "";
 
 
+    /*
+     * SUBCOLEÇÕES
+     */
 
-    itens.forEach(
+    if(
+        colecaoAtual.filhos.length > 0
+    ){
 
-        function(item) {
-
-
-            body.appendChild(
-
-                criarEdicao(
-                    item
-                )
-
+        const secao =
+            document.createElement(
+                "section"
             );
 
-        }
 
+        secao.className =
+            "modal-section";
+
+
+        secao.innerHTML =
+            `
+            <div class="section-title-row">
+
+                <h3 class="section-title">
+                    📁 Subcoleções
+                </h3>
+
+                <span class="section-count">
+                    ${colecaoAtual.filhos.length}
+                </span>
+
+            </div>
+
+            <div class="subcollection-grid"></div>
+            `;
+
+
+        const grid =
+            secao.querySelector(
+                ".subcollection-grid"
+            );
+
+
+        colecaoAtual.filhos.forEach(
+            function(filho){
+
+                grid.appendChild(
+                    criarCardColecao(
+                        filho
+                    )
+                );
+            }
+        );
+
+
+        body.appendChild(
+            secao
+        );
+    }
+
+
+    /*
+     * ARQUIVOS DIRETOS
+     */
+
+    const secaoArquivos =
+        document.createElement(
+            "section"
+        );
+
+
+    secaoArquivos.className =
+        "modal-section";
+
+
+    secaoArquivos.innerHTML =
+        `
+        <div class="section-title-row">
+
+            <h3 class="section-title">
+                📚 Arquivos desta coleção
+            </h3>
+
+            <span class="section-count">
+                ${colecaoAtual.itens.length}
+            </span>
+
+        </div>
+
+        <div class="lista-arquivos"></div>
+        `;
+
+
+    const lista =
+        secaoArquivos.querySelector(
+            ".lista-arquivos"
+        );
+
+
+    const itens =
+        [
+            ...colecaoAtual.itens
+        ];
+
+
+    itens.sort(
+        function(a,b){
+
+            return String(
+                a.nome || ""
+            )
+            .localeCompare(
+                String(
+                    b.nome || ""
+                ),
+                "pt-BR",
+                {
+                    numeric:true,
+                    sensitivity:"base"
+                }
+            );
+        }
     );
 
+
+    if(
+        itens.length === 0
+    ){
+
+        lista.innerHTML =
+            `
+            <div class="empty-inline">
+
+                Esta pasta não possui arquivos diretos.
+
+                <br>
+
+                Os quadrinhos estão organizados nas subcoleções acima.
+
+            </div>
+            `;
+    }
+    else{
+
+        itens.forEach(
+            function(item){
+
+                lista.appendChild(
+                    criarEdicao(
+                        item
+                    )
+                );
+            }
+        );
+    }
+
+
+    body.appendChild(
+        secaoArquivos
+    );
 }
 
+
+/* =========================================================
+   VOLTAR NA ÁRVORE
+========================================================= */
+
+function voltarColecao(){
+
+    if(
+        historicoColecoes.length === 0
+    ){
+        return;
+    }
+
+
+    colecaoAtual =
+        historicoColecoes.pop();
+
+
+    atualizarModalColecao();
+}
 
 
 /* =========================================================
@@ -3318,8 +2477,7 @@ function renderizarItensModal() {
 
 function criarEdicao(
     item
-) {
-
+){
 
     const p =
         progresso[
@@ -3327,33 +2485,26 @@ function criarEdicao(
         ] || {};
 
 
-
     const status =
         p.status ||
         "nao_lido";
 
 
-
     const pagina =
         Number(
-            p.pagina_atual ||
-            0
+            p.pagina_atual || 0
         );
-
 
 
     const total =
         Number(
-            p.total_paginas ||
-            0
+            p.total_paginas || 0
         );
-
 
 
     const favorito =
         p.favorito ===
         true;
-
 
 
     const div =
@@ -3366,43 +2517,34 @@ function criarEdicao(
         "edition";
 
 
-
     div.innerHTML =
         `
-
         <div class="edition-icon">
-
             ${iconeFormato(
                 item.extensao
             )}
-
         </div>
 
 
         <div class="edition-content">
 
-
             <div
                 class="edition-name"
-
                 title="${escapeHtml(
                     item.nome
                 )}"
             >
-
                 ${escapeHtml(
                     item.nome
                 )}
-
             </div>
 
 
             <div class="edition-meta">
 
                 ${
-                    (
-                        item.extensao ||
-                        ""
+                    String(
+                        item.extensao || ""
                     )
                     .toUpperCase()
                 }
@@ -3419,81 +2561,52 @@ function criarEdicao(
             <span
                 class="status ${status}"
             >
-
                 ${nomeStatus(
                     status
                 )}
-
             </span>
 
 
             <div class="page-control">
 
-
                 <input
-
                     id="pagina_${item.file_id}"
-
                     type="number"
-
                     min="0"
-
                     value="${pagina}"
-
                     title="Página atual"
-
                 >
 
-
-                <span>
-                    /
-                </span>
-
+                <span>/</span>
 
                 <input
-
                     id="total_${item.file_id}"
-
                     type="number"
-
                     min="0"
-
                     value="${total}"
-
                     title="Total de páginas"
-
                 >
-
 
                 <button
-
                     class="small-button"
-
                     onclick="
                         salvarPaginas(
                             '${item.file_id}'
                         )
                     "
                 >
-
                     Salvar
-
                 </button>
 
-
             </div>
-
 
         </div>
 
 
         <div class="edition-actions">
 
-
             <button
-
                 class="small-button read"
-
                 onclick="
                     abrirArquivo(
                         '${escapeJs(
@@ -3501,7 +2614,6 @@ function criarEdicao(
                         )}'
                     )
                 "
-
                 title="Abrir arquivo"
             >
                 📖
@@ -3509,16 +2621,13 @@ function criarEdicao(
 
 
             <button
-
                 class="small-button"
-
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'lendo'
                     )
                 "
-
                 title="Lendo"
             >
                 ▶️
@@ -3526,16 +2635,13 @@ function criarEdicao(
 
 
             <button
-
                 class="small-button"
-
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'quero_ler'
                     )
                 "
-
                 title="Quero ler"
             >
                 🔖
@@ -3543,16 +2649,13 @@ function criarEdicao(
 
 
             <button
-
                 class="small-button"
-
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'lido'
                     )
                 "
-
                 title="Lido"
             >
                 ✅
@@ -3560,16 +2663,13 @@ function criarEdicao(
 
 
             <button
-
                 class="small-button"
-
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'nao_lido'
                     )
                 "
-
                 title="Não lido"
             >
                 ↩️
@@ -3577,36 +2677,23 @@ function criarEdicao(
 
 
             <button
-
                 class="small-button"
-
                 onclick="
                     alternarFavorito(
                         '${item.file_id}'
                     )
                 "
-
                 title="Favorito"
             >
-
-                ${
-                    favorito
-                        ? "⭐"
-                        : "☆"
-                }
-
+                ${favorito ? "⭐" : "☆"}
             </button>
 
-
         </div>
-
         `;
 
 
     return div;
-
 }
-
 
 
 /* =========================================================
@@ -3616,8 +2703,7 @@ function criarEdicao(
 async function salvarProgresso(
     fileId,
     alteracoes
-) {
-
+){
 
     const existente =
         progresso[
@@ -3625,81 +2711,49 @@ async function salvarProgresso(
         ] || {};
 
 
-
     const registro = {
-
 
         file_id:
             fileId,
 
-
         status:
-
             alteracoes.status ??
-
             existente.status ??
-
             "nao_lido",
 
-
         pagina_atual:
-
             alteracoes.pagina_atual ??
-
             existente.pagina_atual ??
-
             0,
-
 
         total_paginas:
-
             alteracoes.total_paginas ??
-
             existente.total_paginas ??
-
             0,
 
-
         favorito:
-
             alteracoes.favorito ??
-
             existente.favorito ??
-
             false,
 
-
         capa_url:
-
             existente.capa_url ??
-
             null,
 
-
         ultima_leitura:
-
             new Date()
                 .toISOString()
-
     };
-
 
 
     const resposta =
         await fetch(
-
             SUPABASE_URL +
-
             "/rest/v1/progresso",
-
             {
+                method:"POST",
 
-                method:
-                    "POST",
-
-
-                headers: {
-
+                headers:{
                     apikey:
                         SUPABASE_PUBLISHABLE_KEY,
 
@@ -3708,38 +2762,28 @@ async function salvarProgresso(
 
                     Prefer:
                         "resolution=merge-duplicates,return=minimal"
-
                 },
-
 
                 body:
                     JSON.stringify(
                         registro
                     )
-
             }
-
         );
 
 
-
-    if (!resposta.ok) {
-
+    if(!resposta.ok){
 
         console.error(
             await resposta.text()
         );
 
-
         toast(
-            "Erro ao salvar o progresso."
+            "Erro ao salvar progresso."
         );
 
-
         return false;
-
     }
-
 
 
     progresso[
@@ -3747,67 +2791,48 @@ async function salvarProgresso(
     ] = registro;
 
 
-
     return true;
-
 }
 
 
-
 /* =========================================================
-   ALTERAR STATUS
+   STATUS
 ========================================================= */
 
 async function alterarStatus(
     fileId,
     status
-) {
-
+){
 
     const ok =
         await salvarProgresso(
-
             fileId,
-
             {
                 status:
                     status
             }
-
         );
 
 
-
-    if (!ok) {
-
+    if(!ok){
         return;
-
     }
 
 
-
     toast(
-
         "Marcado como " +
-
         nomeStatus(
             status
         )
-
     );
-
 
 
     atualizarEstatisticas();
 
-
-    renderizarItensModal();
-
+    atualizarModalColecao();
 
     renderizarBiblioteca();
-
 }
-
 
 
 /* =========================================================
@@ -3816,8 +2841,7 @@ async function alterarStatus(
 
 async function alternarFavorito(
     fileId
-) {
-
+){
 
     const atual =
         progresso[
@@ -3826,141 +2850,96 @@ async function alternarFavorito(
         true;
 
 
-
     const ok =
         await salvarProgresso(
-
             fileId,
-
             {
-
                 favorito:
                     !atual
-
             }
-
         );
 
 
-
-    if (!ok) {
-
+    if(!ok){
         return;
-
     }
 
 
-
     toast(
-
         !atual
-
             ? "Adicionado aos favoritos ⭐"
-
             : "Removido dos favoritos"
-
     );
 
 
-
-    renderizarItensModal();
-
+    atualizarModalColecao();
 
     renderizarBiblioteca();
-
 }
 
 
-
 /* =========================================================
-   SALVAR PÁGINAS
+   PÁGINAS
 ========================================================= */
 
 async function salvarPaginas(
     fileId
-) {
-
+){
 
     const pagina =
         Number(
-
             document
                 .getElementById(
                     "pagina_" +
                     fileId
                 )
-                .value ||
-
-            0
-
+                .value || 0
         );
-
 
 
     const total =
         Number(
-
             document
                 .getElementById(
                     "total_" +
                     fileId
                 )
-                .value ||
-
-            0
-
+                .value || 0
         );
 
 
-
     let status =
-
         progresso[
             fileId
         ]?.status ||
-
         "nao_lido";
 
 
-
-    if (
-
+    if(
         pagina > 0 &&
-
         status ===
         "nao_lido"
-
-    ) {
+    ){
 
         status =
             "lendo";
-
     }
 
 
-
-    if (
-
+    if(
         total > 0 &&
-
         pagina >= total
-
-    ) {
+    ){
 
         status =
             "lido";
-
     }
-
 
 
     const ok =
         await salvarProgresso(
-
             fileId,
-
             {
-
                 pagina_atual:
                     pagina,
 
@@ -3969,19 +2948,13 @@ async function salvarPaginas(
 
                 status:
                     status
-
             }
-
         );
 
 
-
-    if (!ok) {
-
+    if(!ok){
         return;
-
     }
-
 
 
     toast(
@@ -3989,44 +2962,49 @@ async function salvarPaginas(
     );
 
 
-
     atualizarEstatisticas();
 
-
-    renderizarItensModal();
-
+    atualizarModalColecao();
 
     renderizarBiblioteca();
-
 }
-
 
 
 /* =========================================================
    ESTATÍSTICAS
 ========================================================= */
 
-function atualizarEstatisticas() {
+function atualizarEstatisticas(){
+
+    const principais =
+        obterColecoesPrincipais();
 
 
-    const colecoes =
-        gerarColecoes();
+    const todas =
+        Array.from(
+            mapaColecoes.values()
+        )
+        .filter(
+            c =>
+                c.nivel >= 1
+        );
 
 
+    const subcolecoes =
+        Math.max(
+            0,
+            todas.length -
+            principais.length
+        );
 
-    let lidos =
-        0;
 
+    let lidos = 0;
 
-    let lendo =
-        0;
-
+    let lendo = 0;
 
 
     biblioteca.forEach(
-
-        function(item) {
-
+        function(item){
 
             const status =
                 progresso[
@@ -4034,31 +3012,22 @@ function atualizarEstatisticas() {
                 ]?.status;
 
 
-
-            if (
+            if(
                 status ===
                 "lido"
-            ) {
-
+            ){
                 lidos++;
-
             }
 
 
-
-            if (
+            if(
                 status ===
                 "lendo"
-            ) {
-
+            ){
                 lendo++;
-
             }
-
         }
-
     );
-
 
 
     document
@@ -4066,8 +3035,16 @@ function atualizarEstatisticas() {
             "statColecoes"
         )
         .textContent =
-            colecoes.length;
+            principais.length;
 
+
+    document
+        .getElementById(
+            "statColecoesDetalhe"
+        )
+        .textContent =
+            subcolecoes +
+            " subcoleção(ões)";
 
 
     document
@@ -4078,7 +3055,6 @@ function atualizarEstatisticas() {
             biblioteca.length;
 
 
-
     document
         .getElementById(
             "statLidos"
@@ -4087,35 +3063,167 @@ function atualizarEstatisticas() {
             lidos;
 
 
-
     document
         .getElementById(
             "statLendo"
         )
         .textContent =
             lendo;
-
 }
 
 
+/* =========================================================
+   ORDENAÇÃO
+========================================================= */
+
+function ordenarColecoes(
+    colecoes
+){
+
+    const tipo =
+        document
+            .getElementById(
+                "ordenacao"
+            )
+            .value;
+
+
+    if(
+        tipo ===
+        "quantidade"
+    ){
+
+        colecoes.sort(
+            function(a,b){
+
+                return (
+                    obterItensRecursivos(
+                        b
+                    ).length -
+                    obterItensRecursivos(
+                        a
+                    ).length
+                );
+            }
+        );
+
+        return;
+    }
+
+
+    if(
+        tipo ===
+        "recente"
+    ){
+
+        colecoes.sort(
+            function(a,b){
+
+                return (
+                    obterUltimaLeitura(
+                        b
+                    ) -
+                    obterUltimaLeitura(
+                        a
+                    )
+                );
+            }
+        );
+
+        return;
+    }
+
+
+    colecoes.sort(
+        function(a,b){
+
+            return a.nome.localeCompare(
+                b.nome,
+                "pt-BR",
+                {
+                    numeric:true,
+                    sensitivity:"base"
+                }
+            );
+        }
+    );
+}
+
 
 /* =========================================================
-   MUDAR CATEGORIA
+   ÚLTIMA LEITURA
+========================================================= */
+
+function obterUltimaLeitura(
+    colecao
+){
+
+    let maior = 0;
+
+
+    obterItensRecursivos(
+        colecao
+    )
+    .forEach(
+        function(item){
+
+            const data =
+                progresso[
+                    item.file_id
+                ]?.ultima_leitura;
+
+
+            if(!data){
+                return;
+            }
+
+
+            const timestamp =
+                new Date(
+                    data
+                ).getTime();
+
+
+            if(
+                timestamp >
+                maior
+            ){
+                maior =
+                    timestamp;
+            }
+        }
+    );
+
+
+    return maior;
+}
+
+
+/* =========================================================
+   CATEGORIA
 ========================================================= */
 
 async function mudarCategoria(
     categoria
-) {
+){
+
+    if(
+        categoria ===
+        categoriaAtual
+    ){
+        return;
+    }
+
+
+    fecharModal();
 
 
     categoriaAtual =
         categoria;
 
 
-
     filtroAtual =
         "todos";
-
 
 
     document
@@ -4130,7 +3238,6 @@ async function mudarCategoria(
         );
 
 
-
     document
         .getElementById(
             "menuMangas"
@@ -4143,20 +3250,15 @@ async function mudarCategoria(
         );
 
 
-
     document
         .getElementById(
             "tituloPagina"
         )
         .textContent =
-
             categoria ===
             "gibis"
-
                 ? "Gibis / HQs"
-
                 : "Mangás";
-
 
 
     document
@@ -4167,17 +3269,12 @@ async function mudarCategoria(
             "";
 
 
-
     atualizarFiltroVisual();
-
 
     fecharMenuMobile();
 
-
     await carregarTudo();
-
 }
-
 
 
 /* =========================================================
@@ -4186,8 +3283,7 @@ async function mudarCategoria(
 
 function selecionarFiltro(
     filtro
-) {
-
+){
 
     filtroAtual =
         filtro;
@@ -4195,92 +3291,58 @@ function selecionarFiltro(
 
     atualizarFiltroVisual();
 
-
     renderizarBiblioteca();
 
-
     fecharMenuMobile();
-
 }
 
 
-
-/* =========================================================
-   VISUAL DOS FILTROS
-========================================================= */
-
-function atualizarFiltroVisual() {
-
+function atualizarFiltroVisual(){
 
     document
         .querySelectorAll(
             ".chip"
         )
         .forEach(
+            function(el){
 
-            function(elemento) {
-
-
-                elemento
-                    .classList
-                    .toggle(
-
-                        "active",
-
-                        elemento.dataset
-                            .filter ===
-                        filtroAtual
-
-                    );
-
+                el.classList.toggle(
+                    "active",
+                    el.dataset.filter ===
+                    filtroAtual
+                );
             }
-
         );
-
 
 
     const mapa = {
 
-
         todos:
             "menuTodos",
-
 
         lendo:
             "menuLendo",
 
-
         quero_ler:
             "menuQuero",
-
 
         lido:
             "menuLidos",
 
-
         favoritos:
             "menuFavoritos"
-
     };
 
 
-
     [
-
         "menuTodos",
-
         "menuLendo",
-
         "menuQuero",
-
         "menuLidos",
-
         "menuFavoritos"
-
-    ].forEach(
-
-        function(id) {
-
+    ]
+    .forEach(
+        function(id){
 
             document
                 .getElementById(
@@ -4290,84 +3352,35 @@ function atualizarFiltroVisual() {
                 .remove(
                     "active"
                 );
-
         }
-
     );
 
 
-
-    if (
+    if(
         mapa[
             filtroAtual
         ]
-    ) {
-
+    ){
 
         document
             .getElementById(
-
                 mapa[
                     filtroAtual
                 ]
-
             )
             .classList
             .add(
                 "active"
             );
-
     }
-
 }
 
 
-
 /* =========================================================
-   SINCRONIZAR DRIVE
+   ATUALIZAR
 ========================================================= */
 
-function sincronizarDrive() {
-
-
-    const url =
-
-        URL_API +
-
-        "?acao=sincronizar&tipo=" +
-
-        encodeURIComponent(
-            categoriaAtual
-        );
-
-
-
-    window.open(
-
-        url,
-
-        "_blank"
-
-    );
-
-
-
-    toast(
-
-        "A sincronização foi aberta em outra aba. Quando terminar, volte aqui e clique em Atualizar."
-
-    );
-
-}
-
-
-
-/* =========================================================
-   ATUALIZAR ESTANTE
-========================================================= */
-
-async function recarregarBiblioteca() {
-
+async function recarregarBiblioteca(){
 
     toast(
         "Atualizando estante..."
@@ -4380,9 +3393,33 @@ async function recarregarBiblioteca() {
     toast(
         "Estante atualizada."
     );
-
 }
 
+
+/* =========================================================
+   SINCRONIZAÇÃO
+========================================================= */
+
+function sincronizarDrive(){
+
+    const url =
+        URL_API +
+        "?acao=sincronizar&tipo=" +
+        encodeURIComponent(
+            categoriaAtual
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+
+    toast(
+        "Sincronização aberta em outra aba. Quando terminar, volte aqui e clique em Atualizar."
+    );
+}
 
 
 /* =========================================================
@@ -4391,40 +3428,31 @@ async function recarregarBiblioteca() {
 
 function abrirArquivo(
     url
-) {
+){
 
-
-    if (!url) {
+    if(!url){
 
         toast(
-            "Arquivo sem URL."
+            "Arquivo sem endereço."
         );
 
         return;
-
     }
 
 
     window.open(
-
         url,
-
         "_blank",
-
         "noopener,noreferrer"
-
     );
-
 }
 
 
-
 /* =========================================================
-   FECHAR MODAL
+   MODAL
 ========================================================= */
 
-function fecharModal() {
-
+function fecharModal(){
 
     document
         .getElementById(
@@ -4439,72 +3467,53 @@ function fecharModal() {
     document.body.style.overflow =
         "";
 
+
+    colecaoAtual =
+        null;
+
+
+    historicoColecoes =
+        [];
 }
 
-
-
-/* =========================================================
-   CLIQUE FORA DO MODAL
-========================================================= */
 
 document
     .getElementById(
         "modal"
     )
     .addEventListener(
-
         "click",
+        function(event){
 
-        function(event) {
-
-
-            if (
+            if(
                 event.target.id ===
                 "modal"
-            ) {
-
+            ){
                 fecharModal();
-
             }
-
         }
-
     );
 
 
-
-/* =========================================================
-   ESC
-========================================================= */
-
 document.addEventListener(
-
     "keydown",
+    function(event){
 
-    function(event) {
-
-
-        if (
+        if(
             event.key ===
             "Escape"
-        ) {
-
+        ){
             fecharModal();
-
         }
-
     }
-
 );
 
 
-
 /* =========================================================
-   MENU MOBILE
+   MOBILE
 ========================================================= */
 
-function alternarMenu() {
-
+function alternarMenu(){
 
     document
         .getElementById(
@@ -4514,19 +3523,15 @@ function alternarMenu() {
         .toggle(
             "open"
         );
-
 }
 
 
+function fecharMenuMobile(){
 
-function fecharMenuMobile() {
-
-
-    if (
+    if(
         window.innerWidth <=
         1000
-    ) {
-
+    ){
 
         document
             .getElementById(
@@ -4536,274 +3541,175 @@ function fecharMenuMobile() {
             .remove(
                 "open"
             );
-
     }
-
 }
 
 
-
 /* =========================================================
-   STATUS EM TEXTO
+   HELPERS
 ========================================================= */
 
 function nomeStatus(
     status
-) {
-
+){
 
     const nomes = {
-
 
         nao_lido:
             "Não lido",
 
-
         lendo:
             "Lendo",
-
 
         lido:
             "Lido",
 
-
         quero_ler:
             "Quero ler"
-
     };
 
 
     return (
-
         nomes[
             status
         ] ||
-
         "Não lido"
-
     );
-
 }
 
 
-
-/* =========================================================
-   ÍCONE DE FORMATO
-========================================================= */
-
 function iconeFormato(
     extensao
-) {
-
+){
 
     extensao =
         String(
-            extensao ||
-            ""
+            extensao || ""
         )
         .toLowerCase();
 
 
-
-    if (
+    if(
         extensao ===
         "pdf"
-    ) {
-
+    ){
         return "📕";
-
     }
 
 
-
-    if (
-
-        extensao ===
-        "cbz" ||
-
-        extensao ===
-        "cbr" ||
-
-        extensao ===
-        "cb7"
-
-    ) {
-
+    if(
+        [
+            "cbz",
+            "cbr",
+            "cb7",
+            "zip",
+            "rar",
+            "7z"
+        ]
+        .includes(
+            extensao
+        )
+    ){
         return "📖";
-
     }
 
 
-
-    if (
-
-        extensao ===
-        "epub" ||
-
-        extensao ===
-        "mobi"
-
-    ) {
-
+    if(
+        [
+            "epub",
+            "mobi",
+            "azw",
+            "azw3"
+        ]
+        .includes(
+            extensao
+        )
+    ){
         return "📘";
-
     }
-
 
 
     return "📚";
-
 }
 
 
-
-/* =========================================================
-   FORMATAR TAMANHO
-========================================================= */
-
 function formatarTamanho(
     bytes
-) {
-
+){
 
     bytes =
         Number(
-            bytes ||
-            0
+            bytes || 0
         );
 
 
-
-    if (
+    if(
         bytes <= 0
-    ) {
-
+    ){
         return "0 MB";
-
     }
-
 
 
     const mb =
-
         bytes /
-
         1024 /
-
         1024;
 
 
-
-    if (
+    if(
         mb < 1024
-    ) {
-
+    ){
 
         return (
-
             mb.toFixed(1) +
-
             " MB"
-
         );
-
     }
 
 
-
     return (
-
         (
             mb /
             1024
         )
         .toFixed(2) +
-
         " GB"
-
     );
-
 }
 
-
-
-/* =========================================================
-   ESCAPAR HTML
-========================================================= */
 
 function escapeHtml(
     texto
-) {
-
+){
 
     return String(
-        texto ??
-        ""
+        texto ?? ""
     )
-
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-
-    .replace(
-        /</g,
-        "&lt;"
-    )
-
-    .replace(
-        />/g,
-        "&gt;"
-    )
-
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
-
-
-/* =========================================================
-   ESCAPAR JS
-========================================================= */
 
 function escapeJs(
     texto
-) {
-
+){
 
     return String(
-        texto ??
-        ""
+        texto ?? ""
     )
-
-    .replace(
-        /\\/g,
-        "\\\\"
-    )
-
-    .replace(
-        /'/g,
-        "\\'"
-    );
-
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'");
 }
 
 
-
 /* =========================================================
-   CARREGANDO
+   LOADING / ERRO
 ========================================================= */
 
-function mostrarCarregando() {
-
+function mostrarCarregando(){
 
     document
         .getElementById(
@@ -4811,30 +3717,20 @@ function mostrarCarregando() {
         )
         .innerHTML =
             `
-
             <div class="state">
 
-                <div class="loader">
-                </div>
+                <div class="loader"></div>
 
                 Carregando sua biblioteca...
 
             </div>
-
             `;
-
 }
 
 
-
-/* =========================================================
-   ERRO
-========================================================= */
-
 function mostrarErro(
     erro
-) {
-
+){
 
     document
         .getElementById(
@@ -4842,35 +3738,25 @@ function mostrarErro(
         )
         .innerHTML =
             `
-
             <div class="state">
 
                 <div class="state-icon">
                     ⚠️
                 </div>
 
-                <div>
+                Não foi possível carregar a biblioteca.
 
-                    Não foi possível carregar a biblioteca.
-
-                </div>
-
-                <br>
+                <br><br>
 
                 <small>
-
                     ${escapeHtml(
                         erro
                     )}
-
                 </small>
 
             </div>
-
             `;
-
 }
-
 
 
 /* =========================================================
@@ -4879,8 +3765,7 @@ function mostrarErro(
 
 function toast(
     mensagem
-) {
-
+){
 
     const container =
         document.getElementById(
@@ -4888,46 +3773,35 @@ function toast(
         );
 
 
-
-    const elemento =
+    const el =
         document.createElement(
             "div"
         );
 
 
-    elemento.className =
+    el.className =
         "toast";
 
 
-    elemento.textContent =
+    el.textContent =
         mensagem;
 
 
-
     container.appendChild(
-        elemento
+        el
     );
-
 
 
     setTimeout(
+        function(){
 
-        function() {
-
-            elemento.remove();
-
+            el.remove();
         },
-
         4000
-
     );
-
 }
-
 
 </script>
 
-
 </body>
-
 </html>
