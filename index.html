@@ -1,28 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="theme-color"
+    content="#090b10"
+>
 
 <title>Minha Estante</title>
 
+
 <style>
+
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
+
 :root {
+
     --bg: #090b10;
-    --bg2: #10131b;
-    --card: #151923;
-    --card2: #1b202c;
-    --border: rgba(255,255,255,.07);
-    --text: #f4f6fb;
-    --muted: #949bab;
+    --bg-soft: #0d1017;
+
+    --sidebar: #0c0f15;
+
+    --card: #141820;
+    --card-hover: #181d27;
+
+    --border: rgba(255,255,255,.075);
+
+    --text: #f5f7fb;
+    --muted: #9299a8;
+    --muted2: #626a7a;
+
     --primary: #ff5a36;
-    --primary2: #ff7c46;
-    --green: #3ddc84;
-    --blue: #5b8cff;
+    --primary-light: #ff7a4f;
+
+    --green: #40d98a;
+    --blue: #6b95ff;
     --yellow: #ffc857;
-    --red: #ff5c72;
-    --radius: 18px;
+
+    --radius: 16px;
 }
+
+
+/* =========================================================
+   RESET
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -33,20 +64,46 @@ html {
 }
 
 body {
+
     margin: 0;
+
     min-height: 100vh;
+
     background:
-        radial-gradient(circle at top right, rgba(255,90,54,.09), transparent 30%),
-        radial-gradient(circle at top left, rgba(91,140,255,.06), transparent 28%),
+
+        radial-gradient(
+            circle at 100% 0,
+            rgba(255,90,54,.07),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 0 100%,
+            rgba(91,140,255,.05),
+            transparent 30%
+        ),
+
         var(--bg);
+
     color: var(--text);
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-                 "Segoe UI", sans-serif;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 }
 
-button, input, select {
+
+button,
+input,
+select {
+
     font: inherit;
 }
+
 
 button {
     cursor: pointer;
@@ -58,115 +115,158 @@ button {
 ========================================================= */
 
 .sidebar {
-    width: 250px;
+
+    width: 240px;
+
     position: fixed;
+
     top: 0;
-    left: 0;
     bottom: 0;
+    left: 0;
 
-    background: rgba(12,14,20,.94);
-    border-right: 1px solid var(--border);
+    padding: 27px 18px;
 
-    padding: 28px 18px;
+    background:
+        rgba(12,15,21,.96);
+
+    border-right:
+        1px solid var(--border);
 
     z-index: 50;
 
-    backdrop-filter: blur(18px);
+    overflow-y: auto;
+
+    backdrop-filter:
+        blur(18px);
 }
+
 
 .logo {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 
+    padding: 0 7px;
+
+    margin-bottom: 34px;
+
+    font-weight: 850;
+
     font-size: 22px;
-    font-weight: 800;
-
-    margin-bottom: 35px;
-
-    padding: 0 8px;
 }
 
+
 .logo-icon {
+
     width: 42px;
     height: 42px;
 
-    border-radius: 13px;
+    flex-shrink: 0;
 
     display: grid;
+
     place-items: center;
 
-    font-size: 22px;
+    border-radius: 13px;
+
+    font-size: 21px;
 
     background:
+
         linear-gradient(
             135deg,
             var(--primary),
-            var(--primary2)
+            var(--primary-light)
         );
 
     box-shadow:
-        0 10px 30px rgba(255,90,54,.25);
+        0 10px 28px
+        rgba(255,90,54,.20);
 }
 
-.logo span {
+
+.logo-text span {
     color: var(--primary);
 }
 
 
 .menu-label {
-    color: #596172;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.4px;
 
     margin:
         25px 11px
-        10px;
+        9px;
+
+    font-size: 10px;
+
+    font-weight: 850;
+
+    letter-spacing: 1.5px;
+
+    color: #606879;
 }
 
+
 .menu-item {
+
     width: 100%;
-
-    border: 0;
-    background: transparent;
-
-    color: var(--muted);
-
-    padding: 12px 13px;
-
-    border-radius: 12px;
-
-    display: flex;
-    align-items: center;
-    gap: 12px;
 
     margin-bottom: 4px;
 
+    padding: 12px 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    color: var(--muted);
+
+    background: transparent;
+
     text-align: left;
 
-    transition: .2s;
+    transition: .18s;
 }
+
 
 .menu-item:hover {
-    background: rgba(255,255,255,.04);
+
     color: white;
+
+    background:
+        rgba(255,255,255,.04);
 }
+
 
 .menu-item.active {
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,90,54,.18),
-            rgba(255,90,54,.05)
-        );
 
     color: white;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(255,90,54,.16),
+            rgba(255,90,54,.04)
+        );
 }
 
-.menu-item .icon {
-    width: 24px;
-    font-size: 18px;
+
+.menu-icon {
+
+    width: 23px;
+
+    text-align: center;
+
+    font-size: 17px;
 }
 
 
@@ -175,7 +275,9 @@ button {
 ========================================================= */
 
 .main {
-    margin-left: 250px;
+
+    margin-left: 240px;
+
     min-height: 100vh;
 }
 
@@ -185,194 +287,287 @@ button {
 ========================================================= */
 
 .header {
+
     position: sticky;
+
     top: 0;
 
     z-index: 30;
 
-    padding: 18px 34px;
+    min-height: 78px;
+
+    padding: 16px 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
 
     background:
-        rgba(9,11,16,.82);
+        rgba(9,11,16,.86);
 
     border-bottom:
         1px solid var(--border);
 
     backdrop-filter:
-        blur(18px);
-
-    display: flex;
-    gap: 18px;
-    align-items: center;
+        blur(20px);
 }
 
+
+.mobile-menu {
+
+    display: none;
+
+    width: 43px;
+    height: 43px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 11px;
+
+    background: var(--card);
+
+    color: white;
+}
+
+
 .search-box {
-    flex: 1;
-    max-width: 650px;
+
+    width: 100%;
+
+    max-width: 500px;
 
     position: relative;
 }
 
-.search-box span {
+
+.search-icon {
+
     position: absolute;
-    left: 16px;
+
     top: 50%;
-    transform: translateY(-50%);
+    left: 16px;
+
+    transform:
+        translateY(-50%);
 
     opacity: .55;
 }
 
+
 .search-box input {
+
     width: 100%;
 
-    background: #151923;
+    padding:
+        13px 15px
+        13px 45px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 13px;
+
+    background: #141821;
 
     color: white;
-
-    border: 1px solid var(--border);
 
     outline: none;
 
-    border-radius: 14px;
-
-    padding:
-        13px 16px
-        13px 45px;
-
-    transition: .2s;
+    transition: .18s;
 }
 
+
 .search-box input:focus {
+
     border-color:
-        rgba(255,90,54,.5);
+        rgba(255,90,54,.45);
 
     box-shadow:
         0 0 0 3px
-        rgba(255,90,54,.08);
+        rgba(255,90,54,.06);
 }
 
 
-.header-spacer {
-    flex: 1;
+.header-actions {
+
+    margin-left: auto;
+
+    display: flex;
+
+    gap: 9px;
 }
 
-.sync-button {
-    border: none;
+
+.action-button {
 
     padding:
-        12px 18px;
+        11px 15px;
 
-    border-radius: 12px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    white-space: nowrap;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
 
     background:
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary2)
-        );
+        #171b24;
 
     color: white;
 
-    font-weight: 750;
+    font-weight: 700;
 
-    display: flex;
-    gap: 8px;
-    align-items: center;
-
-    transition: .2s;
+    transition: .18s;
 }
 
-.sync-button:hover {
-    transform: translateY(-2px);
+
+.action-button:hover {
+
+    background:
+        #202631;
 }
 
-.sync-button:disabled {
-    opacity: .6;
-    cursor: wait;
+
+.action-button.primary {
+
+    border-color: transparent;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-light)
+        );
+}
+
+
+.action-button.primary:hover {
+
+    transform:
+        translateY(-1px);
 }
 
 
 /* =========================================================
-   CONTENT
+   CONTEÚDO
 ========================================================= */
 
 .content {
+
+    max-width: 1600px;
+
+    margin: auto;
+
     padding:
-        32px 34px
+        34px 34px
         70px;
 }
 
-.page-title {
-    margin-bottom: 26px;
+
+.page-heading {
+
+    margin-bottom: 28px;
 }
 
-.page-title h1 {
+
+.page-heading h1 {
+
     margin: 0 0 7px;
 
-    font-size: clamp(
-        25px,
-        3vw,
-        38px
-    );
+    font-size:
+        clamp(
+            27px,
+            3vw,
+            39px
+        );
+
+    letter-spacing: -.7px;
 }
 
-.page-title p {
+
+.page-heading p {
+
     margin: 0;
+
     color: var(--muted);
 }
 
 
 /* =========================================================
-   STATS
+   ESTATÍSTICAS
 ========================================================= */
 
 .stats {
+
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(150px,1fr));
+        repeat(
+            4,
+            minmax(150px,1fr)
+        );
 
-    gap: 16px;
+    gap: 15px;
 
-    margin-bottom: 30px;
+    margin-bottom: 28px;
 }
 
+
 .stat-card {
+
+    min-height: 120px;
+
+    padding: 20px;
+
     background:
+
         linear-gradient(
             145deg,
-            rgba(255,255,255,.055),
-            rgba(255,255,255,.018)
+            rgba(255,255,255,.05),
+            rgba(255,255,255,.017)
         );
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        var(--radius);
-
-    padding: 20px;
-
-    min-height: 115px;
+    border-radius: var(--radius);
 }
+
 
 .stat-label {
-    color: var(--muted);
-    font-size: 13px;
 
     margin-bottom: 8px;
+
+    font-size: 13px;
+
+    color: var(--muted);
 }
+
 
 .stat-number {
+
     font-size: 30px;
-    font-weight: 850;
+
+    font-weight: 900;
 }
 
+
 .stat-detail {
+
     margin-top: 5px;
 
-    color: #646d7f;
-    font-size: 12px;
+    font-size: 11px;
+
+    color: var(--muted2);
 }
 
 
@@ -381,59 +576,75 @@ button {
 ========================================================= */
 
 .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 
-    margin-bottom: 22px;
+    margin-bottom: 23px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
 
     flex-wrap: wrap;
 }
 
-.filter-chip {
+
+.chip {
+
+    padding:
+        8px 14px;
+
     border:
         1px solid var(--border);
 
-    background: #131720;
+    border-radius: 100px;
+
+    background:
+        #131720;
 
     color: var(--muted);
 
-    padding:
-        9px 14px;
-
-    border-radius: 100px;
-
-    transition: .2s;
+    transition: .17s;
 }
 
-.filter-chip:hover {
+
+.chip:hover {
     color: white;
 }
 
-.filter-chip.active {
-    background:
-        rgba(255,90,54,.14);
 
-    border-color:
-        rgba(255,90,54,.32);
+.chip.active {
 
     color: #ff8a68;
+
+    background:
+        rgba(255,90,54,.13);
+
+    border-color:
+        rgba(255,90,54,.35);
 }
 
+
 .toolbar-right {
+
     margin-left: auto;
 }
 
-.toolbar select {
-    background: #131720;
-    color: white;
+
+.sort-select {
+
+    padding:
+        9px 12px;
 
     border:
         1px solid var(--border);
 
     border-radius: 10px;
 
-    padding: 9px 12px;
+    background:
+        #131720;
+
+    color: white;
 
     outline: none;
 }
@@ -444,229 +655,286 @@ button {
 ========================================================= */
 
 .library-grid {
+
     display: grid;
 
     grid-template-columns:
+
         repeat(
             auto-fill,
-            minmax(180px,1fr)
+            minmax(175px,1fr)
         );
 
-    gap: 22px;
+    gap:
+        25px 20px;
 }
 
+
+/* =========================================================
+   CARD COLEÇÃO
+========================================================= */
+
 .collection-card {
+
     min-width: 0;
 
     cursor: pointer;
 
     transition:
-        transform .22s ease;
+        transform .2s;
 }
 
+
 .collection-card:hover {
+
     transform:
-        translateY(-7px);
+        translateY(-6px);
 }
 
 
 .cover {
+
     position: relative;
+
+    overflow: hidden;
 
     aspect-ratio:
         2 / 3;
 
-    border-radius:
-        17px;
-
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            #252b3a,
-            #12151d
-        );
-
     border:
         1px solid var(--border);
 
+    border-radius: 16px;
+
+    background:
+        var(--card);
+
     box-shadow:
-        0 14px 35px
+        0 12px 30px
         rgba(0,0,0,.27);
 }
 
+
 .collection-card:hover .cover {
+
     box-shadow:
         0 20px 45px
-        rgba(0,0,0,.46);
+        rgba(0,0,0,.42);
 }
+
 
 .cover img {
+
     width: 100%;
     height: 100%;
-
-    object-fit: cover;
 
     display: block;
+
+    object-fit: cover;
 }
 
+
 .cover-placeholder {
+
     width: 100%;
     height: 100%;
 
+    padding: 17px;
+
     display: flex;
+
     flex-direction: column;
 
-    justify-content: center;
     align-items: center;
+
+    justify-content: center;
 
     text-align: center;
 
-    padding: 18px;
-
     background:
+
         radial-gradient(
             circle at 30% 20%,
-            rgba(255,90,54,.22),
-            transparent 30%
+            rgba(255,90,54,.20),
+            transparent 32%
         ),
+
         linear-gradient(
             145deg,
-            #202633,
-            #10131a
+            #222835,
+            #11141b
         );
 }
 
+
 .placeholder-icon {
+
+    margin-bottom: 15px;
+
     font-size: 42px;
-    margin-bottom: 14px;
 }
+
 
 .placeholder-name {
-    font-size: 14px;
-    font-weight: 750;
-    line-height: 1.3;
 
-    color: #d7dbe5;
+    font-size: 13px;
+
+    font-weight: 750;
+
+    line-height: 1.4;
+
+    color: #dde1e9;
 }
 
-.cover-badge {
+
+.cover-count {
+
     position: absolute;
 
-    top: 11px;
-    left: 11px;
+    top: 10px;
+    left: 10px;
 
     padding:
-        6px 9px;
+        5px 8px;
 
     border-radius: 8px;
 
-    font-size: 11px;
-    font-weight: 800;
+    font-size: 10px;
+
+    font-weight: 850;
 
     background:
-        rgba(0,0,0,.68);
+        rgba(0,0,0,.7);
 
     backdrop-filter:
         blur(8px);
 }
 
-.favorite-badge {
+
+.cover-star {
+
     position: absolute;
 
-    right: 11px;
-    top: 11px;
+    top: 10px;
+    right: 10px;
 
-    width: 33px;
-    height: 33px;
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+
+    place-items: center;
 
     border-radius: 50%;
 
-    display: grid;
-    place-items: center;
-
     background:
-        rgba(0,0,0,.7);
-
-    font-size: 16px;
+        rgba(0,0,0,.72);
 }
+
 
 .collection-info {
+
     padding:
-        12px 4px 2px;
+        11px 3px 0;
 }
 
+
 .collection-title {
-    font-size: 15px;
-    font-weight: 750;
+
+    margin-bottom: 5px;
 
     overflow: hidden;
 
     white-space: nowrap;
 
-    text-overflow:
-        ellipsis;
+    text-overflow: ellipsis;
 
-    margin-bottom: 5px;
+    font-size: 14px;
+
+    font-weight: 750;
 }
 
-.collection-subtitle {
-    font-size: 12px;
+
+.collection-meta {
+
     color: var(--muted);
+
+    font-size: 11px;
 }
 
 
 /* =========================================================
-   PROGRESS BAR
+   PROGRESSO
 ========================================================= */
 
-.progress {
+.progress-bar {
+
     width: 100%;
     height: 5px;
 
-    background: #292e39;
-
-    border-radius: 20px;
+    margin-top: 9px;
 
     overflow: hidden;
 
-    margin-top: 10px;
-}
-
-.progress-inner {
-    height: 100%;
-
-    border-radius: inherit;
+    border-radius: 100px;
 
     background:
+        #272c37;
+}
+
+
+.progress-fill {
+
+    height: 100%;
+
+    background:
+
         linear-gradient(
             90deg,
             var(--primary),
-            var(--primary2)
+            var(--primary-light)
         );
+
+    border-radius: inherit;
 }
 
 
 /* =========================================================
-   EMPTY / LOADING
+   ESTADOS
 ========================================================= */
 
-.center-state {
-    grid-column: 1 / -1;
+.state {
 
-    padding: 90px 20px;
+    grid-column:
+        1 / -1;
+
+    padding:
+        90px 20px;
 
     text-align: center;
 
     color: var(--muted);
 }
 
-.loader {
-    width: 38px;
-    height: 38px;
 
-    border: 3px solid
+.state-icon {
+
+    margin-bottom: 14px;
+
+    font-size: 48px;
+}
+
+
+.loader {
+
+    width: 39px;
+    height: 39px;
+
+    margin:
+        0 auto 16px;
+
+    border:
+        3px solid
         rgba(255,255,255,.08);
 
     border-top-color:
@@ -674,14 +942,14 @@ button {
 
     border-radius: 50%;
 
-    margin:
-        0 auto 15px;
-
     animation:
-        spin .8s linear infinite;
+        spin .75s
+        linear infinite;
 }
 
+
 @keyframes spin {
+
     to {
         transform:
             rotate(360deg);
@@ -694,166 +962,214 @@ button {
 ========================================================= */
 
 .modal {
+
     display: none;
 
     position: fixed;
-    inset: 0;
 
-    background:
-        rgba(3,5,9,.88);
+    inset: 0;
 
     z-index: 100;
 
-    padding: 24px;
+    padding: 22px;
 
     overflow-y: auto;
+
+    background:
+        rgba(3,5,9,.88);
 
     backdrop-filter:
         blur(10px);
 }
 
+
 .modal.open {
+
     display: flex;
 
-    align-items:
-        flex-start;
+    justify-content: center;
 
-    justify-content:
-        center;
+    align-items: flex-start;
 }
 
+
 .modal-box {
+
     width: 100%;
+
     max-width: 1000px;
+
+    margin: auto;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 20px;
 
     background:
         #11151d;
 
-    border:
-        1px solid var(--border);
-
-    border-radius: 22px;
-
-    overflow: hidden;
-
-    margin:
-        auto;
-
     box-shadow:
-        0 30px 80px
+        0 30px 90px
         rgba(0,0,0,.55);
 }
 
+
 .modal-header {
+
     padding:
-        27px 30px;
+        25px 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
 
     border-bottom:
         1px solid var(--border);
-
-    display: flex;
-    gap: 20px;
-    align-items: center;
 }
 
-.modal-title-area {
+
+.modal-title-container {
+
+    min-width: 0;
+
     flex: 1;
 }
+
 
 .modal-title {
-    margin: 0 0 6px;
 
-    font-size: 26px;
-}
-
-.modal-subtitle {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.close-btn {
-    width: 43px;
-    height: 43px;
-
-    border: 1px solid var(--border);
-
-    color: white;
-
-    border-radius: 12px;
-
-    background: #1b202a;
-
-    font-size: 21px;
-}
-
-.modal-body {
-    padding: 25px 30px;
-}
-
-
-/* =========================================================
-   EDITION
-========================================================= */
-
-.edition {
-    border:
-        1px solid var(--border);
-
-    border-radius: 15px;
-
-    background:
-        #161a23;
-
-    padding:
-        16px;
-
-    margin-bottom: 10px;
-
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.edition:hover {
-    border-color:
-        rgba(255,255,255,.12);
-}
-
-.edition-icon {
-    width: 46px;
-    height: 58px;
-
-    border-radius: 9px;
-
-    background:
-        #232936;
-
-    display: grid;
-    place-items: center;
-
-    font-size: 22px;
-
-    flex-shrink: 0;
-}
-
-.edition-main {
-    flex: 1;
-    min-width: 0;
-}
-
-.edition-name {
-    font-weight: 700;
-
-    margin-bottom: 5px;
+    margin:
+        0 0 5px;
 
     overflow: hidden;
 
     text-overflow: ellipsis;
+
+    font-size: 25px;
 }
 
-.edition-meta {
+
+.modal-subtitle {
+
     color: var(--muted);
+
     font-size: 12px;
+}
+
+
+.close-button {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        #1b202a;
+
+    color: white;
+
+    font-size: 21px;
+}
+
+
+.modal-body {
+
+    padding:
+        22px 27px;
+}
+
+
+/* =========================================================
+   EDIÇÕES
+========================================================= */
+
+.edition {
+
+    margin-bottom: 9px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+        #161a22;
+}
+
+
+.edition:hover {
+
+    background:
+        #191e27;
+}
+
+
+.edition-icon {
+
+    width: 44px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        #252b37;
+
+    font-size: 21px;
+}
+
+
+.edition-content {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.edition-name {
+
+    margin-bottom: 4px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    font-size: 13px;
+
+    font-weight: 750;
+}
+
+
+.edition-meta {
+
+    font-size: 11px;
+
+    color: var(--muted);
 }
 
 
@@ -862,135 +1178,155 @@ button {
 ========================================================= */
 
 .status {
+
     display: inline-block;
 
     margin-top: 7px;
 
-    font-size: 10px;
-    font-weight: 800;
-
     padding:
-        4px 8px;
+        4px 7px;
 
-    border-radius: 20px;
+    border-radius: 100px;
+
+    font-size: 9px;
+
+    font-weight: 900;
 
     text-transform: uppercase;
 }
 
+
 .status.nao_lido {
+
+    color: #a0a7b4;
+
     background:
         rgba(255,255,255,.07);
-
-    color: #9ca3b2;
 }
+
 
 .status.lendo {
-    background:
-        rgba(255,90,54,.14);
 
-    color: #ff8a68;
+    color: #ff8b69;
+
+    background:
+        rgba(255,90,54,.13);
 }
+
 
 .status.lido {
-    background:
-        rgba(61,220,132,.13);
 
     color: var(--green);
+
+    background:
+        rgba(64,217,138,.12);
 }
 
-.status.quero_ler {
-    background:
-        rgba(91,140,255,.14);
 
-    color: #80a4ff;
+.status.quero_ler {
+
+    color: #8aa9ff;
+
+    background:
+        rgba(107,149,255,.13);
 }
 
 
 /* =========================================================
-   EDITION ACTIONS
+   CONTROLE DE PÁGINAS
 ========================================================= */
 
-.edition-actions {
+.page-control {
+
+    margin-top: 9px;
+
     display: flex;
-    gap: 7px;
 
-    flex-wrap: wrap;
+    align-items: center;
 
-    justify-content:
-        flex-end;
+    gap: 6px;
 }
 
-.icon-btn {
+
+.page-control input {
+
+    width: 68px;
+
+    padding:
+        6px 7px;
+
     border:
         1px solid var(--border);
 
+    border-radius: 7px;
+
     background:
-        #202531;
-
-    color: #dce0e8;
-
-    border-radius: 9px;
-
-    padding:
-        8px 10px;
-
-    transition: .15s;
-}
-
-.icon-btn:hover {
-    background:
-        #2b3240;
-
-    color: white;
-}
-
-.read-btn {
-    background:
-        var(--primary);
+        #0f1218;
 
     color: white;
 
-    border-color:
-        transparent;
+    outline: none;
 }
 
-.read-btn:hover {
-    background:
-        var(--primary2);
+
+.page-control span {
+
+    color: var(--muted);
+
+    font-size: 11px;
 }
 
 
 /* =========================================================
-   PROGRESS EDITOR
+   AÇÕES DA EDIÇÃO
 ========================================================= */
 
-.progress-editor {
+.edition-actions {
+
     display: flex;
-    gap: 7px;
+
     align-items: center;
 
-    margin-top: 10px;
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
 }
 
-.progress-editor input {
-    width: 75px;
 
-    background: #0f1218;
-    color: white;
+.small-button {
+
+    padding:
+        7px 9px;
 
     border:
         1px solid var(--border);
 
     border-radius: 8px;
 
-    padding: 6px 8px;
+    background:
+        #202530;
 
-    outline: none;
+    color: white;
+
+    transition: .15s;
 }
 
-.progress-editor span {
-    font-size: 12px;
-    color: var(--muted);
+
+.small-button:hover {
+
+    background:
+        #2b323f;
+}
+
+
+.small-button.read {
+
+    border-color: transparent;
+
+    background:
+        var(--primary);
 }
 
 
@@ -999,49 +1335,64 @@ button {
 ========================================================= */
 
 .toast-container {
+
     position: fixed;
 
-    bottom: 25px;
-    right: 25px;
+    z-index: 300;
 
-    z-index: 200;
+    right: 22px;
+    bottom: 22px;
 
     display: flex;
+
     flex-direction: column;
-    gap: 10px;
+
+    gap: 9px;
 }
 
+
 .toast {
-    min-width: 280px;
+
+    max-width: 360px;
+
+    min-width: 270px;
 
     padding:
-        14px 17px;
-
-    background:
-        #202530;
+        13px 16px;
 
     border:
         1px solid var(--border);
 
-    border-radius: 12px;
+    border-radius: 11px;
+
+    background:
+        #202530;
+
+    color: white;
 
     box-shadow:
         0 15px 35px
         rgba(0,0,0,.35);
 
     animation:
-        toastIn .25s ease;
+        toastIn .22s ease;
 }
 
+
 @keyframes toastIn {
+
     from {
+
         opacity: 0;
+
         transform:
             translateY(10px);
     }
 
     to {
+
         opacity: 1;
+
         transform:
             translateY(0);
     }
@@ -1049,112 +1400,166 @@ button {
 
 
 /* =========================================================
-   MOBILE
+   RESPONSIVIDADE
 ========================================================= */
 
-.mobile-menu {
-    display: none;
-}
-
-@media (max-width: 1000px) {
+@media (
+    max-width: 1000px
+) {
 
     .sidebar {
+
         transform:
             translateX(-100%);
 
-        transition: .25s;
+        transition:
+            .24s;
     }
 
+
     .sidebar.open {
+
         transform:
             translateX(0);
     }
 
+
     .main {
+
         margin-left: 0;
     }
 
+
     .mobile-menu {
+
         display: block;
-
-        border: 0;
-
-        border-radius: 10px;
-
-        width: 42px;
-        height: 42px;
-
-        background: #1b202a;
-
-        color: white;
     }
 
+
     .stats {
+
         grid-template-columns:
             repeat(2,1fr);
     }
 }
 
-@media (max-width: 600px) {
+
+@media (
+    max-width: 650px
+) {
 
     .header {
-        padding: 14px;
+
+        padding:
+            12px;
     }
 
+
     .content {
+
         padding:
-            22px 14px
+            23px 13px
             60px;
     }
 
-    .stats {
-        grid-template-columns:
-            repeat(2,1fr);
 
-        gap: 10px;
-    }
+    .header-actions span {
 
-    .stat-card {
-        padding: 14px;
-    }
-
-    .stat-number {
-        font-size: 24px;
-    }
-
-    .library-grid {
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-        gap: 14px;
-    }
-
-    .sync-button span {
         display: none;
     }
 
-    .modal {
-        padding: 8px;
+
+    .action-button {
+
+        padding:
+            11px 12px;
     }
 
-    .modal-header,
-    .modal-body {
-        padding: 18px;
+
+    .library-grid {
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+        gap:
+            18px 12px;
     }
+
+
+    .stats {
+
+        gap: 9px;
+    }
+
+
+    .stat-card {
+
+        min-height: 105px;
+
+        padding: 15px;
+    }
+
+
+    .stat-number {
+
+        font-size: 25px;
+    }
+
+
+    .toolbar-right {
+
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+
+    .sort-select {
+
+        width: 100%;
+    }
+
+
+    .modal {
+
+        padding: 7px;
+    }
+
+
+    .modal-header {
+
+        padding:
+            17px;
+    }
+
+
+    .modal-body {
+
+        padding:
+            13px;
+    }
+
 
     .edition {
+
         align-items:
             flex-start;
     }
 
+
     .edition-actions {
-        flex-direction:
-            column;
+
+        flex-direction: column;
     }
 }
 
 </style>
+
 </head>
+
 
 <body>
 
@@ -1168,92 +1573,149 @@ button {
     class="sidebar"
 >
 
-    <div class="logo">
-        <div class="logo-icon">📚</div>
 
-        <div>
-            Minha <span>Estante</span>
-        </div>
+<div class="logo">
+
+    <div class="logo-icon">
+        📚
     </div>
 
+    <div class="logo-text">
 
-    <div class="menu-label">
-        BIBLIOTECA
+        Minha<br>
+
+        <span>
+            Estante
+        </span>
+
     </div>
 
-    <button
-        id="menuTodos"
-        class="menu-item active"
-        onclick="selecionarFiltro('todos')"
-    >
-        <span class="icon">🏠</span>
-        Todos
-    </button>
-
-    <button
-        id="menuLendo"
-        class="menu-item"
-        onclick="selecionarFiltro('lendo')"
-    >
-        <span class="icon">📖</span>
-        Lendo
-    </button>
-
-    <button
-        id="menuQuero"
-        class="menu-item"
-        onclick="selecionarFiltro('quero_ler')"
-    >
-        <span class="icon">🔖</span>
-        Quero ler
-    </button>
-
-    <button
-        id="menuLidos"
-        class="menu-item"
-        onclick="selecionarFiltro('lido')"
-    >
-        <span class="icon">✅</span>
-        Lidos
-    </button>
-
-    <button
-        id="menuFavoritos"
-        class="menu-item"
-        onclick="selecionarFiltro('favoritos')"
-    >
-        <span class="icon">⭐</span>
-        Favoritos
-    </button>
+</div>
 
 
-    <div class="menu-label">
-        CATEGORIA
-    </div>
 
-    <button
-        id="menuGibis"
-        class="menu-item active"
-        onclick="mudarCategoria('gibis')"
-    >
-        <span class="icon">🦸</span>
-        Gibis / HQs
-    </button>
+<div class="menu-label">
+    BIBLIOTECA
+</div>
 
-    <button
-        id="menuMangas"
-        class="menu-item"
-        onclick="mudarCategoria('mangas')"
-    >
-        <span class="icon">🇯🇵</span>
-        Mangás
-    </button>
+
+<button
+    id="menuTodos"
+    class="menu-item active"
+    onclick="selecionarFiltro('todos')"
+>
+
+    <span class="menu-icon">
+        🏠
+    </span>
+
+    Todos
+
+</button>
+
+
+<button
+    id="menuLendo"
+    class="menu-item"
+    onclick="selecionarFiltro('lendo')"
+>
+
+    <span class="menu-icon">
+        📖
+    </span>
+
+    Lendo
+
+</button>
+
+
+<button
+    id="menuQuero"
+    class="menu-item"
+    onclick="selecionarFiltro('quero_ler')"
+>
+
+    <span class="menu-icon">
+        🔖
+    </span>
+
+    Quero ler
+
+</button>
+
+
+<button
+    id="menuLidos"
+    class="menu-item"
+    onclick="selecionarFiltro('lido')"
+>
+
+    <span class="menu-icon">
+        ✅
+    </span>
+
+    Lidos
+
+</button>
+
+
+<button
+    id="menuFavoritos"
+    class="menu-item"
+    onclick="selecionarFiltro('favoritos')"
+>
+
+    <span class="menu-icon">
+        ⭐
+    </span>
+
+    Favoritos
+
+</button>
+
+
+
+<div class="menu-label">
+    CATEGORIA
+</div>
+
+
+<button
+    id="menuGibis"
+    class="menu-item active"
+    onclick="mudarCategoria('gibis')"
+>
+
+    <span class="menu-icon">
+        🦸
+    </span>
+
+    Gibis / HQs
+
+</button>
+
+
+<button
+    id="menuMangas"
+    class="menu-item"
+    onclick="mudarCategoria('mangas')"
+>
+
+    <span class="menu-icon">
+        🇯🇵
+    </span>
+
+    Mangás
+
+</button>
+
 
 </aside>
 
 
+
 <!-- ======================================================
-     MAIN
+     CONTEÚDO PRINCIPAL
 ======================================================= -->
 
 <main class="main">
@@ -1261,38 +1723,65 @@ button {
 
 <header class="header">
 
-    <button
-        class="mobile-menu"
-        onclick="alternarMenu()"
+
+<button
+    class="mobile-menu"
+    onclick="alternarMenu()"
+>
+    ☰
+</button>
+
+
+<div class="search-box">
+
+    <span class="search-icon">
+        🔎
+    </span>
+
+    <input
+        id="pesquisa"
+        type="search"
+        placeholder="Pesquisar coleção ou arquivo..."
     >
-        ☰
-    </button>
+
+</div>
 
 
-    <div class="search-box">
-
-        <span>🔎</span>
-
-        <input
-            id="pesquisa"
-            type="search"
-            placeholder="Pesquisar coleção ou arquivo..."
-        >
-
-    </div>
+<div class="header-actions">
 
 
-    <div class="header-spacer"></div>
+<button
+    class="action-button"
+    onclick="recarregarBiblioteca()"
+    title="Recarregar dados do Supabase"
+>
+
+    ↻
+
+    <span>
+        Atualizar
+    </span>
+
+</button>
 
 
-    <button
-        id="btnSync"
-        class="sync-button"
-        onclick="sincronizarDrive()"
-    >
-        🔄
-        <span>Sincronizar Drive</span>
-    </button>
+<button
+    class="action-button primary"
+    onclick="sincronizarDrive()"
+    title="Sincronizar Google Drive"
+>
+
+    🔄
+
+    <span>
+        Sincronizar Drive
+    </span>
+
+</button>
+
+
+</div>
+
 
 </header>
 
@@ -1301,190 +1790,217 @@ button {
 <div class="content">
 
 
-    <section class="page-title">
+<section class="page-heading">
 
-        <h1 id="tituloPagina">
-            Gibis / HQs
-        </h1>
+    <h1 id="tituloPagina">
+        Gibis / HQs
+    </h1>
 
-        <p id="subtituloPagina">
-            Sua coleção pessoal organizada em um só lugar.
-        </p>
+    <p id="subtituloPagina">
+        Sua coleção pessoal organizada em um só lugar.
+    </p>
 
-    </section>
-
-
-
-    <!-- STATS -->
-
-    <section class="stats">
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                Coleções
-            </div>
-
-            <div
-                id="statColecoes"
-                class="stat-number"
-            >
-                0
-            </div>
-
-            <div class="stat-detail">
-                pastas encontradas
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                Arquivos
-            </div>
-
-            <div
-                id="statArquivos"
-                class="stat-number"
-            >
-                0
-            </div>
-
-            <div class="stat-detail">
-                volumes e edições
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                Lidos
-            </div>
-
-            <div
-                id="statLidos"
-                class="stat-number"
-            >
-                0
-            </div>
-
-            <div class="stat-detail">
-                concluídos
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                Lendo
-            </div>
-
-            <div
-                id="statLendo"
-                class="stat-number"
-            >
-                0
-            </div>
-
-            <div class="stat-detail">
-                em andamento
-            </div>
-
-        </div>
-
-    </section>
+</section>
 
 
 
-    <!-- TOOLBAR -->
+<!-- ======================================================
+     ESTATÍSTICAS
+======================================================= -->
 
-    <div class="toolbar">
-
-        <button
-            class="filter-chip active"
-            data-chip="todos"
-            onclick="selecionarFiltro('todos')"
-        >
-            Todos
-        </button>
-
-        <button
-            class="filter-chip"
-            data-chip="lendo"
-            onclick="selecionarFiltro('lendo')"
-        >
-            📖 Lendo
-        </button>
-
-        <button
-            class="filter-chip"
-            data-chip="lido"
-            onclick="selecionarFiltro('lido')"
-        >
-            ✓ Lidos
-        </button>
-
-        <button
-            class="filter-chip"
-            data-chip="favoritos"
-            onclick="selecionarFiltro('favoritos')"
-        >
-            ⭐ Favoritos
-        </button>
+<section class="stats">
 
 
-        <div class="toolbar-right">
+<div class="stat-card">
 
-            <select
-                id="ordenacao"
-                onchange="renderizarBiblioteca()"
-            >
-
-                <option value="nome">
-                    Nome
-                </option>
-
-                <option value="quantidade">
-                    Mais edições
-                </option>
-
-                <option value="recente">
-                    Última leitura
-                </option>
-
-            </select>
-
-        </div>
-
+    <div class="stat-label">
+        Coleções
     </div>
-
-
-
-    <!-- GRID -->
 
     <div
-        id="libraryGrid"
-        class="library-grid"
+        id="statColecoes"
+        class="stat-number"
     >
-
-        <div class="center-state">
-
-            <div class="loader"></div>
-
-            Carregando biblioteca...
-
-        </div>
-
+        0
     </div>
+
+    <div class="stat-detail">
+        pastas encontradas
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Arquivos
+    </div>
+
+    <div
+        id="statArquivos"
+        class="stat-number"
+    >
+        0
+    </div>
+
+    <div class="stat-detail">
+        volumes e edições
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Lidos
+    </div>
+
+    <div
+        id="statLidos"
+        class="stat-number"
+    >
+        0
+    </div>
+
+    <div class="stat-detail">
+        concluídos
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <div class="stat-label">
+        Lendo
+    </div>
+
+    <div
+        id="statLendo"
+        class="stat-number"
+    >
+        0
+    </div>
+
+    <div class="stat-detail">
+        em andamento
+    </div>
+
+</div>
+
+
+</section>
+
+
+
+<!-- ======================================================
+     FILTROS
+======================================================= -->
+
+<div class="toolbar">
+
+
+<button
+    class="chip active"
+    data-filter="todos"
+    onclick="selecionarFiltro('todos')"
+>
+    Todos
+</button>
+
+
+<button
+    class="chip"
+    data-filter="lendo"
+    onclick="selecionarFiltro('lendo')"
+>
+    📖 Lendo
+</button>
+
+
+<button
+    class="chip"
+    data-filter="quero_ler"
+    onclick="selecionarFiltro('quero_ler')"
+>
+    🔖 Quero ler
+</button>
+
+
+<button
+    class="chip"
+    data-filter="lido"
+    onclick="selecionarFiltro('lido')"
+>
+    ✓ Lidos
+</button>
+
+
+<button
+    class="chip"
+    data-filter="favoritos"
+    onclick="selecionarFiltro('favoritos')"
+>
+    ⭐ Favoritos
+</button>
+
+
+<div class="toolbar-right">
+
+
+<select
+    id="ordenacao"
+    class="sort-select"
+    onchange="renderizarBiblioteca()"
+>
+
+    <option value="nome">
+        Nome
+    </option>
+
+    <option value="quantidade">
+        Mais edições
+    </option>
+
+    <option value="recente">
+        Última leitura
+    </option>
+
+</select>
 
 
 </div>
+
+
+</div>
+
+
+
+<!-- ======================================================
+     BIBLIOTECA
+======================================================= -->
+
+<div
+    id="libraryGrid"
+    class="library-grid"
+>
+
+<div class="state">
+
+    <div class="loader">
+    </div>
+
+    Carregando sua biblioteca...
+
+</div>
+
+</div>
+
+
+</div>
+
 
 </main>
 
@@ -1499,46 +2015,51 @@ button {
     class="modal"
 >
 
-    <div class="modal-box">
+
+<div class="modal-box">
 
 
-        <div class="modal-header">
-
-            <div class="modal-title-area">
-
-                <h2
-                    id="modalTitle"
-                    class="modal-title"
-                >
-                    Coleção
-                </h2>
-
-                <div
-                    id="modalSubtitle"
-                    class="modal-subtitle"
-                >
-                </div>
-
-            </div>
+<div class="modal-header">
 
 
-            <button
-                class="close-btn"
-                onclick="fecharModal()"
-            >
-                ×
-            </button>
+<div class="modal-title-container">
 
-        </div>
+    <h2
+        id="modalTitle"
+        class="modal-title"
+    >
+        Coleção
+    </h2>
 
-
-        <div
-            id="modalBody"
-            class="modal-body"
-        >
-        </div>
-
+    <div
+        id="modalSubtitle"
+        class="modal-subtitle"
+    >
     </div>
+
+</div>
+
+
+<button
+    class="close-button"
+    onclick="fecharModal()"
+>
+    ×
+</button>
+
+
+</div>
+
+
+<div
+    id="modalBody"
+    class="modal-body"
+>
+</div>
+
+
+</div>
+
 
 </div>
 
@@ -1547,7 +2068,9 @@ button {
 <div
     id="toastContainer"
     class="toast-container"
-></div>
+>
+</div>
+
 
 
 
@@ -1559,55 +2082,70 @@ button {
 
 
 /*
- * SUA API DO GOOGLE APPS SCRIPT
+ * APPS SCRIPT
+ *
+ * JÁ DEIXEI SUA URL CONFIGURADA.
  */
 
 const URL_API =
-"https://script.google.com/macros/s/AKfycbzb08jyTllecWC3RhQFBAg5qUNI-KUQVqJQdjV7notW-6gVjQ9XG3AkN5J1aXInX4v25Q/exec";
+    "https://script.google.com/macros/s/AKfycbzb08jyTllecWC3RhQFBAg5qUNI-KUQVqJQdjV7notW-6gVjQ9XG3AkN5J1aXInX4v25Q/exec";
 
 
 /*
- * COLE A URL DO SEU SUPABASE.
+ * ========================================================
  *
- * Exemplo:
- * https://abcdefgh.supabase.co
+ * ALTERE ESTA LINHA
+ *
+ * Supabase → Connect → Project URL
+ *
+ * ========================================================
  */
 
 const SUPABASE_URL =
-"https://cnujjmfurumklnusiedh.supabase.co";
+    "https://cnujjmfurumklnusiedh.supabase.co";
 
 
 /*
- * COLE A PUBLISHABLE KEY.
+ * ========================================================
  *
- * Normalmente começa com:
+ * ALTERE ESTA LINHA
+ *
+ * Supabase → Connect → Publishable key
+ *
+ * Tem que começar com:
  *
  * sb_publishable_
  *
- * NÃO coloque sb_secret_ aqui.
- * NÃO coloque service_role aqui.
+ * NÃO COLOQUE sb_secret_
+ * NÃO COLOQUE service_role
+ *
+ * ========================================================
  */
 
 const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_YsV_wvI18wbxep-ekR1sag_QUQ9q2U6";
+    "sb_publishable_YsV_wvI18wbxep-ekR1sag_QUQ9q2U6";
 
 
 
 /* =========================================================
-   VARIÁVEIS
+   ESTADO DO APP
 ========================================================= */
 
 let categoriaAtual =
     "gibis";
 
+
 let filtroAtual =
     "todos";
+
 
 let biblioteca =
     [];
 
+
 let progresso =
     {};
+
 
 let colecaoAberta =
     null;
@@ -1615,232 +2153,397 @@ let colecaoAberta =
 
 
 /* =========================================================
-   INICIALIZAÇÃO
+   INICIAR
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    async () => {
+
+    async function() {
+
 
         document
-            .getElementById("pesquisa")
+            .getElementById(
+                "pesquisa"
+            )
             .addEventListener(
                 "input",
                 renderizarBiblioteca
             );
 
+
         await carregarTudo();
+
     }
 );
 
 
 
 /* =========================================================
-   CARREGAMENTO
+   CARREGAR TUDO
 ========================================================= */
 
 async function carregarTudo() {
 
-    mostrarLoading();
+
+    mostrarCarregando();
+
 
     try {
 
+
         await Promise.all([
+
             carregarBiblioteca(),
+
             carregarProgresso()
+
         ]);
+
 
         atualizarEstatisticas();
 
+
         renderizarBiblioteca();
+
 
     } catch (erro) {
 
-        console.error(erro);
+
+        console.error(
+            erro
+        );
+
 
         mostrarErro(
             erro.message
         );
+
     }
+
 }
 
 
 
 /* =========================================================
-   BIBLIOTECA
+   CARREGAR BIBLIOTECA DIRETAMENTE DO SUPABASE
 ========================================================= */
 
 async function carregarBiblioteca() {
 
-    const resposta =
-        await fetch(
-            URL_API +
-            "?acao=biblioteca&tipo=" +
+
+    biblioteca = [];
+
+
+    const limite =
+        1000;
+
+
+    let offset =
+        0;
+
+
+    while (true) {
+
+
+        const url =
+
+            SUPABASE_URL +
+
+            "/rest/v1/biblioteca" +
+
+            "?select=*" +
+
+            "&categoria=eq." +
             encodeURIComponent(
                 categoriaAtual
-            )
-        );
+            ) +
+
+            "&encontrado_no_drive=eq.true" +
+
+            "&order=pasta_nome.asc,nome.asc" +
+
+            "&limit=" +
+            limite +
+
+            "&offset=" +
+            offset;
 
 
-    if (!resposta.ok) {
 
-        throw new Error(
-            "Erro ao consultar a biblioteca."
-        );
-    }
+        const resposta =
+            await fetch(
 
+                url,
 
-    const dados =
-        await resposta.json();
+                {
 
+                    headers: {
 
-    if (!Array.isArray(dados)) {
+                        apikey:
+                            SUPABASE_PUBLISHABLE_KEY
 
-        if (dados.erro) {
-            throw new Error(
-                dados.erro
+                    }
+
+                }
+
             );
+
+
+
+        if (!resposta.ok) {
+
+
+            const texto =
+                await resposta.text();
+
+
+            throw new Error(
+
+                "Supabase HTTP " +
+
+                resposta.status +
+
+                ": " +
+
+                texto
+
+            );
+
         }
 
-        throw new Error(
-            "Resposta inesperada da API."
+
+
+        const dados =
+            await resposta.json();
+
+
+
+        if (
+
+            !dados ||
+
+            dados.length === 0
+
+        ) {
+
+            break;
+
+        }
+
+
+
+        biblioteca.push(
+            ...dados
         );
+
+
+
+        if (
+            dados.length <
+            limite
+        ) {
+
+            break;
+
+        }
+
+
+
+        offset +=
+            limite;
+
     }
 
-
-    biblioteca =
-        dados;
 }
 
 
 
 /* =========================================================
-   PROGRESSO
+   CARREGAR PROGRESSO
 ========================================================= */
 
 async function carregarProgresso() {
 
-    progresso = {};
+
+    progresso =
+        {};
 
 
     const resposta =
         await fetch(
 
             SUPABASE_URL +
+
             "/rest/v1/progresso?select=*",
 
             {
+
                 headers: {
+
                     apikey:
                         SUPABASE_PUBLISHABLE_KEY
+
                 }
+
             }
+
         );
+
 
 
     if (!resposta.ok) {
 
+
+        const erro =
+            await resposta.text();
+
+
         console.warn(
-            "Não foi possível carregar progresso.",
-            await resposta.text()
+
+            "Não foi possível carregar progresso:",
+
+            erro
+
         );
 
+
         return;
+
     }
+
 
 
     const dados =
         await resposta.json();
 
 
+
     dados.forEach(
-        item => {
+
+        function(item) {
+
 
             progresso[
                 item.file_id
             ] = item;
+
+
         }
+
     );
+
 }
 
 
 
 /* =========================================================
-   AGRUPAMENTO
+   AGRUPAR POR PASTA
 ========================================================= */
 
 function gerarColecoes() {
 
-    const mapa = {};
+
+    const mapa =
+        {};
 
 
     biblioteca.forEach(
-        item => {
 
-            if (!mapa[item.pasta_id]) {
+        function(item) {
 
-                mapa[item.pasta_id] = {
+
+            const pastaId =
+                item.pasta_id;
+
+
+            if (!mapa[pastaId]) {
+
+
+                mapa[pastaId] = {
 
                     id:
-                        item.pasta_id,
+                        pastaId,
 
                     nome:
                         item.pasta_nome ||
                         "Sem nome",
 
-                    itens: [],
+                    itens:
+                        [],
 
-                    capa: null
+                    capa:
+                        null
+
                 };
+
             }
+
 
 
             mapa[
-                item.pasta_id
-            ].itens.push(item);
+                pastaId
+            ].itens.push(
+                item
+            );
+
 
 
             if (
+
                 !mapa[
-                    item.pasta_id
+                    pastaId
                 ].capa &&
+
                 item.capa_url
+
             ) {
 
+
                 mapa[
-                    item.pasta_id
+                    pastaId
                 ].capa =
                     item.capa_url;
+
             }
+
         }
+
     );
 
 
     return Object.values(
         mapa
     );
+
 }
 
 
 
 /* =========================================================
-   FILTRO
+   FILTRAR
 ========================================================= */
 
 function colecaoPassaFiltro(
     colecao
 ) {
 
+
     if (
-        filtroAtual === "todos"
+        filtroAtual ===
+        "todos"
     ) {
 
         return true;
+
     }
 
 
+
     return colecao.itens.some(
-        item => {
+
+        function(item) {
+
 
             const p =
                 progresso[
@@ -1851,7 +2554,9 @@ function colecaoPassaFiltro(
             if (!p) {
 
                 return false;
+
             }
+
 
 
             if (
@@ -1859,27 +2564,35 @@ function colecaoPassaFiltro(
                 "favoritos"
             ) {
 
+
                 return (
-                    p.favorito === true
+                    p.favorito ===
+                    true
                 );
+
             }
+
 
 
             return (
                 p.status ===
                 filtroAtual
             );
+
         }
+
     );
+
 }
 
 
 
 /* =========================================================
-   RENDER BIBLIOTECA
+   RENDERIZAR BIBLIOTECA
 ========================================================= */
 
 function renderizarBiblioteca() {
+
 
     const grid =
         document.getElementById(
@@ -1897,13 +2610,17 @@ function renderizarBiblioteca() {
             .toLowerCase();
 
 
+
     let colecoes =
         gerarColecoes();
 
 
+
     colecoes =
         colecoes.filter(
-            colecao => {
+
+            function(colecao) {
+
 
                 if (
                     !colecaoPassaFiltro(
@@ -1912,40 +2629,50 @@ function renderizarBiblioteca() {
                 ) {
 
                     return false;
+
                 }
+
 
 
                 if (!busca) {
 
                     return true;
+
                 }
 
 
-                const nomeColecao =
+
+                if (
                     colecao.nome
-                        .toLowerCase();
+                        .toLowerCase()
+                        .includes(busca)
+                ) {
+
+                    return true;
+
+                }
 
 
-                const encontradoNaColecao =
-                    nomeColecao
-                        .includes(busca);
+
+                return colecao.itens.some(
+
+                    function(item) {
 
 
-                const encontradoNosArquivos =
-                    colecao.itens.some(
-                        item =>
-                            item.nome
-                                .toLowerCase()
-                                .includes(busca)
-                    );
+                        return item.nome
+                            .toLowerCase()
+                            .includes(
+                                busca
+                            );
 
+                    }
 
-                return (
-                    encontradoNaColecao ||
-                    encontradoNosArquivos
                 );
+
             }
+
         );
+
 
 
     ordenarColecoes(
@@ -1953,43 +2680,57 @@ function renderizarBiblioteca() {
     );
 
 
+
     if (
-        colecoes.length === 0
+        colecoes.length ===
+        0
     ) {
+
 
         grid.innerHTML =
             `
-            <div class="center-state">
 
-                <div style="font-size:50px;margin-bottom:15px">
+            <div class="state">
+
+                <div class="state-icon">
                     📭
                 </div>
 
                 Nenhuma coleção encontrada.
 
             </div>
+
             `;
 
+
         return;
+
     }
 
 
-    grid.innerHTML = "";
+
+    grid.innerHTML =
+        "";
+
 
 
     colecoes.forEach(
-        colecao => {
 
-            const card =
-                criarCardColecao(
-                    colecao
-                );
+        function(colecao) {
+
 
             grid.appendChild(
-                card
+
+                criarCardColecao(
+                    colecao
+                )
+
             );
+
         }
+
     );
+
 }
 
 
@@ -2002,65 +2743,111 @@ function criarCardColecao(
     colecao
 ) {
 
-    const div =
+
+    const card =
         document.createElement(
             "article"
         );
 
 
-    div.className =
+    card.className =
         "collection-card";
 
 
-    const favoritos =
-        colecao.itens.filter(
-            item =>
-                progresso[
-                    item.file_id
-                ]?.favorito
-        ).length;
+
+    const total =
+        colecao.itens.length;
 
 
-    const lidos =
-        colecao.itens.filter(
-            item =>
+
+    let lidos =
+        0;
+
+
+    let favoritos =
+        0;
+
+
+
+    colecao.itens.forEach(
+
+        function(item) {
+
+
+            const p =
                 progresso[
                     item.file_id
-                ]?.status ===
+                ];
+
+
+            if (
+                p?.status ===
                 "lido"
-        ).length;
+            ) {
+
+                lidos++;
+
+            }
 
 
-    const porcentagem =
-        colecao.itens.length
+            if (
+                p?.favorito ===
+                true
+            ) {
+
+                favoritos++;
+
+            }
+
+        }
+
+    );
+
+
+
+    const percentual =
+        total > 0
+
             ? Math.round(
                 (
                     lidos /
-                    colecao.itens.length
-                ) * 100
+                    total
+                )
+                * 100
             )
+
             : 0;
 
 
-    let imagem = "";
+
+    let capaHtml;
 
 
-    if (colecao.capa) {
+    if (
+        colecao.capa
+    ) {
 
-        imagem =
+
+        capaHtml =
             `
+
             <img
+
                 src="${escapeHtml(
                     colecao.capa
                 )}"
-                alt=""
+
                 loading="lazy"
+
+                alt="Capa"
 
                 onerror="
                     this.style.display='none';
                     this.nextElementSibling.style.display='flex';
                 "
+
             >
+
 
             <div
                 class="cover-placeholder"
@@ -2072,109 +2859,145 @@ function criarCardColecao(
                 </div>
 
                 <div class="placeholder-name">
+
                     ${escapeHtml(
                         colecao.nome
                     )}
+
                 </div>
 
             </div>
+
             `;
+
 
     } else {
 
-        imagem =
+
+        capaHtml =
             `
-            <div
-                class="cover-placeholder"
-            >
+
+            <div class="cover-placeholder">
 
                 <div class="placeholder-icon">
                     📚
                 </div>
 
                 <div class="placeholder-name">
+
                     ${escapeHtml(
                         colecao.nome
                     )}
+
                 </div>
 
             </div>
+
             `;
+
     }
 
 
-    div.innerHTML =
+
+    card.innerHTML =
         `
+
         <div class="cover">
 
-            ${imagem}
 
-            <div class="cover-badge">
-                ${colecao.itens.length}
+            ${capaHtml}
+
+
+            <div class="cover-count">
+
+                ${total}
                 ed.
+
             </div>
 
+
             ${
-                favoritos
+                favoritos > 0
+
                     ? `
-                    <div class="favorite-badge">
+                    <div class="cover-star">
                         ⭐
                     </div>
                     `
+
                     : ""
             }
+
 
         </div>
 
 
         <div class="collection-info">
 
+
             <div
                 class="collection-title"
+
                 title="${escapeHtml(
                     colecao.nome
                 )}"
             >
+
                 ${escapeHtml(
                     colecao.nome
                 )}
+
             </div>
 
 
-            <div class="collection-subtitle">
+            <div class="collection-meta">
 
                 ${lidos}
                 de
-                ${colecao.itens.length}
+                ${total}
                 lidos
 
             </div>
 
 
-            <div class="progress">
+            <div class="progress-bar">
 
                 <div
-                    class="progress-inner"
+                    class="progress-fill"
+
                     style="
                         width:
-                        ${porcentagem}%
+                        ${percentual}%
                     "
-                ></div>
+                >
+                </div>
 
             </div>
 
+
         </div>
+
         `;
 
 
-    div.onclick =
-        () =>
+
+    card.addEventListener(
+
+        "click",
+
+        function() {
+
             abrirColecao(
                 colecao
             );
 
+        }
 
-    return div;
+    );
+
+
+    return card;
+
 }
 
 
@@ -2187,6 +3010,7 @@ function ordenarColecoes(
     colecoes
 ) {
 
+
     const tipo =
         document
             .getElementById(
@@ -2195,58 +3019,108 @@ function ordenarColecoes(
             .value;
 
 
+
     if (
-        tipo === "quantidade"
+        tipo ===
+        "quantidade"
     ) {
 
+
         colecoes.sort(
-            (a,b) =>
-                b.itens.length -
-                a.itens.length
+
+            function(a,b) {
+
+                return (
+                    b.itens.length -
+                    a.itens.length
+                );
+
+            }
+
         );
 
+
         return;
+
     }
 
 
+
     if (
-        tipo === "recente"
+        tipo ===
+        "recente"
     ) {
 
+
         colecoes.sort(
-            (a,b) =>
-                dataUltimaLeitura(b) -
-                dataUltimaLeitura(a)
+
+            function(a,b) {
+
+
+                return (
+                    obterUltimaLeitura(b) -
+                    obterUltimaLeitura(a)
+                );
+
+            }
+
         );
 
+
         return;
+
     }
+
 
 
     colecoes.sort(
-        (a,b) =>
-            a.nome.localeCompare(
+
+        function(a,b) {
+
+
+            return a.nome.localeCompare(
+
                 b.nome,
+
                 "pt-BR",
+
                 {
-                    numeric: true,
-                    sensitivity: "base"
+
+                    numeric:
+                        true,
+
+                    sensitivity:
+                        "base"
+
                 }
-            )
+
+            );
+
+        }
+
     );
+
 }
 
 
 
-function dataUltimaLeitura(
+/* =========================================================
+   ÚLTIMA LEITURA
+========================================================= */
+
+function obterUltimaLeitura(
     colecao
 ) {
 
-    let maior = 0;
+
+    let maior =
+        0;
 
 
     colecao.itens.forEach(
-        item => {
+
+        function(item) {
+
 
             const data =
                 progresso[
@@ -2255,7 +3129,9 @@ function dataUltimaLeitura(
 
 
             if (!data) {
+
                 return;
+
             }
 
 
@@ -2272,26 +3148,32 @@ function dataUltimaLeitura(
 
                 maior =
                     timestamp;
+
             }
+
         }
+
     );
 
 
     return maior;
+
 }
 
 
 
 /* =========================================================
-   MODAL
+   ABRIR COLEÇÃO
 ========================================================= */
 
 function abrirColecao(
     colecao
 ) {
 
+
     colecaoAberta =
         colecao;
+
 
 
     document
@@ -2302,19 +3184,30 @@ function abrirColecao(
             colecao.nome;
 
 
+
     document
         .getElementById(
             "modalSubtitle"
         )
         .textContent =
-            `${colecao.itens.length} arquivo(s) • ${
-                categoriaAtual === "gibis"
-                    ? "Gibis / HQs"
-                    : "Mangás"
-            }`;
+
+            colecao.itens.length +
+
+            " arquivo(s) • " +
+
+            (
+                categoriaAtual ===
+                "gibis"
+
+                ? "Gibis / HQs"
+
+                : "Mangás"
+            );
+
 
 
     renderizarItensModal();
+
 
 
     document
@@ -2322,73 +3215,111 @@ function abrirColecao(
             "modal"
         )
         .classList
-        .add("open");
+        .add(
+            "open"
+        );
+
 
 
     document.body.style.overflow =
         "hidden";
+
 }
 
 
 
 /* =========================================================
-   ITENS MODAL
+   RENDER MODAL
 ========================================================= */
 
 function renderizarItensModal() {
 
+
     if (!colecaoAberta) {
+
         return;
+
     }
 
 
-    const corpo =
+
+    const body =
         document.getElementById(
             "modalBody"
         );
 
 
+
     const itens =
-        [...colecaoAberta.itens];
+        [
+            ...colecaoAberta.itens
+        ];
+
 
 
     itens.sort(
-        (a,b) =>
-            a.nome.localeCompare(
+
+        function(a,b) {
+
+
+            return a.nome.localeCompare(
+
                 b.nome,
+
                 "pt-BR",
+
                 {
-                    numeric: true,
-                    sensitivity: "base"
+
+                    numeric:
+                        true,
+
+                    sensitivity:
+                        "base"
+
                 }
-            )
+
+            );
+
+        }
+
     );
 
 
-    corpo.innerHTML = "";
+
+    body.innerHTML =
+        "";
+
 
 
     itens.forEach(
-        item => {
 
-            corpo.appendChild(
+        function(item) {
+
+
+            body.appendChild(
+
                 criarEdicao(
                     item
                 )
+
             );
+
         }
+
     );
+
 }
 
 
 
 /* =========================================================
-   EDIÇÃO
+   CRIAR EDIÇÃO
 ========================================================= */
 
 function criarEdicao(
     item
 ) {
+
 
     const p =
         progresso[
@@ -2396,25 +3327,33 @@ function criarEdicao(
         ] || {};
 
 
+
     const status =
         p.status ||
         "nao_lido";
 
 
-    const paginaAtual =
+
+    const pagina =
         Number(
-            p.pagina_atual || 0
+            p.pagina_atual ||
+            0
         );
 
 
-    const totalPaginas =
+
+    const total =
         Number(
-            p.total_paginas || 0
+            p.total_paginas ||
+            0
         );
+
 
 
     const favorito =
-        p.favorito === true;
+        p.favorito ===
+        true;
+
 
 
     const div =
@@ -2427,27 +3366,34 @@ function criarEdicao(
         "edition";
 
 
+
     div.innerHTML =
         `
 
         <div class="edition-icon">
+
             ${iconeFormato(
                 item.extensao
             )}
+
         </div>
 
 
-        <div class="edition-main">
+        <div class="edition-content">
+
 
             <div
                 class="edition-name"
+
                 title="${escapeHtml(
                     item.nome
                 )}"
             >
+
                 ${escapeHtml(
                     item.nome
                 )}
+
             </div>
 
 
@@ -2473,44 +3419,70 @@ function criarEdicao(
             <span
                 class="status ${status}"
             >
+
                 ${nomeStatus(
                     status
                 )}
+
             </span>
 
 
-            <div class="progress-editor">
+            <div class="page-control">
+
 
                 <input
+
                     id="pagina_${item.file_id}"
+
                     type="number"
+
                     min="0"
-                    value="${paginaAtual}"
+
+                    value="${pagina}"
+
                     title="Página atual"
+
                 >
 
-                <span>/</span>
+
+                <span>
+                    /
+                </span>
+
 
                 <input
+
                     id="total_${item.file_id}"
+
                     type="number"
+
                     min="0"
-                    value="${totalPaginas}"
+
+                    value="${total}"
+
                     title="Total de páginas"
+
                 >
+
 
                 <button
-                    class="icon-btn"
+
+                    class="small-button"
+
                     onclick="
                         salvarPaginas(
                             '${item.file_id}'
                         )
                     "
                 >
+
                     Salvar
+
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -2519,42 +3491,51 @@ function criarEdicao(
 
 
             <button
-                class="icon-btn read-btn"
+
+                class="small-button read"
+
                 onclick="
                     abrirArquivo(
-                        '${escapeAttribute(
+                        '${escapeJs(
                             item.drive_url
                         )}'
                     )
                 "
-                title="Abrir no Google Drive"
+
+                title="Abrir arquivo"
             >
-                📖 Ler
+                📖
             </button>
 
 
             <button
-                class="icon-btn"
+
+                class="small-button"
+
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'lendo'
                     )
                 "
-                title="Marcar como lendo"
+
+                title="Lendo"
             >
                 ▶️
             </button>
 
 
             <button
-                class="icon-btn"
+
+                class="small-button"
+
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'quero_ler'
                     )
                 "
+
                 title="Quero ler"
             >
                 🔖
@@ -2562,51 +3543,68 @@ function criarEdicao(
 
 
             <button
-                class="icon-btn"
+
+                class="small-button"
+
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'lido'
                     )
                 "
-                title="Marcar como lido"
+
+                title="Lido"
             >
                 ✅
             </button>
 
 
             <button
-                class="icon-btn"
+
+                class="small-button"
+
                 onclick="
                     alterarStatus(
                         '${item.file_id}',
                         'nao_lido'
                     )
                 "
-                title="Marcar como não lido"
+
+                title="Não lido"
             >
                 ↩️
             </button>
 
 
             <button
-                class="icon-btn"
+
+                class="small-button"
+
                 onclick="
                     alternarFavorito(
                         '${item.file_id}'
                     )
                 "
+
                 title="Favorito"
             >
-                ${favorito ? "⭐" : "☆"}
+
+                ${
+                    favorito
+                        ? "⭐"
+                        : "☆"
+                }
+
             </button>
 
 
         </div>
+
         `;
 
 
     return div;
+
 }
 
 
@@ -2620,55 +3618,85 @@ async function salvarProgresso(
     alteracoes
 ) {
 
+
     const existente =
-        progresso[fileId] ||
-        {};
+        progresso[
+            fileId
+        ] || {};
+
 
 
     const registro = {
 
+
         file_id:
             fileId,
 
+
         status:
+
             alteracoes.status ??
+
             existente.status ??
+
             "nao_lido",
 
+
         pagina_atual:
+
             alteracoes.pagina_atual ??
+
             existente.pagina_atual ??
+
             0,
+
 
         total_paginas:
+
             alteracoes.total_paginas ??
+
             existente.total_paginas ??
+
             0,
 
+
         favorito:
+
             alteracoes.favorito ??
+
             existente.favorito ??
+
             false,
 
+
         capa_url:
+
             existente.capa_url ??
+
             null,
 
+
         ultima_leitura:
+
             new Date()
                 .toISOString()
+
     };
+
 
 
     const resposta =
         await fetch(
 
             SUPABASE_URL +
+
             "/rest/v1/progresso",
 
             {
 
-                method: "POST",
+                method:
+                    "POST",
+
 
                 headers: {
 
@@ -2679,47 +3707,55 @@ async function salvarProgresso(
                         "application/json",
 
                     Prefer:
-                        "resolution=merge-duplicates,return=representation"
+                        "resolution=merge-duplicates,return=minimal"
+
                 },
+
 
                 body:
                     JSON.stringify(
                         registro
                     )
+
             }
+
         );
+
 
 
     if (!resposta.ok) {
 
-        const erro =
-            await resposta.text();
-
 
         console.error(
-            erro
+            await resposta.text()
         );
 
 
         toast(
-            "Não foi possível salvar o progresso."
+            "Erro ao salvar o progresso."
         );
 
+
         return false;
+
     }
 
 
-    progresso[fileId] =
-        registro;
+
+    progresso[
+        fileId
+    ] = registro;
+
 
 
     return true;
+
 }
 
 
 
 /* =========================================================
-   STATUS
+   ALTERAR STATUS
 ========================================================= */
 
 async function alterarStatus(
@@ -2727,32 +3763,49 @@ async function alterarStatus(
     status
 ) {
 
+
     const ok =
         await salvarProgresso(
+
             fileId,
+
             {
                 status:
                     status
             }
+
         );
 
 
+
     if (!ok) {
+
         return;
+
     }
 
 
+
     toast(
-        "Status alterado para " +
-        nomeStatus(status)
+
+        "Marcado como " +
+
+        nomeStatus(
+            status
+        )
+
     );
+
 
 
     atualizarEstatisticas();
 
+
     renderizarItensModal();
 
+
     renderizarBiblioteca();
+
 }
 
 
@@ -2765,104 +3818,147 @@ async function alternarFavorito(
     fileId
 ) {
 
+
     const atual =
         progresso[
             fileId
-        ]?.favorito === true;
+        ]?.favorito ===
+        true;
+
 
 
     const ok =
         await salvarProgresso(
+
             fileId,
+
             {
+
                 favorito:
                     !atual
+
             }
+
         );
 
 
+
     if (!ok) {
+
         return;
+
     }
 
 
+
     toast(
+
         !atual
+
             ? "Adicionado aos favoritos ⭐"
+
             : "Removido dos favoritos"
+
     );
+
 
 
     renderizarItensModal();
 
+
     renderizarBiblioteca();
+
 }
 
 
 
 /* =========================================================
-   PÁGINAS
+   SALVAR PÁGINAS
 ========================================================= */
 
 async function salvarPaginas(
     fileId
 ) {
 
+
     const pagina =
         Number(
+
             document
                 .getElementById(
                     "pagina_" +
                     fileId
                 )
-                .value || 0
+                .value ||
+
+            0
+
         );
+
 
 
     const total =
         Number(
+
             document
                 .getElementById(
                     "total_" +
                     fileId
                 )
-                .value || 0
+                .value ||
+
+            0
+
         );
 
 
+
     let status =
+
         progresso[
             fileId
         ]?.status ||
+
         "nao_lido";
 
 
+
     if (
+
         pagina > 0 &&
-        (
-            status ===
-            "nao_lido"
-        )
+
+        status ===
+        "nao_lido"
+
     ) {
 
         status =
             "lendo";
+
     }
 
 
+
     if (
+
         total > 0 &&
+
         pagina >= total
+
     ) {
 
         status =
             "lido";
+
     }
+
 
 
     const ok =
         await salvarProgresso(
+
             fileId,
+
             {
 
                 pagina_atual:
@@ -2873,13 +3969,19 @@ async function salvarPaginas(
 
                 status:
                     status
+
             }
+
         );
 
 
+
     if (!ok) {
+
         return;
+
     }
+
 
 
     toast(
@@ -2887,11 +3989,15 @@ async function salvarPaginas(
     );
 
 
+
     atualizarEstatisticas();
+
 
     renderizarItensModal();
 
+
     renderizarBiblioteca();
+
 }
 
 
@@ -2902,16 +4008,25 @@ async function salvarPaginas(
 
 function atualizarEstatisticas() {
 
+
     const colecoes =
         gerarColecoes();
 
 
-    let lidos = 0;
-    let lendo = 0;
+
+    let lidos =
+        0;
+
+
+    let lendo =
+        0;
+
 
 
     biblioteca.forEach(
-        item => {
+
+        function(item) {
+
 
             const status =
                 progresso[
@@ -2919,22 +4034,31 @@ function atualizarEstatisticas() {
                 ]?.status;
 
 
+
             if (
-                status === "lido"
+                status ===
+                "lido"
             ) {
 
                 lidos++;
+
             }
+
 
 
             if (
-                status === "lendo"
+                status ===
+                "lendo"
             ) {
 
                 lendo++;
+
             }
+
         }
+
     );
+
 
 
     document
@@ -2945,12 +4069,14 @@ function atualizarEstatisticas() {
             colecoes.length;
 
 
+
     document
         .getElementById(
             "statArquivos"
         )
         .textContent =
             biblioteca.length;
+
 
 
     document
@@ -2961,12 +4087,14 @@ function atualizarEstatisticas() {
             lidos;
 
 
+
     document
         .getElementById(
             "statLendo"
         )
         .textContent =
             lendo;
+
 }
 
 
@@ -2979,21 +4107,15 @@ async function mudarCategoria(
     categoria
 ) {
 
-    if (
-        categoria ===
-        categoriaAtual
-    ) {
-
-        return;
-    }
-
 
     categoriaAtual =
         categoria;
 
 
+
     filtroAtual =
         "todos";
+
 
 
     document
@@ -3003,8 +4125,10 @@ async function mudarCategoria(
         .classList
         .toggle(
             "active",
-            categoria === "gibis"
+            categoria ===
+            "gibis"
         );
+
 
 
     document
@@ -3014,8 +4138,10 @@ async function mudarCategoria(
         .classList
         .toggle(
             "active",
-            categoria === "mangas"
+            categoria ===
+            "mangas"
         );
+
 
 
     document
@@ -3023,16 +4149,23 @@ async function mudarCategoria(
             "tituloPagina"
         )
         .textContent =
-            categoria === "gibis"
+
+            categoria ===
+            "gibis"
+
                 ? "Gibis / HQs"
+
                 : "Mangás";
+
 
 
     document
         .getElementById(
             "pesquisa"
         )
-        .value = "";
+        .value =
+            "";
+
 
 
     atualizarFiltroVisual();
@@ -3042,6 +4175,7 @@ async function mudarCategoria(
 
 
     await carregarTudo();
+
 }
 
 
@@ -3054,50 +4188,75 @@ function selecionarFiltro(
     filtro
 ) {
 
+
     filtroAtual =
         filtro;
 
 
     atualizarFiltroVisual();
 
+
     renderizarBiblioteca();
 
+
     fecharMenuMobile();
+
 }
 
 
 
+/* =========================================================
+   VISUAL DOS FILTROS
+========================================================= */
+
 function atualizarFiltroVisual() {
+
 
     document
         .querySelectorAll(
-            ".filter-chip"
+            ".chip"
         )
         .forEach(
-            el => {
 
-                el.classList.toggle(
-                    "active",
-                    el.dataset.chip ===
-                    filtroAtual
-                );
+            function(elemento) {
+
+
+                elemento
+                    .classList
+                    .toggle(
+
+                        "active",
+
+                        elemento.dataset
+                            .filter ===
+                        filtroAtual
+
+                    );
+
             }
+
         );
+
 
 
     const mapa = {
 
+
         todos:
             "menuTodos",
+
 
         lendo:
             "menuLendo",
 
+
         quero_ler:
             "menuQuero",
 
+
         lido:
             "menuLidos",
+
 
         favoritos:
             "menuFavoritos"
@@ -3105,21 +4264,37 @@ function atualizarFiltroVisual() {
     };
 
 
+
     [
+
         "menuTodos",
+
         "menuLendo",
+
         "menuQuero",
+
         "menuLidos",
+
         "menuFavoritos"
+
     ].forEach(
-        id => {
+
+        function(id) {
+
 
             document
-                .getElementById(id)
+                .getElementById(
+                    id
+                )
                 .classList
-                .remove("active");
+                .remove(
+                    "active"
+                );
+
         }
+
     );
+
 
 
     if (
@@ -3128,15 +4303,22 @@ function atualizarFiltroVisual() {
         ]
     ) {
 
+
         document
             .getElementById(
+
                 mapa[
                     filtroAtual
                 ]
+
             )
             .classList
-            .add("active");
+            .add(
+                "active"
+            );
+
     }
+
 }
 
 
@@ -3145,81 +4327,60 @@ function atualizarFiltroVisual() {
    SINCRONIZAR DRIVE
 ========================================================= */
 
-async function sincronizarDrive() {
+function sincronizarDrive() {
 
-    const botao =
-        document.getElementById(
-            "btnSync"
+
+    const url =
+
+        URL_API +
+
+        "?acao=sincronizar&tipo=" +
+
+        encodeURIComponent(
+            categoriaAtual
         );
 
 
-    botao.disabled =
-        true;
+
+    window.open(
+
+        url,
+
+        "_blank"
+
+    );
 
 
-    const original =
-        botao.innerHTML;
+
+    toast(
+
+        "A sincronização foi aberta em outra aba. Quando terminar, volte aqui e clique em Atualizar."
+
+    );
+
+}
 
 
-    botao.innerHTML =
-        "⏳ <span>Sincronizando...</span>";
+
+/* =========================================================
+   ATUALIZAR ESTANTE
+========================================================= */
+
+async function recarregarBiblioteca() {
 
 
-    try {
-
-        const url =
-            URL_API +
-            "?acao=sincronizar&tipo=" +
-            categoriaAtual;
+    toast(
+        "Atualizando estante..."
+    );
 
 
-        const resposta =
-            await fetch(url);
+    await carregarTudo();
 
 
-        const dados =
-            await resposta.json();
+    toast(
+        "Estante atualizada."
+    );
 
-
-        if (
-            !dados.sucesso
-        ) {
-
-            throw new Error(
-                dados.erro ||
-                "Erro desconhecido."
-            );
-        }
-
-
-        toast(
-            "Google Drive sincronizado com sucesso."
-        );
-
-
-        await carregarTudo();
-
-
-    } catch (erro) {
-
-        console.error(
-            erro
-        );
-
-
-        toast(
-            "Erro ao sincronizar o Google Drive."
-        );
-
-
-    } finally {
-
-        botao.disabled =
-            false;
-
-        botao.innerHTML =
-            original;
-    }
 }
 
 
@@ -3232,42 +4393,70 @@ function abrirArquivo(
     url
 ) {
 
+
+    if (!url) {
+
+        toast(
+            "Arquivo sem URL."
+        );
+
+        return;
+
+    }
+
+
     window.open(
+
         url,
+
         "_blank",
+
         "noopener,noreferrer"
+
     );
+
 }
 
 
 
 /* =========================================================
-   MODAL
+   FECHAR MODAL
 ========================================================= */
 
 function fecharModal() {
+
 
     document
         .getElementById(
             "modal"
         )
         .classList
-        .remove("open");
+        .remove(
+            "open"
+        );
 
 
     document.body.style.overflow =
         "";
+
 }
 
 
+
+/* =========================================================
+   CLIQUE FORA DO MODAL
+========================================================= */
 
 document
     .getElementById(
         "modal"
     )
     .addEventListener(
+
         "click",
-        event => {
+
+        function(event) {
+
 
             if (
                 event.target.id ===
@@ -3275,15 +4464,25 @@ document
             ) {
 
                 fecharModal();
+
             }
+
         }
+
     );
 
 
 
+/* =========================================================
+   ESC
+========================================================= */
+
 document.addEventListener(
+
     "keydown",
-    event => {
+
+    function(event) {
+
 
         if (
             event.key ===
@@ -3291,88 +4490,119 @@ document.addEventListener(
         ) {
 
             fecharModal();
+
         }
+
     }
+
 );
 
 
 
 /* =========================================================
-   MOBILE MENU
+   MENU MOBILE
 ========================================================= */
 
 function alternarMenu() {
+
 
     document
         .getElementById(
             "sidebar"
         )
         .classList
-        .toggle("open");
+        .toggle(
+            "open"
+        );
+
 }
 
 
 
 function fecharMenuMobile() {
 
+
     if (
         window.innerWidth <=
         1000
     ) {
+
 
         document
             .getElementById(
                 "sidebar"
             )
             .classList
-            .remove("open");
+            .remove(
+                "open"
+            );
+
     }
+
 }
 
 
 
 /* =========================================================
-   HELPERS
+   STATUS EM TEXTO
 ========================================================= */
 
 function nomeStatus(
     status
 ) {
 
-    const mapa = {
+
+    const nomes = {
+
 
         nao_lido:
             "Não lido",
 
+
         lendo:
             "Lendo",
+
 
         lido:
             "Lido",
 
+
         quero_ler:
             "Quero ler"
+
     };
 
 
     return (
-        mapa[status] ||
+
+        nomes[
+            status
+        ] ||
+
         "Não lido"
+
     );
+
 }
 
 
+
+/* =========================================================
+   ÍCONE DE FORMATO
+========================================================= */
 
 function iconeFormato(
     extensao
 ) {
 
+
     extensao =
-        (
+        String(
             extensao ||
             ""
         )
         .toLowerCase();
+
 
 
     if (
@@ -3381,41 +4611,67 @@ function iconeFormato(
     ) {
 
         return "📕";
+
     }
 
 
+
     if (
-        extensao === "cbz" ||
-        extensao === "cbr" ||
-        extensao === "cb7"
+
+        extensao ===
+        "cbz" ||
+
+        extensao ===
+        "cbr" ||
+
+        extensao ===
+        "cb7"
+
     ) {
 
         return "📖";
+
     }
+
 
 
     if (
-        extensao === "epub" ||
-        extensao === "mobi"
+
+        extensao ===
+        "epub" ||
+
+        extensao ===
+        "mobi"
+
     ) {
 
         return "📘";
+
     }
 
 
+
     return "📚";
+
 }
 
 
+
+/* =========================================================
+   FORMATAR TAMANHO
+========================================================= */
 
 function formatarTamanho(
     bytes
 ) {
 
+
     bytes =
         Number(
-            bytes || 0
+            bytes ||
+            0
         );
+
 
 
     if (
@@ -3423,44 +4679,66 @@ function formatarTamanho(
     ) {
 
         return "0 MB";
+
     }
 
 
+
     const mb =
+
         bytes /
+
         1024 /
+
         1024;
+
 
 
     if (
         mb < 1024
     ) {
 
+
         return (
+
             mb.toFixed(1) +
+
             " MB"
+
         );
+
     }
 
 
+
     return (
+
         (
             mb /
             1024
         )
         .toFixed(2) +
+
         " GB"
+
     );
+
 }
 
 
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
 
 function escapeHtml(
     texto
 ) {
 
+
     return String(
-        texto ?? ""
+        texto ??
+        ""
     )
 
     .replace(
@@ -3487,16 +4765,23 @@ function escapeHtml(
         /'/g,
         "&#039;"
     );
+
 }
 
 
 
-function escapeAttribute(
+/* =========================================================
+   ESCAPAR JS
+========================================================= */
+
+function escapeJs(
     texto
 ) {
 
+
     return String(
-        texto ?? ""
+        texto ??
+        ""
     )
 
     .replace(
@@ -3508,15 +4793,17 @@ function escapeAttribute(
         /'/g,
         "\\'"
     );
+
 }
 
 
 
 /* =========================================================
-   LOADING / ERROR
+   CARREGANDO
 ========================================================= */
 
-function mostrarLoading() {
+function mostrarCarregando() {
+
 
     document
         .getElementById(
@@ -3524,7 +4811,8 @@ function mostrarLoading() {
         )
         .innerHTML =
             `
-            <div class="center-state">
+
+            <div class="state">
 
                 <div class="loader">
                 </div>
@@ -3532,14 +4820,21 @@ function mostrarLoading() {
                 Carregando sua biblioteca...
 
             </div>
+
             `;
+
 }
 
 
 
+/* =========================================================
+   ERRO
+========================================================= */
+
 function mostrarErro(
     erro
 ) {
+
 
     document
         .getElementById(
@@ -3547,29 +4842,33 @@ function mostrarErro(
         )
         .innerHTML =
             `
-            <div class="center-state">
 
-                <div
-                    style="
-                        font-size:45px;
-                        margin-bottom:15px
-                    "
-                >
+            <div class="state">
+
+                <div class="state-icon">
                     ⚠️
                 </div>
 
-                Não foi possível carregar a biblioteca.
+                <div>
 
-                <br><br>
+                    Não foi possível carregar a biblioteca.
+
+                </div>
+
+                <br>
 
                 <small>
+
                     ${escapeHtml(
                         erro
                     )}
+
                 </small>
 
             </div>
+
             `;
+
 }
 
 
@@ -3582,42 +4881,53 @@ function toast(
     mensagem
 ) {
 
+
     const container =
         document.getElementById(
             "toastContainer"
         );
 
 
-    const div =
+
+    const elemento =
         document.createElement(
             "div"
         );
 
 
-    div.className =
+    elemento.className =
         "toast";
 
 
-    div.textContent =
+    elemento.textContent =
         mensagem;
 
 
+
     container.appendChild(
-        div
+        elemento
     );
+
 
 
     setTimeout(
-        () => {
 
-            div.remove();
+        function() {
+
+            elemento.remove();
 
         },
-        3500
+
+        4000
+
     );
+
 }
+
 
 </script>
 
+
 </body>
+
 </html>
