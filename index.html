@@ -903,7 +903,7 @@ button{cursor:pointer}
         <h1 id="tituloPagina">Gibis / HQs</h1>
 
         <p>
-            Sua biblioteca organizada em coleções e subcoleções.
+            Sua biblioteca organizada por pastas, editoras, séries, sagas e subcoleções.
         </p>
 
     </section>
@@ -1080,7 +1080,7 @@ button{cursor:pointer}
 ========================================================= */
 
 const URL_API =
-"https://script.google.com/macros/s/AKfycbzb08jyTllecWC3RhQFBAg5qUNI-KUQVqJQdjV7notW-6gVjQ9XG3AkN5J1aXInX4v25Q/exec";
+"https://script.google.com/macros/s/AKfycbwEYs71P7oyRrzo69JzGiiVFNcvm5VcQe9GqyoCTZDeona6dRLIQbZZLAtEWmAw9cZ-KQ/exec";
 
 
 /*
@@ -1308,136 +1308,196 @@ async function carregarProgresso(){
 
 /* =========================================================
    CRIAR ÁRVORE DE COLEÇÕES
+   Agora usa caminho_pastas para reconstruir TODOS os níveis,
+   inclusive pastas intermediárias sem arquivos diretos.
 ========================================================= */
 
 function montarArvoreColecoes(){
 
-    mapaColecoes =
-        new Map();
+    mapaColecoes = new Map();
 
+    function garantirColecao(dados){
 
-    /*
-     * Primeiro cria todas as pastas que possuem arquivos.
-     */
+        if(!dados || !dados.id){
+            return null;
+        }
+
+        if(!mapaColecoes.has(dados.id)){
+
+            mapaColecoes.set(
+                dados.id,
+                {
+                    id: dados.id,
+                    nome: dados.nome || "Sem nome",
+                    parentId: dados.parentId || null,
+                    parentName: dados.parentName || null,
+                    nivel: Number(dados.nivel || 0),
+                    itens: [],
+                    filhos: [],
+                    capa: null
+                }
+            );
+        }
+        else{
+
+            const existente = mapaColecoes.get(dados.id);
+
+            if(
+                !existente.parentId &&
+                dados.parentId
+            ){
+                existente.parentId = dados.parentId;
+            }
+
+            if(
+                !existente.parentName &&
+                dados.parentName
+            ){
+                existente.parentName = dados.parentName;
+            }
+
+            if(
+                (!existente.nome || existente.nome === "Sem nome") &&
+                dados.nome
+            ){
+                existente.nome = dados.nome;
+            }
+
+            existente.nivel = Number(dados.nivel ?? existente.nivel ?? 0);
+        }
+
+        return mapaColecoes.get(dados.id);
+    }
+
 
     biblioteca.forEach(
         function(item){
 
-            if(
-                !mapaColecoes.has(
-                    item.pasta_id
-                )
-            ){
+            let caminho = item.caminho_pastas;
 
-                mapaColecoes.set(
-                    item.pasta_id,
-                    {
-                        id:
-                            item.pasta_id,
+            /*
+             * O Supabase normalmente devolve jsonb já como array.
+             * Este trecho também aceita uma string JSON, por segurança.
+             */
+            if(typeof caminho === "string"){
 
-                        nome:
-                            item.pasta_nome ||
-                            "Sem nome",
-
-                        parentId:
-                            item.pasta_pai_id ||
-                            null,
-
-                        parentName:
-                            item.pasta_pai_nome ||
-                            null,
-
-                        nivel:
-                            Number(
-                                item.nivel || 0
-                            ),
-
-                        itens:
-                            [],
-
-                        filhos:
-                            [],
-
-                        capa:
-                            null
-                    }
-                );
+                try{
+                    caminho = JSON.parse(caminho);
+                }
+                catch(erro){
+                    caminho = null;
+                }
             }
-
-
-            const colecao =
-                mapaColecoes.get(
-                    item.pasta_id
-                );
-
-
-            colecao.itens.push(
-                item
-            );
 
 
             /*
-             * Uma capa de qualquer arquivo da pasta
-             * pode representar a coleção.
+             * Caminho novo:
+             *
+             * Gibis
+             *   > Marvel
+             *     > Sagas
+             *       > Guerra Civil
+             *
+             * Todos esses níveis são criados, mesmo quando uma pasta
+             * intermediária não possui nenhum quadrinho diretamente.
              */
-
             if(
-                !colecao.capa &&
-                item.capa_url
+                Array.isArray(caminho) &&
+                caminho.length > 0
             ){
 
-                colecao.capa =
-                    item.capa_url;
+                caminho.forEach(
+                    function(pasta, indice){
+
+                        if(
+                            !pasta ||
+                            !pasta.id
+                        ){
+                            return;
+                        }
+
+                        const pai =
+                            indice > 0
+                                ? caminho[indice - 1]
+                                : null;
+
+                        garantirColecao(
+                            {
+                                id: pasta.id,
+                                nome: pasta.nome || "Sem nome",
+                                parentId: pai?.id || null,
+                                parentName: pai?.nome || null,
+                                nivel: indice
+                            }
+                        );
+                    }
+                );
+
+
+                const pastaAtual =
+                    caminho[caminho.length - 1];
+
+                const colecaoAtual =
+                    pastaAtual?.id
+                        ? mapaColecoes.get(pastaAtual.id)
+                        : null;
+
+                if(colecaoAtual){
+
+                    colecaoAtual.itens.push(item);
+
+                    if(
+                        !colecaoAtual.capa &&
+                        item.capa_url
+                    ){
+                        colecaoAtual.capa = item.capa_url;
+                    }
+                }
+
+                return;
             }
-        }
-    );
 
 
-    /*
-     * Cria também pastas-pai que talvez não tenham
-     * nenhum arquivo direto.
-     */
-
-    biblioteca.forEach(
-        function(item){
-
-            if(
-                item.pasta_pai_id &&
-                !mapaColecoes.has(
-                    item.pasta_pai_id
-                )
-            ){
-
-                mapaColecoes.set(
-                    item.pasta_pai_id,
+            /*
+             * Compatibilidade com registros antigos que ainda não
+             * possuam caminho_pastas.
+             */
+            const colecao =
+                garantirColecao(
                     {
-                        id:
-                            item.pasta_pai_id,
+                        id: item.pasta_id,
+                        nome: item.pasta_nome || "Sem nome",
+                        parentId: item.pasta_pai_id || null,
+                        parentName: item.pasta_pai_nome || null,
+                        nivel: Number(item.nivel || 0)
+                    }
+                );
 
-                        nome:
-                            item.pasta_pai_nome ||
-                            "Coleção",
+            if(colecao){
 
-                        parentId:
-                            null,
+                colecao.itens.push(item);
 
-                        parentName:
-                            null,
+                if(
+                    !colecao.capa &&
+                    item.capa_url
+                ){
+                    colecao.capa = item.capa_url;
+                }
+            }
 
-                        nivel:
-                            Math.max(
-                                0,
-                                Number(item.nivel || 1) - 1
-                            ),
 
-                        itens:
-                            [],
+            if(item.pasta_pai_id){
 
-                        filhos:
-                            [],
-
-                        capa:
-                            null
+                garantirColecao(
+                    {
+                        id: item.pasta_pai_id,
+                        nome: item.pasta_pai_nome || "Coleção",
+                        parentId: null,
+                        parentName: null,
+                        nivel: Math.max(
+                            0,
+                            Number(item.nivel || 1) - 1
+                        )
                     }
                 );
             }
@@ -1446,36 +1506,44 @@ function montarArvoreColecoes(){
 
 
     /*
-     * Relaciona filho → pai.
+     * Liga cada pasta ao pai.
+     * Como os nós já foram todos criados pelo caminho_pastas,
+     * não perdemos mais pastas intermediárias.
      */
+    mapaColecoes.forEach(
+        function(colecao){
+
+            colecao.filhos = [];
+        }
+    );
+
 
     mapaColecoes.forEach(
         function(colecao){
 
             if(
                 colecao.parentId &&
-                mapaColecoes.has(
-                    colecao.parentId
-                )
+                mapaColecoes.has(colecao.parentId)
             ){
 
-                mapaColecoes
-                    .get(
-                        colecao.parentId
+                const pai =
+                    mapaColecoes.get(colecao.parentId);
+
+                if(
+                    !pai.filhos.some(
+                        filho => filho.id === colecao.id
                     )
-                    .filhos
-                    .push(
-                        colecao
-                    );
+                ){
+                    pai.filhos.push(colecao);
+                }
             }
         }
     );
 
 
     /*
-     * Ordena filhos.
+     * Ordenação natural: 2 antes de 10, nomes com acentos etc.
      */
-
     mapaColecoes.forEach(
         function(colecao){
 
@@ -1497,11 +1565,16 @@ function montarArvoreColecoes(){
 
 
     /*
-     * Se uma coleção-pai não tiver capa própria,
-     * usa uma capa de algum descendente.
+     * Pasta sem capa própria herda uma capa de algum descendente.
+     * Isso permite que Marvel, DC, Sagas etc. também tenham capa.
      */
+    const porNivel =
+        Array.from(mapaColecoes.values())
+            .sort(
+                (a,b) => b.nivel - a.nivel
+            );
 
-    mapaColecoes.forEach(
+    porNivel.forEach(
         function(colecao){
 
             if(!colecao.capa){
@@ -1514,7 +1587,6 @@ function montarArvoreColecoes(){
         }
     );
 }
-
 
 /* =========================================================
    CAPA DESCENDENTE
@@ -1568,6 +1640,14 @@ function encontrarCapaDescendente(
 
 /* =========================================================
    COLEÇÕES PRINCIPAIS
+
+   caminho_pastas usa:
+   nível 0 = raiz (Gibis / Mangás)
+   nível 1 = primeira pasta abaixo da raiz
+
+   Exemplo:
+   Gibis > Marvel > Sagas > Guerra Civil
+           ^ nível 1
 ========================================================= */
 
 function obterColecoesPrincipais(){
@@ -1579,55 +1659,87 @@ function obterColecoesPrincipais(){
 
 
     /*
-     * A raiz "Gibis" / "Mangás" está no nível 0.
-     * As coleções principais estão normalmente no nível 1.
+     * Primeiro tentamos localizar a raiz real da categoria.
      */
-
-    let principais =
+    const raizes =
         todas.filter(
-            function(c){
-
-                return (
-                    c.nivel === 1
-                );
-            }
+            c =>
+                c.parentId === null &&
+                c.nivel === 0
         );
 
 
     /*
-     * Segurança para bibliotecas antigas.
+     * Se a raiz foi reconstruída pelo caminho_pastas,
+     * mostramos somente os filhos dela.
+     *
+     * Assim a tela principal passa a mostrar:
+     * Marvel, DC, Vertigo, Image, Crossovers...
+     * e, em Mangás, as pastas principais abaixo de Mangás.
      */
+    if(raizes.length > 0){
 
-    if(
-        principais.length === 0
-    ){
+        const idsRaiz =
+            new Set(
+                raizes.map(
+                    r => r.id
+                )
+            );
+
+        const principais =
+            todas.filter(
+                c =>
+                    c.parentId &&
+                    idsRaiz.has(c.parentId)
+            );
+
+        if(principais.length > 0){
+            return principais;
+        }
+    }
+
+
+    /*
+     * Fallback para dados antigos.
+     */
+    let principais =
+        todas.filter(
+            c =>
+                c.nivel === 1
+        );
+
+
+    if(principais.length === 0){
+
+        const candidatas =
+            todas.filter(
+                c =>
+                    c.itens.length > 0 ||
+                    c.filhos.length > 0
+            );
+
+        if(candidatas.length === 0){
+            return [];
+        }
 
         const menorNivel =
             Math.min(
-                ...todas
-                    .filter(
-                        c =>
-                            c.itens.length > 0 ||
-                            c.filhos.length > 0
-                    )
-                    .map(
-                        c => c.nivel
-                    )
+                ...candidatas.map(
+                    c => c.nivel
+                )
             );
 
 
         principais =
-            todas.filter(
+            candidatas.filter(
                 c =>
-                    c.nivel ===
-                    menorNivel
+                    c.nivel === menorNivel
             );
     }
 
 
     return principais;
 }
-
 
 /* =========================================================
    TODOS OS ARQUIVOS DE UMA ÁRVORE
