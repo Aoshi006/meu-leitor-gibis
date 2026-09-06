@@ -1119,6 +1119,8 @@ let progresso = {};
 
 let mapaColecoes = new Map();
 
+let capasPastas = {};
+
 let colecaoAtual = null;
 
 let historicoColecoes = [];
@@ -1156,7 +1158,8 @@ async function carregarTudo(){
 
         await Promise.all([
             carregarBiblioteca(),
-            carregarProgresso()
+            carregarProgresso(),
+            carregarCapasPastas()
         ]);
 
         montarArvoreColecoes();
@@ -1301,6 +1304,60 @@ async function carregarProgresso(){
             progresso[
                 item.file_id
             ] = item;
+        }
+    );
+}
+
+
+/* =========================================================
+   SUPABASE - CAPAS PERSONALIZADAS DAS PASTAS
+========================================================= */
+
+async function carregarCapasPastas(){
+
+    capasPastas = {};
+
+    const url =
+        SUPABASE_URL +
+        "/rest/v1/capas_pastas" +
+        "?select=pasta_id,capa_url" +
+        "&categoria=eq." +
+        encodeURIComponent(categoriaAtual);
+
+    const resposta =
+        await fetch(
+            url,
+            {
+                headers:{
+                    apikey:
+                        SUPABASE_PUBLISHABLE_KEY
+                }
+            }
+        );
+
+    if(!resposta.ok){
+
+        console.warn(
+            "Não foi possível carregar capas_pastas:",
+            await resposta.text()
+        );
+
+        return;
+    }
+
+    const dados =
+        await resposta.json();
+
+    dados.forEach(
+        function(item){
+
+            if(
+                item.pasta_id &&
+                item.capa_url
+            ){
+                capasPastas[item.pasta_id] =
+                    item.capa_url;
+            }
         }
     );
 }
@@ -1560,6 +1617,27 @@ function montarArvoreColecoes(){
                     );
                 }
             );
+        }
+    );
+
+
+    /*
+     * CAPAS PERSONALIZADAS
+     *
+     * Têm prioridade sobre qualquer capa herdada de quadrinho.
+     */
+    mapaColecoes.forEach(
+        function(colecao){
+
+            if(
+                capasPastas[colecao.id]
+            ){
+                colecao.capa =
+                    capasPastas[colecao.id];
+
+                colecao.capaPersonalizada =
+                    true;
+            }
         }
     );
 
