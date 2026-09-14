@@ -1,1 +1,14 @@
-
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.meu_leitor_gibis.twa",
+      "sha256_cert_fingerprints": [
+        "77:60:F7:F9:91:21:88:FA:B3:64:A0:C6:A5:91:F2:7A:BB:FE:D3:20:68:FC:F5:5E:42:A4:98:DC:95:95:53:4C"
+      ]
+    }
+  }
+]
