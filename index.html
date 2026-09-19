@@ -1094,7 +1094,7 @@ body.historico-ativo #historicoView{
 
     <button id="menuGibis" class="menu-item active" onclick="mudarCategoria('gibis')">
         <span class="menu-icon">
-            <img src="./icons/batman.jpg" alt="Gibis / HQs">
+            <img src="./icons/batman.png" alt="Gibis / HQs">
         </span>
         Gibis / HQs
     </button>
@@ -1848,6 +1848,8 @@ async function salvarHistorico(
         total_paginas:
             Number(
                 registro.total_paginas ||
+                item.total_paginas ||
+                existente?.total_paginas ||
                 0
             ),
 
@@ -4327,7 +4329,9 @@ function criarEdicao(
 
     const total =
         Number(
-            p.total_paginas || 0
+            p.total_paginas ||
+            item.total_paginas ||
+            0
         );
 
 
@@ -4540,6 +4544,13 @@ async function salvarProgresso(
         ] || {};
 
 
+    const itemAtual =
+        biblioteca.find(
+            item =>
+                item.file_id === fileId
+        ) || {};
+
+
     const registro = {
 
         file_id:
@@ -4558,6 +4569,7 @@ async function salvarProgresso(
         total_paginas:
             alteracoes.total_paginas ??
             existente.total_paginas ??
+            itemAtual.total_paginas ??
             0,
 
         favorito:
