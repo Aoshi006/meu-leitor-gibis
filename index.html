@@ -1016,6 +1016,31 @@ body.historico-ativo #historicoView{
     }
 }
 
+
+.logo-icon img{
+    width:28px;
+    height:28px;
+    object-fit:contain;
+    display:block;
+}
+
+.menu-icon{
+    width:23px;
+    height:23px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.menu-icon img{
+    width:20px;
+    height:20px;
+    object-fit:cover;
+    display:block;
+    border-radius:4px;
+}
+
 </style>
 </head>
 
@@ -1024,7 +1049,9 @@ body.historico-ativo #historicoView{
 <aside id="sidebar" class="sidebar">
 
     <div class="logo">
-        <div class="logo-icon">📚</div>
+        <div class="logo-icon">
+        <img src="./icons/gibi.png" alt="Minha Estante">
+    </div>
         <div>
             Minha<br>
             <span>Estante</span>
@@ -1066,12 +1093,16 @@ body.historico-ativo #historicoView{
     <div class="menu-label">CATEGORIA</div>
 
     <button id="menuGibis" class="menu-item active" onclick="mudarCategoria('gibis')">
-        <span class="menu-icon">🦸</span>
+        <span class="menu-icon">
+            <img src="./icons/batman.jpg" alt="Gibis / HQs">
+        </span>
         Gibis / HQs
     </button>
 
     <button id="menuMangas" class="menu-item" onclick="mudarCategoria('mangas')">
-        <span class="menu-icon">🇯🇵</span>
+        <span class="menu-icon">
+            <img src="./icons/bandeirinhas.png" alt="Mangás">
+        </span>
         Mangás
     </button>
 
