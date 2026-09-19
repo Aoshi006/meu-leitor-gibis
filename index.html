@@ -7,16 +7,6 @@
 
 <title>Minha Estante</title>
 
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/quadrinho-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="./icons/quadrinho-512.png">
-<link rel="apple-touch-icon" sizes="180x180" href="./icons/quadrinho-180.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Minha Estante">
-
-
 <style>
 :root{
     --bg:#090b10;
@@ -816,6 +806,216 @@ button{cursor:pointer}
         flex-direction:column;
     }
 }
+
+/* =========================
+   HISTÓRICO DE LEITURA
+========================= */
+
+body.historico-ativo .page-heading,
+body.historico-ativo .stats,
+body.historico-ativo .toolbar,
+body.historico-ativo #libraryGrid{
+    display:none !important;
+}
+
+#historicoView{
+    display:none;
+}
+
+body.historico-ativo #historicoView{
+    display:block;
+}
+
+.history-heading{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:18px;
+    margin-bottom:22px;
+}
+
+.history-heading h1{
+    margin:0 0 7px;
+    font-size:clamp(27px,3vw,39px);
+    letter-spacing:-.7px;
+}
+
+.history-heading p{
+    margin:0;
+    color:var(--muted);
+}
+
+.history-stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(150px,1fr));
+    gap:15px;
+    margin-bottom:22px;
+}
+
+.history-filters{
+    display:grid;
+    grid-template-columns:minmax(210px,1.4fr) repeat(4,minmax(130px,.7fr));
+    gap:10px;
+    margin-bottom:24px;
+}
+
+.history-filters input,
+.history-filters select{
+    width:100%;
+    padding:11px 12px;
+    color:#fff;
+    outline:none;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:#131720;
+}
+
+.history-group{
+    margin:0 0 34px;
+}
+
+.history-group-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin:0 0 14px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+}
+
+.history-group-title{
+    font-size:21px;
+    font-weight:900;
+}
+
+.history-group-count{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.history-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(275px,1fr));
+    gap:12px;
+}
+
+.history-item{
+    display:grid;
+    grid-template-columns:66px 1fr;
+    gap:13px;
+    min-width:0;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+}
+
+.history-cover{
+    width:66px;
+    aspect-ratio:2/3;
+    overflow:hidden;
+    border-radius:9px;
+    background:#171b24;
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted2);
+    font-size:24px;
+}
+
+.history-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.history-info{
+    min-width:0;
+}
+
+.history-name{
+    margin-bottom:5px;
+    font-weight:800;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.history-path{
+    margin-bottom:8px;
+    color:var(--muted2);
+    font-size:11px;
+    line-height:1.4;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.history-meta{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.history-badge{
+    padding:4px 7px;
+    border-radius:100px;
+    background:#171b24;
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-size:10px;
+}
+
+.history-badge.ok{
+    color:#91e6a5;
+    border-color:rgba(83,196,111,.26);
+    background:rgba(83,196,111,.08);
+}
+
+.history-badge.off{
+    color:#ffb6a4;
+    border-color:rgba(255,90,54,.26);
+    background:rgba(255,90,54,.08);
+}
+
+.history-empty{
+    padding:55px 20px;
+    text-align:center;
+    color:var(--muted);
+    border:1px dashed var(--border);
+    border-radius:16px;
+}
+
+@media(max-width:900px){
+    .history-stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .history-filters{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .history-filters input{
+        grid-column:1/-1;
+    }
+}
+
+@media(max-width:650px){
+    .history-list{
+        grid-template-columns:1fr;
+    }
+
+    .history-filters{
+        grid-template-columns:1fr;
+    }
+
+    .history-filters input{
+        grid-column:auto;
+    }
+}
+
 </style>
 </head>
 
@@ -856,6 +1056,11 @@ button{cursor:pointer}
     <button id="menuFavoritos" class="menu-item" onclick="selecionarFiltro('favoritos')">
         <span class="menu-icon">⭐</span>
         Favoritos
+    </button>
+
+    <button id="menuHistorico" class="menu-item" onclick="abrirHistorico()">
+        <span class="menu-icon">🕘</span>
+        Histórico
     </button>
 
     <div class="menu-label">CATEGORIA</div>
@@ -1038,6 +1243,79 @@ button{cursor:pointer}
 
     </div>
 
+
+    <section id="historicoView">
+
+        <div class="history-heading">
+            <div>
+                <h1>Histórico de leitura</h1>
+                <p>Seu registro permanente de tudo o que você já leu, mesmo que o arquivo saia do Drive.</p>
+            </div>
+        </div>
+
+        <section class="history-stats">
+
+            <div class="stat-card">
+                <div class="stat-label">Revistas lidas</div>
+                <div id="histStatLidos" class="stat-number">0</div>
+                <div class="stat-detail">registro permanente</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Páginas lidas</div>
+                <div id="histStatPaginas" class="stat-number">0</div>
+                <div class="stat-detail">somente páginas informadas</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Editoras</div>
+                <div id="histStatEditoras" class="stat-number">0</div>
+                <div class="stat-detail">com leituras registradas</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Fora do Drive</div>
+                <div id="histStatArquivados" class="stat-number">0</div>
+                <div class="stat-detail">histórico preservado</div>
+            </div>
+
+        </section>
+
+        <div class="history-filters">
+
+            <input
+                id="histPesquisa"
+                type="search"
+                placeholder="Pesquisar revista, coleção ou pasta..."
+                oninput="renderizarHistorico()"
+            >
+
+            <select id="histCategoria" onchange="renderizarHistorico()">
+                <option value="todas">Todas as categorias</option>
+                <option value="gibis">Gibis / HQs</option>
+                <option value="mangas">Mangás</option>
+            </select>
+
+            <select id="histEditora" onchange="renderizarHistorico()">
+                <option value="todas">Todas as editoras</option>
+            </select>
+
+            <select id="histAno" onchange="renderizarHistorico()">
+                <option value="todos">Todos os anos</option>
+            </select>
+
+            <select id="histDisponibilidade" onchange="renderizarHistorico()">
+                <option value="todos">No Drive + arquivados</option>
+                <option value="drive">Disponível no Drive</option>
+                <option value="fora">Fora do Drive</option>
+            </select>
+
+        </div>
+
+        <div id="historicoLista"></div>
+
+    </section>
+
 </div>
 
 </main>
@@ -1130,6 +1408,9 @@ let progresso = {};
 let mapaColecoes = new Map();
 
 let capasPastas = {};
+
+let historicoLeitura = [];
+let historicoCarregado = false;
 
 let colecaoAtual = null;
 
@@ -1317,6 +1598,1108 @@ async function carregarProgresso(){
         }
     );
 }
+
+
+
+/* =========================================================
+   HISTÓRICO PERMANENTE
+========================================================= */
+
+function normalizarChaveHistorico(valor){
+
+    return String(valor || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+}
+
+
+function nomesCaminhoItem(item){
+
+    let caminho = item?.caminho_pastas;
+
+    if(
+        typeof caminho === "string"
+    ){
+        try{
+            caminho = JSON.parse(caminho);
+        }catch(e){
+            caminho = [];
+        }
+    }
+
+    if(!Array.isArray(caminho)){
+        return [];
+    }
+
+    return caminho
+        .map(
+            p =>
+                typeof p === "string"
+                    ? p
+                    : p?.nome
+        )
+        .filter(Boolean);
+}
+
+
+function nomeSemExtensao(nome){
+
+    return String(nome || "")
+        .replace(/\.[^.]+$/, "");
+}
+
+
+function itemKeyHistorico(item){
+
+    const caminho =
+        nomesCaminhoItem(item)
+            .join("/");
+
+    return [
+        normalizarChaveHistorico(
+            item?.categoria ||
+            categoriaAtual
+        ),
+        normalizarChaveHistorico(
+            caminho
+        ),
+        normalizarChaveHistorico(
+            nomeSemExtensao(
+                item?.nome
+            )
+        )
+    ].join("|");
+}
+
+
+function metadadosHistorico(item){
+
+    const nomes =
+        nomesCaminhoItem(item);
+
+    const raiz =
+        normalizarChaveHistorico(
+            nomes[0] || ""
+        );
+
+    let uteis =
+        [...nomes];
+
+    if(
+        raiz === "gibis" ||
+        raiz === "mangas"
+    ){
+        uteis =
+            uteis.slice(1);
+    }
+
+    let editora = "";
+
+    if(
+        item?.categoria === "gibis"
+    ){
+        editora =
+            uteis[0] ||
+            item?.pasta_pai_nome ||
+            item?.pasta_nome ||
+            "Outras";
+    }else{
+        editora = "Mangás";
+    }
+
+    return {
+        editora:
+            editora,
+
+        colecao:
+            item?.pasta_nome ||
+            uteis[
+                Math.max(
+                    0,
+                    uteis.length - 1
+                )
+            ] ||
+            "Sem coleção",
+
+        caminho_nomes:
+            nomes
+    };
+}
+
+
+async function salvarHistorico(
+    fileId,
+    registro
+){
+
+    const item =
+        biblioteca.find(
+            x =>
+                x.file_id === fileId
+        );
+
+    if(!item){
+        return;
+    }
+
+    const meta =
+        metadadosHistorico(item);
+
+    const existente =
+        historicoLeitura.find(
+            h =>
+                h.item_key ===
+                itemKeyHistorico(item)
+        );
+
+    const agora =
+        new Date().toISOString();
+
+    const virouLido =
+        registro.status === "lido";
+
+    const payload = {
+        item_key:
+            itemKeyHistorico(item),
+
+        file_id_atual:
+            fileId,
+
+        nome:
+            nomeSemExtensao(
+                item.nome
+            ),
+
+        categoria:
+            item.categoria ||
+            categoriaAtual,
+
+        editora:
+            meta.editora,
+
+        colecao:
+            meta.colecao,
+
+        caminho_nomes:
+            meta.caminho_nomes,
+
+        status_atual:
+            registro.status,
+
+        ja_lido:
+            existente?.ja_lido === true ||
+            virouLido,
+
+        pagina_atual:
+            Number(
+                registro.pagina_atual ||
+                0
+            ),
+
+        total_paginas:
+            Number(
+                registro.total_paginas ||
+                0
+            ),
+
+        favorito:
+            registro.favorito === true,
+
+        capa_url:
+            item.capa_url ||
+            registro.capa_url ||
+            existente?.capa_url ||
+            null,
+
+        primeira_conclusao_em:
+            existente?.primeira_conclusao_em ||
+            (
+                virouLido
+                    ? agora
+                    : null
+            ),
+
+        ultima_leitura:
+            registro.ultima_leitura ||
+            agora
+    };
+
+
+    try{
+
+        const resposta =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/historico_leitura" +
+                "?on_conflict=item_key",
+                {
+                    method:"POST",
+
+                    headers:{
+                        apikey:
+                            SUPABASE_PUBLISHABLE_KEY,
+
+                        "Content-Type":
+                            "application/json",
+
+                        Prefer:
+                            "resolution=merge-duplicates,return=representation"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+
+        if(!resposta.ok){
+
+            console.warn(
+                "Histórico não foi salvo:",
+                await resposta.text()
+            );
+
+            return;
+        }
+
+
+        const dados =
+            await resposta.json();
+
+        if(
+            Array.isArray(dados) &&
+            dados[0]
+        ){
+            const indice =
+                historicoLeitura.findIndex(
+                    h =>
+                        h.item_key ===
+                        dados[0].item_key
+                );
+
+            if(indice >= 0){
+                historicoLeitura[indice] =
+                    dados[0];
+            }else{
+                historicoLeitura.push(
+                    dados[0]
+                );
+            }
+        }
+
+    }catch(erro){
+
+        console.warn(
+            "Falha ao atualizar histórico:",
+            erro
+        );
+    }
+}
+
+
+async function carregarHistorico(){
+
+    historicoLeitura = [];
+
+    let offset = 0;
+    const limite = 1000;
+
+    while(true){
+
+        const resposta =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/historico_leitura" +
+                "?select=*" +
+                "&order=ultima_leitura.desc" +
+                "&limit=" +
+                limite +
+                "&offset=" +
+                offset,
+                {
+                    headers:{
+                        apikey:
+                            SUPABASE_PUBLISHABLE_KEY
+                    }
+                }
+            );
+
+
+        if(!resposta.ok){
+
+            const texto =
+                await resposta.text();
+
+            throw new Error(
+                "Não foi possível carregar o histórico. " +
+                texto
+            );
+        }
+
+
+        const dados =
+            await resposta.json();
+
+        if(
+            !dados ||
+            dados.length === 0
+        ){
+            break;
+        }
+
+        historicoLeitura.push(
+            ...dados
+        );
+
+        if(
+            dados.length <
+            limite
+        ){
+            break;
+        }
+
+        offset += limite;
+    }
+
+    historicoCarregado = true;
+
+    preencherFiltrosHistorico();
+}
+
+
+function chavesDisponiveisAgora(){
+
+    return new Set(
+        biblioteca.map(
+            item =>
+                itemKeyHistorico(item)
+        )
+    );
+}
+
+
+function formatarNumero(valor){
+
+    return new Intl.NumberFormat(
+        "pt-BR"
+    ).format(
+        Number(valor || 0)
+    );
+}
+
+
+function formatarDataHistorico(valor){
+
+    if(!valor){
+        return "Data não informada";
+    }
+
+    const data =
+        new Date(valor);
+
+    if(
+        Number.isNaN(
+            data.getTime()
+        )
+    ){
+        return "Data não informada";
+    }
+
+    return data.toLocaleDateString(
+        "pt-BR"
+    );
+}
+
+
+function preencherFiltrosHistorico(){
+
+    const editoras =
+        Array.from(
+            new Set(
+                historicoLeitura
+                    .filter(
+                        h =>
+                            h.ja_lido ===
+                            true
+                    )
+                    .map(
+                        h =>
+                            h.editora ||
+                            "Outras"
+                    )
+            )
+        )
+        .sort(
+            (a,b) =>
+                a.localeCompare(
+                    b,
+                    "pt-BR",
+                    {
+                        sensitivity:"base"
+                    }
+                )
+        );
+
+
+    const selectEditora =
+        document.getElementById(
+            "histEditora"
+        );
+
+    if(selectEditora){
+
+        const atual =
+            selectEditora.value;
+
+        selectEditora.innerHTML =
+            '<option value="todas">Todas as editoras</option>' +
+            editoras
+                .map(
+                    nome =>
+                        '<option value="' +
+                        escaparHtml(nome) +
+                        '">' +
+                        escaparHtml(nome) +
+                        '</option>'
+                )
+                .join("");
+
+        if(
+            editoras.includes(
+                atual
+            )
+        ){
+            selectEditora.value =
+                atual;
+        }
+    }
+
+
+    const anos =
+        Array.from(
+            new Set(
+                historicoLeitura
+                    .filter(
+                        h =>
+                            h.ja_lido ===
+                            true
+                    )
+                    .map(
+                        h => {
+                            const valor =
+                                h.primeira_conclusao_em ||
+                                h.ultima_leitura;
+
+                            if(!valor){
+                                return null;
+                            }
+
+                            const d =
+                                new Date(valor);
+
+                            return Number.isNaN(
+                                d.getTime()
+                            )
+                                ? null
+                                : d.getFullYear();
+                        }
+                    )
+                    .filter(Boolean)
+            )
+        )
+        .sort(
+            (a,b) =>
+                b - a
+        );
+
+
+    const selectAno =
+        document.getElementById(
+            "histAno"
+        );
+
+    if(selectAno){
+
+        const atual =
+            selectAno.value;
+
+        selectAno.innerHTML =
+            '<option value="todos">Todos os anos</option>' +
+            anos
+                .map(
+                    ano =>
+                        '<option value="' +
+                        ano +
+                        '">' +
+                        ano +
+                        '</option>'
+                )
+                .join("");
+
+        if(
+            anos.map(String)
+                .includes(
+                    atual
+                )
+        ){
+            selectAno.value =
+                atual;
+        }
+    }
+}
+
+
+async function abrirHistorico(){
+
+    fecharModal();
+
+    document.body
+        .classList
+        .add(
+            "historico-ativo"
+        );
+
+    document
+        .querySelectorAll(
+            ".menu-item"
+        )
+        .forEach(
+            el =>
+                el.classList
+                    .remove(
+                        "active"
+                    )
+        );
+
+    document
+        .getElementById(
+            "menuHistorico"
+        )
+        ?.classList
+        .add(
+            "active"
+        );
+
+    fecharMenuMobile();
+
+    const lista =
+        document.getElementById(
+            "historicoLista"
+        );
+
+    lista.innerHTML =
+        '<div class="state"><div class="loader"></div>Carregando histórico...</div>';
+
+    try{
+
+        await carregarHistorico();
+
+        renderizarHistorico();
+
+    }catch(erro){
+
+        console.error(
+            erro
+        );
+
+        lista.innerHTML =
+            '<div class="history-empty">' +
+            'Não foi possível abrir o histórico.<br>' +
+            '<small>Execute primeiro o arquivo SQL da implantação.</small>' +
+            '</div>';
+    }
+}
+
+
+function fecharHistorico(){
+
+    if(
+        document.body
+            .classList
+            .contains(
+                "historico-ativo"
+            )
+    ){
+        document.body
+            .classList
+            .remove(
+                "historico-ativo"
+            );
+
+        atualizarFiltroVisual();
+
+        document
+            .getElementById(
+                categoriaAtual === "gibis"
+                    ? "menuGibis"
+                    : "menuMangas"
+            )
+            ?.classList
+            .add(
+                "active"
+            );
+    }
+}
+
+
+function renderizarHistorico(){
+
+    const container =
+        document.getElementById(
+            "historicoLista"
+        );
+
+    if(!container){
+        return;
+    }
+
+    const pesquisa =
+        normalizarChaveHistorico(
+            document
+                .getElementById(
+                    "histPesquisa"
+                )
+                ?.value ||
+            ""
+        );
+
+    const categoria =
+        document
+            .getElementById(
+                "histCategoria"
+            )
+            ?.value ||
+        "todas";
+
+    const editora =
+        document
+            .getElementById(
+                "histEditora"
+            )
+            ?.value ||
+        "todas";
+
+    const ano =
+        document
+            .getElementById(
+                "histAno"
+            )
+            ?.value ||
+        "todos";
+
+    const disponibilidade =
+        document
+            .getElementById(
+                "histDisponibilidade"
+            )
+            ?.value ||
+        "todos";
+
+    const disponiveis =
+        chavesDisponiveisAgora();
+
+
+    let itens =
+        historicoLeitura
+            .filter(
+                h =>
+                    h.ja_lido ===
+                    true
+            )
+            .map(
+                h => ({
+                    ...h,
+
+                    disponivel_agora:
+                        disponiveis.has(
+                            h.item_key
+                        )
+                })
+            );
+
+
+    itens =
+        itens.filter(
+            h => {
+
+                if(
+                    categoria !== "todas" &&
+                    h.categoria !== categoria
+                ){
+                    return false;
+                }
+
+                if(
+                    editora !== "todas" &&
+                    (h.editora || "Outras") !== editora
+                ){
+                    return false;
+                }
+
+                if(
+                    disponibilidade === "drive" &&
+                    !h.disponivel_agora
+                ){
+                    return false;
+                }
+
+                if(
+                    disponibilidade === "fora" &&
+                    h.disponivel_agora
+                ){
+                    return false;
+                }
+
+                const data =
+                    h.primeira_conclusao_em ||
+                    h.ultima_leitura;
+
+                if(
+                    ano !== "todos"
+                ){
+                    const d =
+                        data
+                            ? new Date(data)
+                            : null;
+
+                    if(
+                        !d ||
+                        Number.isNaN(
+                            d.getTime()
+                        ) ||
+                        String(
+                            d.getFullYear()
+                        ) !== ano
+                    ){
+                        return false;
+                    }
+                }
+
+                if(pesquisa){
+
+                    const texto =
+                        normalizarChaveHistorico(
+                            [
+                                h.nome,
+                                h.editora,
+                                h.colecao,
+                                ...(Array.isArray(
+                                    h.caminho_nomes
+                                )
+                                    ? h.caminho_nomes
+                                    : [])
+                            ].join(" ")
+                        );
+
+                    if(
+                        !texto.includes(
+                            pesquisa
+                        )
+                    ){
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        );
+
+
+    const totalPaginas =
+        itens.reduce(
+            (soma,h) =>
+                soma +
+                Number(
+                    h.total_paginas ||
+                    0
+                ),
+            0
+        );
+
+
+    const editoras =
+        new Set(
+            itens.map(
+                h =>
+                    h.editora ||
+                    "Outras"
+            )
+        );
+
+
+    const fora =
+        itens.filter(
+            h =>
+                !h.disponivel_agora
+        ).length;
+
+
+    document
+        .getElementById(
+            "histStatLidos"
+        )
+        .textContent =
+            formatarNumero(
+                itens.length
+            );
+
+    document
+        .getElementById(
+            "histStatPaginas"
+        )
+        .textContent =
+            formatarNumero(
+                totalPaginas
+            );
+
+    document
+        .getElementById(
+            "histStatEditoras"
+        )
+        .textContent =
+            formatarNumero(
+                editoras.size
+            );
+
+    document
+        .getElementById(
+            "histStatArquivados"
+        )
+        .textContent =
+            formatarNumero(
+                fora
+            );
+
+
+    if(
+        itens.length === 0
+    ){
+        container.innerHTML =
+            '<div class="history-empty">' +
+            'Nenhuma leitura encontrada com esses filtros.' +
+            '</div>';
+
+        return;
+    }
+
+
+    const grupos =
+        new Map();
+
+
+    itens.forEach(
+        h => {
+
+            const chave =
+                h.editora ||
+                "Outras";
+
+            if(
+                !grupos.has(
+                    chave
+                )
+            ){
+                grupos.set(
+                    chave,
+                    []
+                );
+            }
+
+            grupos.get(
+                chave
+            ).push(
+                h
+            );
+        }
+    );
+
+
+    const nomesGrupos =
+        Array.from(
+            grupos.keys()
+        )
+        .sort(
+            (a,b) =>
+                a.localeCompare(
+                    b,
+                    "pt-BR",
+                    {
+                        sensitivity:"base"
+                    }
+                )
+        );
+
+
+    container.innerHTML =
+        nomesGrupos
+            .map(
+                nomeGrupo => {
+
+                    const grupo =
+                        grupos.get(
+                            nomeGrupo
+                        )
+                        .sort(
+                            (a,b) =>
+                                String(
+                                    a.nome ||
+                                    ""
+                                )
+                                .localeCompare(
+                                    String(
+                                        b.nome ||
+                                        ""
+                                    ),
+                                    "pt-BR",
+                                    {
+                                        numeric:true,
+                                        sensitivity:"base"
+                                    }
+                                )
+                        );
+
+
+                    const paginasGrupo =
+                        grupo.reduce(
+                            (soma,h) =>
+                                soma +
+                                Number(
+                                    h.total_paginas ||
+                                    0
+                                ),
+                            0
+                        );
+
+
+                    const cards =
+                        grupo.map(
+                            h => {
+
+                                const caminho =
+                                    Array.isArray(
+                                        h.caminho_nomes
+                                    )
+                                        ? h.caminho_nomes
+                                            .join(" › ")
+                                        : (
+                                            h.colecao ||
+                                            ""
+                                        );
+
+                                const capa =
+                                    h.capa_url
+                                        ? '<img src="' +
+                                            escaparHtml(
+                                                h.capa_url
+                                            ) +
+                                            '" alt="">'
+                                        : '📖';
+
+                                return `
+                                    <article class="history-item">
+
+                                        <div class="history-cover">
+                                            ${capa}
+                                        </div>
+
+                                        <div class="history-info">
+
+                                            <div class="history-name">
+                                                ${escaparHtml(
+                                                    h.nome ||
+                                                    "Sem nome"
+                                                )}
+                                            </div>
+
+                                            <div class="history-path">
+                                                ${escaparHtml(
+                                                    caminho
+                                                )}
+                                            </div>
+
+                                            <div class="history-meta">
+
+                                                <span class="history-badge">
+                                                    ${Number(
+                                                        h.total_paginas ||
+                                                        0
+                                                    ) > 0
+                                                        ? formatarNumero(
+                                                            h.total_paginas
+                                                        ) + " pág."
+                                                        : "páginas não informadas"
+                                                    }
+                                                </span>
+
+                                                <span class="history-badge">
+                                                    Lido em ${formatarDataHistorico(
+                                                        h.primeira_conclusao_em ||
+                                                        h.ultima_leitura
+                                                    )}
+                                                </span>
+
+                                                <span class="history-badge ${h.disponivel_agora ? "ok" : "off"}">
+                                                    ${h.disponivel_agora
+                                                        ? "No Drive"
+                                                        : "Fora do Drive"
+                                                    }
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </article>
+                                `;
+                            }
+                        )
+                        .join("");
+
+
+                    return `
+                        <section class="history-group">
+
+                            <div class="history-group-header">
+
+                                <div class="history-group-title">
+                                    ${escaparHtml(
+                                        nomeGrupo
+                                    )}
+                                </div>
+
+                                <div class="history-group-count">
+                                    ${formatarNumero(
+                                        grupo.length
+                                    )} revista(s)
+                                    ${paginasGrupo > 0
+                                        ? " • " +
+                                          formatarNumero(
+                                              paginasGrupo
+                                          ) +
+                                          " páginas"
+                                        : ""
+                                    }
+                                </div>
+
+                            </div>
+
+                            <div class="history-list">
+                                ${cards}
+                            </div>
+
+                        </section>
+                    `;
+                }
+            )
+            .join("");
+}
+
 
 
 /* =========================================================
@@ -2991,6 +4374,12 @@ async function salvarProgresso(
     ] = registro;
 
 
+    await salvarHistorico(
+        fileId,
+        registro
+    );
+
+
     return true;
 }
 
@@ -3407,6 +4796,8 @@ async function mudarCategoria(
     categoria
 ){
 
+    fecharHistorico();
+
     if(
         categoria ===
         categoriaAtual
@@ -3484,6 +4875,8 @@ async function mudarCategoria(
 function selecionarFiltro(
     filtro
 ){
+
+    fecharHistorico();
 
     filtroAtual =
         filtro;
@@ -4001,17 +5394,6 @@ function toast(
     );
 }
 
-</script>
-
-
-<script>
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-        navigator.serviceWorker.register("./sw.js").catch(function (erro) {
-            console.warn("Service Worker não registrado:", erro);
-        });
-    });
-}
 </script>
 
 </body>
