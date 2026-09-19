@@ -1411,6 +1411,8 @@ let capasPastas = {};
 
 let historicoLeitura = [];
 let historicoCarregado = false;
+let capasHistoricoPorChave = new Map();
+let capasHistoricoCarregadas = false;
 
 let colecaoAtual = null;
 
@@ -1996,6 +1998,199 @@ function chavesDisponiveisAgora(){
 }
 
 
+async function carregarCapasHistorico(){
+
+    if(capasHistoricoCarregadas){
+        return;
+    }
+
+    capasHistoricoPorChave =
+        new Map();
+
+    const itensTodasCategorias = [];
+    const capasPastasTodas = {};
+
+    /*
+     * Carrega só os metadados necessários para resolver capas
+     * de Gibis e Mangás, independentemente da categoria aberta.
+     */
+    let offset = 0;
+    const limite = 1000;
+
+    while(true){
+
+        const resposta =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/biblioteca" +
+                "?select=file_id,nome,categoria,pasta_id,capa_url,caminho_pastas" +
+                "&encontrado_no_drive=eq.true" +
+                "&limit=" +
+                limite +
+                "&offset=" +
+                offset,
+                {
+                    headers:{
+                        apikey:
+                            SUPABASE_PUBLISHABLE_KEY
+                    }
+                }
+            );
+
+        if(!resposta.ok){
+            break;
+        }
+
+        const dados =
+            await resposta.json();
+
+        if(
+            !dados ||
+            dados.length === 0
+        ){
+            break;
+        }
+
+        itensTodasCategorias.push(
+            ...dados
+        );
+
+        if(
+            dados.length <
+            limite
+        ){
+            break;
+        }
+
+        offset += limite;
+    }
+
+
+    try{
+
+        const resposta =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/capas_pastas" +
+                "?select=pasta_id,capa_url",
+                {
+                    headers:{
+                        apikey:
+                            SUPABASE_PUBLISHABLE_KEY
+                    }
+                }
+            );
+
+        if(resposta.ok){
+
+            const dados =
+                await resposta.json();
+
+            dados.forEach(
+                item => {
+
+                    if(
+                        item.pasta_id &&
+                        item.capa_url
+                    ){
+                        capasPastasTodas[
+                            item.pasta_id
+                        ] =
+                            item.capa_url;
+                    }
+                }
+            );
+        }
+
+    }catch(e){
+        console.warn(
+            "Não foi possível carregar capas de pastas para o histórico.",
+            e
+        );
+    }
+
+
+    /*
+     * Primeiro encontra uma capa representativa para cada pasta.
+     * Prioridade:
+     * 1. capa personalizada em capas_pastas;
+     * 2. qualquer capa de revista existente naquela pasta.
+     */
+    const capaPorPasta = {
+        ...capasPastasTodas
+    };
+
+    itensTodasCategorias.forEach(
+        item => {
+
+            if(
+                item.pasta_id &&
+                item.capa_url &&
+                !capaPorPasta[
+                    item.pasta_id
+                ]
+            ){
+                capaPorPasta[
+                    item.pasta_id
+                ] =
+                    item.capa_url;
+            }
+        }
+    );
+
+
+    /*
+     * Agora cria uma capa para cada revista lógica.
+     */
+    itensTodasCategorias.forEach(
+        item => {
+
+            const chave =
+                itemKeyHistorico(
+                    item
+                );
+
+            const capa =
+                item.capa_url ||
+                capaPorPasta[
+                    item.pasta_id
+                ] ||
+                null;
+
+            if(
+                chave &&
+                capa
+            ){
+                capasHistoricoPorChave.set(
+                    chave,
+                    capa
+                );
+            }
+        }
+    );
+
+    capasHistoricoCarregadas =
+        true;
+}
+
+
+function resolverCapaHistorico(itemHistorico){
+
+    if(
+        itemHistorico?.capa_url
+    ){
+        return itemHistorico.capa_url;
+    }
+
+    return (
+        capasHistoricoPorChave.get(
+            itemHistorico?.item_key
+        ) ||
+        null
+    );
+}
+
+
 function formatarNumero(valor){
 
     return new Intl.NumberFormat(
@@ -2210,7 +2405,10 @@ async function abrirHistorico(){
 
     try{
 
-        await carregarHistorico();
+        await Promise.all([
+            carregarHistorico(),
+            carregarCapasHistorico()
+        ]);
 
         renderizarHistorico();
 
@@ -2604,13 +2802,18 @@ function renderizarHistorico(){
                                             ""
                                         );
 
+                                const urlCapa =
+                                    resolverCapaHistorico(
+                                        h
+                                    );
+
                                 const capa =
-                                    h.capa_url
+                                    urlCapa
                                         ? '<img src="' +
                                             escaparHtml(
-                                                h.capa_url
+                                                urlCapa
                                             ) +
-                                            '" alt="">'
+                                            '" alt="" loading="lazy">'
                                         : '📖';
 
                                 return `
